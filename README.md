@@ -1,4 +1,5 @@
 # PlateMate
 Personalized Meal Planner
-Team Members:
+Team Members: <br>
 Mayesha Rahaman - mayesharahaman
+Aroush Syed - asyed2105

@@ -10,6 +10,8 @@ public class SignupState {
     private String passwordError;
     private String repeatPassword = "";
     private String repeatPasswordError;
+    private String email = "";
+    private String address = "";
 
     public String getUsername() {
         return username;
@@ -33,6 +35,14 @@ public class SignupState {
 
     public String getRepeatPasswordError() {
         return repeatPasswordError;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public void setUsername(String username) {
@@ -59,12 +69,23 @@ public class SignupState {
         this.repeatPasswordError = repeatPasswordError;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "SignupState{"
                 + "username='" + username + '\''
                 + ", password='" + password + '\''
                 + ", repeatPassword='" + repeatPassword + '\''
+                + ", email='" + email + '\''
+                + ", address='" + address + '\''
                 + '}';
     }
+
 }

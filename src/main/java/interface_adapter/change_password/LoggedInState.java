@@ -8,11 +8,15 @@ public class LoggedInState {
 
     private String password = "";
     private String passwordError;
+    private String email = "";
+    private String address = "";
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
+        email = copy.email;
+        address = copy.address;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -39,4 +43,21 @@ public class LoggedInState {
     public String getPassword() {
         return password;
     }
+
+    public void setEmail(String email) {
+        this.username = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
 }

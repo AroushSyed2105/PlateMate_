@@ -26,18 +26,18 @@ public class CommonUser implements User {
     }
 
     @Override
-    public List<String> getDietaryRestrictions() {
-        return List.of();
+    public String[] getDietaryRestrictions() {
+        return new String[0];
     }
 
     @Override
-    public List<String> getAllergies() {
-        return List.of();
+    public String[] getAllergies() {
+        return new String[0];
     }
 
     @Override
-    public List<String> getHealthGoals() {
-        return List.of();
+    public String[] getHealthGoals() {
+        return new String[0];
     }
 
 }

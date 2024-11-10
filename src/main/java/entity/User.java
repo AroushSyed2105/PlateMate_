@@ -18,9 +18,9 @@ public interface User {
      */
     String getPassword();
 
-    List<String> getDietaryRestrictions();
+    String[] getDietaryRestrictions();
 
-    List<String> getAllergies();
+    String[] getAllergies();
 
-    List<String> getHealthGoals();
+    String[] getHealthGoals();
 }

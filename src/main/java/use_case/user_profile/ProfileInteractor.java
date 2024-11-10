@@ -1,6 +1,7 @@
 package use_case.user_profile;
 
 import entity.UserFactory;
+import use_case.signup.SignupOutputData;
 
 public class ProfileInteractor {
     private final ProfileUserDataAccessInterface userDataAccessObject;
@@ -16,15 +17,16 @@ public class ProfileInteractor {
     }
 
     @Override
-    public void execute(ProfileOutputData profileOutputData) {
-        if (userDataAccessObject.existsByUsername(profileOutputData.getUsername())) {
+    public void execute(ProfileInputData profileInputData) {
+        if (userDataAccessObject.existsByUsername(profileInputData.getUsername())) {
             profilePresenter.prepareFailView("Profile already exists.");
         } else {
-            final Profile profile = profileFactory.create(profileOutputData.getUsername(),
-                    profileOutputData.getDietaryRestrictions(), profileOutputData.getAllergies(),
-                    profileOutputData.getHealthGoals());
+            final Profile profile = profileFactory.create(profileInputData.getUsername(),
+                    profileInputData.getDietaryRestrictions(), profileInputData.getAllergies(),
+                    profileInputData.getHealthGoals());
             userDataAccessObject.saveProfile(profile);
 
+            final ProfileOutputData profileOutputData = new ProfileOutputData();
             profilePresenter.prepareSuccessView(profileOutputData);
         }
 

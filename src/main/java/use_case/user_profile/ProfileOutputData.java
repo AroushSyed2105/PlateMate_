@@ -1,6 +1,6 @@
 package use_case.user_profile;
 
-public class ProfileOutputData {
+public class ProfileInputData {
 
     private final String username;
 

@@ -1,4 +1,5 @@
 package entity;
+import java.util.List;
 
 /**
  * The representation of a user in our program.
@@ -17,4 +18,9 @@ public interface User {
      */
     String getPassword();
 
+    String[] getDietaryRestrictions();
+
+    String[] getAllergies();
+
+    String[] getHealthGoals();
 }

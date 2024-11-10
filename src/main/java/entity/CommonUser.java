@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 /**
  * A simple implementation of the User interface.
  */
@@ -21,6 +23,21 @@ public class CommonUser implements User {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String[] getDietaryRestrictions() {
+        return new String[0];
+    }
+
+    @Override
+    public String[] getAllergies() {
+        return new String[0];
+    }
+
+    @Override
+    public String[] getHealthGoals() {
+        return new String[0];
     }
 
 }

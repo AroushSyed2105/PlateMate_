@@ -6,16 +6,16 @@ package use_case.user_profile;
 
 public class ProfileInputData {
     private final String[] allergies;
-    private final String[] HealthyGoals ;
-    private final String[] DietaryRestrictions;
+    private final String[] healthGoals ;
+    private final String[] dietaryRestrictions;
 
-    public ProfileInputData(String[] allergies, String[] HealthyGoals, String[] DietaryRestrictions) {
+    public ProfileInputData(String[] allergies, String[] HealthGoals, String[] DietaryRestrictions) {
         this.allergies = allergies;
-        this.HealthyGoals = HealthyGoals;
-        this.DietaryRestrictions = DietaryRestrictions;
+        this.healthGoals = HealthGoals;
+        this.dietaryRestrictions = DietaryRestrictions;
     }
 
     String[] getAllergies() { return allergies; }
-    String[] getHealthyGoals() { return HealthyGoals; }
-    String[] getDietaryRestrictions() { return DietaryRestrictions; }
+    String[] getHealthGoals() { return healthGoals; }
+    String[] getDietaryRestrictions() { return dietaryRestrictions; }
 }

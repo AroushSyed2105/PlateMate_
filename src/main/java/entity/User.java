@@ -17,10 +17,4 @@ public interface User {
      * @return the password of the user.
      */
     String getPassword();
-
-    String[] getDietaryRestrictions();
-
-    String[] getAllergies();
-
-    String[] getHealthGoals();
 }

@@ -20,8 +20,8 @@ public class ProfileController {
      * @param HealthyGoals are the goals that the user wants us to follow in health plan
      * @param DietaryRestrictions are any eating restrictions they have that we should keep account for
      */
-    public void execute(String[] allergies, String[] HealthyGoals, String[] DietaryRestrictions) {
-        final ProfileInputData profileInputData = new ProfileInputData(allergies, HealthyGoals, DietaryRestrictions);
+    public void execute(String[] allergies, String[] HealthyGoals, String[] DietaryRestrictions, String username) {
+        final ProfileInputData profileInputData = new ProfileInputData(allergies, HealthyGoals, DietaryRestrictions, username);
         profileUseCaseInteractor.execute(profileInputData);
     }
 }

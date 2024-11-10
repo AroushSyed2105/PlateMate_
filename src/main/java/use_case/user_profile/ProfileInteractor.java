@@ -1,19 +1,21 @@
 package use_case.user_profile;
 
-import entity.UserFactory;
+import entity.ProfileFactory;
+import entity.Profile;
+
 import use_case.signup.SignupOutputData;
 
-public class ProfileInteractor {
+public class ProfileInteractor implements ProfileInputBoundary{
     private final ProfileUserDataAccessInterface userDataAccessObject;
     private final ProfileOutputBoundary profilePresenter;
-    private final UserFactory userFactory;
+    private final ProfileFactory profileFactory;
 
     public ProfileInteractor(ProfileUserDataAccessInterface profileUserDataAccessInterface,
                             ProfileOutputBoundary profileOutputBoundary,
-                            UserFactory userFactory) {
+                            ProfileFactory profileFactory) {
         this.userDataAccessObject = profileUserDataAccessInterface;
         this.profilePresenter = profileOutputBoundary;
-        this.userFactory = userFactory;
+        this.profileFactory = profileFactory;
     }
 
     @Override
@@ -21,18 +23,13 @@ public class ProfileInteractor {
         if (userDataAccessObject.existsByUsername(profileInputData.getUsername())) {
             profilePresenter.prepareFailView("Profile already exists.");
         } else {
-            final Profile profile = profileFactory.create(profileInputData.getUsername(),
-                    profileInputData.getDietaryRestrictions(), profileInputData.getAllergies(),
-                    profileInputData.getHealthGoals());
+            final Profile profile = profileFactory.create( profileInputData.getAllergies(), profileInputData.getDietaryRestrictions(),
+                    profileInputData.getHealthGoals(),profileInputData.getUsername());
             userDataAccessObject.saveProfile(profile);
 
-            final ProfileOutputData profileOutputData = new ProfileOutputData();
+            final ProfileOutputData profileOutputData = new ProfileOutputData(profileInputData.getAllergies(), profileInputData.getDietaryRestrictions(),
+                    profileInputData.getHealthGoals(),profileInputData.getUsername());
             profilePresenter.prepareSuccessView(profileOutputData);
-        }
-
-        @Override
-        public void switchToProfileView() {
-            profilePresenter.switchToProfileView();
         }
     }
 }

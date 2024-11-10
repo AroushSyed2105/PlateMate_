@@ -1,5 +1,6 @@
 package use_case.user_profile;
 
+import entity.Profile;
 import entity.User;
 
 public interface ProfileUserDataAccessInterface {
@@ -14,10 +15,10 @@ public interface ProfileUserDataAccessInterface {
     User getProfileByUsername(String username);
 
     /**
-     * Saves the user.
-     * @param user the user to save
+     * Saves the profile.
+     * @param profile saves the users profile
      */
-    void saveProfile(User user);
+    void saveProfile(Profile profile);
 
     void deleteProfile(String username);
 }

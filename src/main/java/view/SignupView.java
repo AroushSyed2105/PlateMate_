@@ -30,6 +30,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JTextField usernameInputField = new JTextField(15);
     private final JPasswordField passwordInputField = new JPasswordField(15);
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
+    private final JTextField emailInputField = new JTextField(15);
+    private final JTextField addressInputField = new JTextField(15);
     private SignupController signupController;
 
     private final JButton signUp;
@@ -43,6 +45,10 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        final LabelTextPanel emailInfo = new LabelTextPanel(
+                new JLabel(signupViewModel.EMAIL_LABEL), emailInputField);
+        final LabelTextPanel addressInfo = new LabelTextPanel(
+                new JLabel(SignupViewModel.ADDRESS_LABEL), addressInputField);
         final LabelTextPanel usernameInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.USERNAME_LABEL), usernameInputField);
         final LabelTextPanel passwordInfo = new LabelTextPanel(
@@ -68,7 +74,9 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                             signupController.execute(
                                     currentState.getUsername(),
                                     currentState.getPassword(),
-                                    currentState.getRepeatPassword()
+                                    currentState.getRepeatPassword(),
+                                    currentState.getEmail(),
+                                    currentState.getAddress()
                             );
                         }
                     }
@@ -88,6 +96,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         addUsernameListener();
         addPasswordListener();
         addRepeatPasswordListener();
+        addEmailListener();
+        addAddressListener();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -95,7 +105,59 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.add(usernameInfo);
         this.add(passwordInfo);
         this.add(repeatPasswordInfo);
+        this.add(emailInfo);
+        this.add(addressInfo);
         this.add(buttons);
+    }
+
+    private void addEmailListener() {
+        emailInputField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                final SignupState currentState = signupViewModel.getState();
+                currentState.setEmail(emailInputField.getText());
+                signupViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+    }
+
+    private void addAddressListener() {
+        addressInputField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                final SignupState currentState = signupViewModel.getState();
+                currentState.setAddress(addressInputField.getText());
+                signupViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
     }
 
     private void addUsernameListener() {

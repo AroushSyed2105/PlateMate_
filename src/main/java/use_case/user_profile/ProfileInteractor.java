@@ -3,8 +3,6 @@ package use_case.user_profile;
 import entity.ProfileFactory;
 import entity.Profile;
 
-import use_case.signup.SignupOutputData;
-
 public class ProfileInteractor implements ProfileInputBoundary{
     private final ProfileUserDataAccessInterface userDataAccessObject;
     private final ProfileOutputBoundary profilePresenter;

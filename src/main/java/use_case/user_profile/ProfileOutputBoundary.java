@@ -14,9 +14,4 @@ public interface ProfileOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
-    /**
-     * Switches to the Profile View.
-     */
-    void switchToProfileView();
-
 }

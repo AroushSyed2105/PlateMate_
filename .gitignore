@@ -2,7 +2,7 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-.idea/easycode.ignore
+../idea/.idea/easycode.ignore
 
 target/
 

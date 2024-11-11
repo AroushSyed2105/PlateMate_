@@ -13,30 +13,23 @@ import use_case.user_profile.ProfileOutputData;
  */
 public class ProfilePresenter implements ProfileOutputBoundary {
     private final ProfileViewModel viewModel;
-    private final LoginViewModel loginViewModel;
     private final LoggedInViewModel loggedInViewModel;
+    private final MealPlanViewModel meanPlanViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public ProfilePresenter(ProfileViewModel viewModel, ViewManagerModel viewManagerModel,
                             LoggedInViewModel loggedInViewModel,
-                            LoginViewModel loginViewModel) {
+                            MealPlanViewModel mealPlanViewModel) {
         this.viewModel = viewModel;
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
-        this.loginViewModel = loginViewModel;
+        this.meanPlanViewModel = mealPlanViewModel;
     }
 
     @Override
     public void prepareSuccessView(ProfileOutputData response) {
-        // On success, switch to the logged in view.
-
-        final LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername(response.getUsername());
-        this.loggedInViewModel.setState(loggedInState);
-        this.loggedInViewModel.firePropertyChanged();
-
-        this.viewManagerModel.setState(loggedInViewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
+        // On success, switch to the meal plan view.
+        this.viewManagerModel.setState(meanPlanViewModel.getViewName());
     }
 
     @Override

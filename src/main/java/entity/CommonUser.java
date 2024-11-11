@@ -25,17 +25,17 @@ public class CommonUser implements User {
         return password;
     }
 
-    @Override
+
     public String[] getDietaryRestrictions() {
         return new String[0];
     }
 
-    @Override
+
     public String[] getAllergies() {
         return new String[0];
     }
 
-    @Override
+
     public String[] getHealthGoals() {
         return new String[0];
     }

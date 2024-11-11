@@ -29,14 +29,24 @@ public class ProfilePresenter implements ProfileOutputBoundary {
     @Override
     public void prepareSuccessView(ProfileOutputData response) {
         // On success, switch to the meal plan view.
+
+        final LoggedInState loggedInState = loggedInViewModel.getState();
+
+        // 2. set the username in the state to the empty string
+        loggedInState.setUsername("");
+        // 3. set the state in the LoggedInViewModel to the updated state
+        loggedInViewModel.setState(loggedInState);
+        // 4. firePropertyChanged so that the View that is listening is updated.
+        loggedInViewModel.firePropertyChanged();
+
         this.viewManagerModel.setState(meanPlanViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
-        final LoginState loginState = loginViewModel.getState();
-        loginState.setLoginError(error);
-        loginViewModel.firePropertyChanged();
+        // No need to add code here. We'll assume that profile can't fail.
+        // Thought question: is this a reasonable assumption?
     }
 }
 

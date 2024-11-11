@@ -5,8 +5,10 @@ import interface_adapter.profile.ProfileState;
 
 public class MealPlanViewModel extends ViewModel<ProfileState> {
 
-}
     public MealPlanViewModel() {
         super("Meal Plan");
         setState(new MealPlanState());
     }
+
+}
+

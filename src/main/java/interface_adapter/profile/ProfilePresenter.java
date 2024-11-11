@@ -13,37 +13,40 @@ import use_case.user_profile.ProfileOutputData;
  */
 public class ProfilePresenter implements ProfileOutputBoundary {
     private final ProfileViewModel viewModel;
-    private final LoginViewModel loginViewModel;
     private final LoggedInViewModel loggedInViewModel;
+    private final MealPlanViewModel meanPlanViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public ProfilePresenter(ProfileViewModel viewModel, ViewManagerModel viewManagerModel,
                             LoggedInViewModel loggedInViewModel,
-                            LoginViewModel loginViewModel) {
+                            MealPlanViewModel mealPlanViewModel) {
         this.viewModel = viewModel;
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
-        this.loginViewModel = loginViewModel;
+        this.meanPlanViewModel = mealPlanViewModel;
     }
 
     @Override
     public void prepareSuccessView(ProfileOutputData response) {
-        // On success, switch to the logged in view.
+        // On success, switch to the meal plan view.
 
         final LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername(response.getUsername());
-        this.loggedInViewModel.setState(loggedInState);
-        this.loggedInViewModel.firePropertyChanged();
 
-        this.viewManagerModel.setState(loggedInViewModel.getViewName());
+        // 2. set the username in the state to the empty string
+        loggedInState.setUsername("");
+        // 3. set the state in the LoggedInViewModel to the updated state
+        loggedInViewModel.setState(loggedInState);
+        // 4. firePropertyChanged so that the View that is listening is updated.
+        loggedInViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(meanPlanViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
-        final LoginState loginState = loginViewModel.getState();
-        loginState.setLoginError(error);
-        loginViewModel.firePropertyChanged();
+        // No need to add code here. We'll assume that profile can't fail.
+        // Thought question: is this a reasonable assumption?
     }
 }
 

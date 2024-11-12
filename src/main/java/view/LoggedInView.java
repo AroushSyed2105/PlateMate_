@@ -33,6 +33,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final JButton logOut;
 
+    private final JButton profileButton;
+
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
 
@@ -55,6 +57,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         changePassword = new JButton("Change Password");
         buttons.add(changePassword);
+
+        profileButton = new JButton("Go to Profile");
+        buttons.add(profileButton);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

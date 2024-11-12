@@ -10,14 +10,14 @@ public class ProfileOutputData {
 
     private final String[] healthGoals;
 
-    private final boolean updateSuccess;
+    // private final boolean updateSuccess;
 
-    public ProfileOutputData(String username, String[] DietaryRestrictions, String[] allergies, String[] HealthGoals, boolean updateSuccess) {
-        this.username = username;
+    public ProfileOutputData(String[] allergies, String[] DietaryRestrictions, String[] HealthGoals,String username) {
         this.allergies = allergies;
-        this.healthGoals = HealthGoals;
         this.dietaryRestrictions = DietaryRestrictions;
-        this.updateSuccess = updateSuccess;
+        this.healthGoals = HealthGoals;
+        this.username = username;
+        // this.updateSuccess = updateSuccess;
     }
 
     public String getUsername() {
@@ -37,7 +37,7 @@ public class ProfileOutputData {
         return healthGoals;
     }
 
-    public boolean isUpdateSuccess() {
-        return updateSuccess;
-    }
+    // public boolean isUpdateSuccess() {
+        // return updateSuccess;
+    // }
 }

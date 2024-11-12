@@ -13,16 +13,16 @@ import use_case.user_profile.ProfileOutputData;
  * The Presenter for the Login Use Case.
  */
 public class ProfilePresenter implements ProfileOutputBoundary {
-    private final ProfileViewModel profileviewModel;
+    private final ProfileViewModel profileViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private final MealPlanViewModel meanPlanViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public ProfilePresenter(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel,
                             MealPlanViewModel mealPlanViewModel,
-                            ProfileViewModel profileviewModel
+                            ProfileViewModel profileViewModel
                             ) {
-        this.profileviewModel = profileviewModel;
+        this.profileViewModel = profileViewModel;
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.meanPlanViewModel = mealPlanViewModel;
@@ -33,7 +33,9 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         // On success, switch to the meal plan view.
 
         final LoggedInState loggedInState = loggedInViewModel.getState();
+        final ProfileState profileState = profileViewModel.getState();
 
+        //not sure what purpose this block is serving right now
         // 2. set the username in the state to the empty string
         loggedInState.setUsername("");
         // 3. set the state in the LoggedInViewModel to the updated state
@@ -41,6 +43,17 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         // 4. firePropertyChanged so that the View that is listening is updated.
         loggedInViewModel.firePropertyChanged();
 
+        //Update the profile information
+        profileState.setUsername(response.getUsername());
+        profileState.setAllergies(response.getAllergies());
+        profileState.setHealthGoals(response.getHealthGoals());
+        profileState.setDietaryRestrictions(response.getDietaryRestrictions());
+
+        //update the ProfileViewModel state
+        profileViewModel.setState(profileState);
+        profileViewModel.firePropertyChanged();
+
+        //switch to MealPlanView
         this.viewManagerModel.setState(meanPlanViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

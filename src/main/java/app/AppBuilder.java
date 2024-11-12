@@ -19,6 +19,7 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.profile.ProfilePresenter;
+import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -71,6 +72,7 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private ProfileViewModel profileViewModel;
     private ProfileView profileView;
 
     public AppBuilder() {
@@ -107,6 +109,17 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Profile View to the application.
+     * @return this builder
+     */
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView(profileViewModel);
+        cardPanel.add(profileView, profileView.getViewName());
         return this;
     }
 

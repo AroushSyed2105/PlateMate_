@@ -5,6 +5,7 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.meal_plan.MealPlanViewModel;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileOutputData;
 
@@ -12,15 +13,16 @@ import use_case.user_profile.ProfileOutputData;
  * The Presenter for the Login Use Case.
  */
 public class ProfilePresenter implements ProfileOutputBoundary {
-    private final ProfileViewModel viewModel;
+    private final ProfileViewModel profileviewModel;
     private final LoggedInViewModel loggedInViewModel;
     private final MealPlanViewModel meanPlanViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public ProfilePresenter(ProfileViewModel viewModel, ViewManagerModel viewManagerModel,
-                            LoggedInViewModel loggedInViewModel,
-                            MealPlanViewModel mealPlanViewModel) {
-        this.viewModel = viewModel;
+    public ProfilePresenter(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel,
+                            MealPlanViewModel mealPlanViewModel,
+                            ProfileViewModel profileviewModel
+                            ) {
+        this.profileviewModel = profileviewModel;
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.meanPlanViewModel = mealPlanViewModel;

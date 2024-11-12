@@ -24,4 +24,12 @@ public class ProfileController {
         final ProfileInputData profileInputData = new ProfileInputData(allergies, HealthyGoals, DietaryRestrictions, username);
         profileUseCaseInteractor.execute(profileInputData);
     }
+
+    /**
+     * Executes the "switch to MealView" Use Case.
+     */
+    public void switchToMealPlanView() {
+        profileUseCaseInteractor.switchToMealPlanView();
+    }
+
 }

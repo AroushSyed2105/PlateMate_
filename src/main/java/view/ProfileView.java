@@ -5,13 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileViewModel;
-import use_case.user_profile.ProfileInteractor;
 
 /**
  * The View for the Profile Use Case.
@@ -20,7 +25,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final String viewName = "profile";
 
     private final ProfileViewModel profileViewModel;
-    private final JList<String> allergiesInputField = new JList<>(ProfileInteractor.getValidAllergies());
+    private final JTextField allergiesInputField = new JTextField(20);
     private final JTextField dietaryRestrictionsInputField = new JTextField(20);
     private final JTextArea healthGoalsInputField = new JTextArea(5, 20);
     private final JTextField usernameInputField = new JTextField(20);
@@ -58,7 +63,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 // Split the input fields into String[] based on commas (or any delimiter you choose)
-                String[] allergiesArray = String.join(",", allergiesInputField.getSelectedValuesList()).split(",");
+                String[] allergiesArray = allergiesInputField.getText().split(",");
                 String[] dietaryRestrictionsArray = dietaryRestrictionsInputField.getText().split(",");
                 String[] healthGoalsArray = healthGoalsInputField.getText().split(",");
 
@@ -71,6 +76,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                 );
             }
         });
+
 
         cancelButton.addActionListener(this);
 
@@ -88,11 +94,13 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     }
 
     private void addAllergiesListener() {
-        allergiesInputField.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                String[] selectedAllergies = allergiesInputField.getSelectedValuesList().toArray(new String[0]);
-                profileViewModel.getState().setAllergies(selectedAllergies);
+        allergiesInputField.getDocument().addDocumentListener(new DocumentListener() {
+            private void documentListenerHelper() {
+                profileViewModel.getState().setAllergies(allergiesInputField.getText().split(","));
             }
+            public void insertUpdate(DocumentEvent e) { documentListenerHelper(); }
+            public void removeUpdate(DocumentEvent e) { documentListenerHelper(); }
+            public void changedUpdate(DocumentEvent e) { documentListenerHelper(); }
         });
     }
 
@@ -136,4 +144,3 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         return viewName;
     }
 }
-

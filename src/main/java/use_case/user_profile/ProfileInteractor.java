@@ -64,5 +64,10 @@ public class ProfileInteractor implements ProfileInputBoundary{
         }
     }
 
+    @Override
+    public void switchToMealPlanView() {
+
+    }
+
 
 }

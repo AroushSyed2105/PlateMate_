@@ -26,8 +26,10 @@ public class ProfileInteractor implements ProfileInputBoundary{
     private final ProfileFactory profileFactory;
 
     public static String[] getValidAllergies() {
+
         return VALID_ALLERGIES;
     }
+
     public ProfileInteractor(ProfileUserDataAccessInterface profileUserDataAccessInterface,
                             ProfileOutputBoundary profileOutputBoundary,
                             ProfileFactory profileFactory) {

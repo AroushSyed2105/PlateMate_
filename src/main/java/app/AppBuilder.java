@@ -8,6 +8,7 @@ import javax.swing.WindowConstants;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
+import entity.ProfileFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
@@ -18,6 +19,8 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.meal_plan.MealPlanViewModel;
+import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.signup.SignupController;
@@ -43,6 +46,7 @@ import view.LoginView;
 import view.SignupView;
 import view.ViewManager;
 import view.ProfileView;
+import view.MealView;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -60,6 +64,7 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     // thought question: is the hard dependency below a problem?
     private final UserFactory userFactory = new CommonUserFactory();
+    private final ProfileFactory profileFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
@@ -74,6 +79,8 @@ public class AppBuilder {
     private LoginView loginView;
     private ProfileViewModel profileViewModel;
     private ProfileView profileView;
+    private MealPlanViewModel mealPlanViewModel;
+    private MealView mealPlanView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -150,6 +157,17 @@ public class AppBuilder {
 
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
+        return this;
+    }
+
+    public AppBuilder addProfileUseCase() {
+        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel, loggedInViewModel,
+                mealPlanViewModel, profileViewModel);
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
+                profileOutputBoundary, profileFactory);
+
+        final ProfileController profileController = new ProfileController(profileInteractor);
+        profileView.setProfileController(profileController);
         return this;
     }
 

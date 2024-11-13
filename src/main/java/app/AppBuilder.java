@@ -114,6 +114,7 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
+        profileViewModel = new ProfileViewModel();
         loggedInView = new LoggedInView(profileViewModel, loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
@@ -166,8 +167,8 @@ public class AppBuilder {
         final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
                 profileOutputBoundary, profileFactory);
 
-        final ProfileController profileController = new ProfileController(profileInteractor);
-        profileView.setProfileController(profileController);
+         final ProfileController profileController = new ProfileController(profileInteractor);
+        loggedInView.setProfileController(profileController);
         return this;
     }
 

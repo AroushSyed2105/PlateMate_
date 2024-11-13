@@ -167,6 +167,10 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.changePasswordController = changePasswordController;
     }
 
+    public void setProfileController(ProfileController profileController) {
+        this.profileController = profileController;
+    }
+
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }

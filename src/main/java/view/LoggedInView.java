@@ -18,8 +18,6 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.profile.ProfileController;
-import interface_adapter.profile.ProfileState;
-import interface_adapter.profile.ProfileViewModel;
 
 /**
  * The View for when the user is logged into the program.
@@ -27,24 +25,21 @@ import interface_adapter.profile.ProfileViewModel;
 public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "logged in";
-    private final ProfileViewModel profileViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
-    private ProfileController profileController;
 
     private final JLabel username;
 
     private final JButton logOut;
 
-    private final JButton toProfile;
+    private final JButton profileButton;
 
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
 
-    public LoggedInView(ProfileViewModel profileViewModel, LoggedInViewModel loggedInViewModel) {
-        this.profileViewModel = profileViewModel;
+    public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
@@ -64,8 +59,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         changePassword = new JButton("Change Password");
         buttons.add(changePassword);
 
-        toProfile = new JButton("Go to Profile");
-        buttons.add(toProfile);
+        profileButton = new JButton("Go to Profile");
+        buttons.add(profileButton);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -92,23 +87,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 documentListenerHelper();
             }
         });
-
-        toProfile.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(toProfile)) {
-                        final ProfileState currentState = profileViewModel.getState();
-
-                        this.profileController.execute(
-                                currentState.getAllergies(),
-                                currentState.getHealthGoals(),
-                                currentState.getDietaryRestrictions(),
-                                currentState.getUsername()
-
-                        );
-                    }
-                }
-        );
 
         changePassword.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.

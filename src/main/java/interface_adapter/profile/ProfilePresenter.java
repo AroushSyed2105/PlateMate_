@@ -63,5 +63,10 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         // No need to add code here. We'll assume that profile can't fail.
         // Thought question: is this a reasonable assumption?
     }
+
+    @Override
+    public void switchToMealPlanView() {
+
+    }
 }
 

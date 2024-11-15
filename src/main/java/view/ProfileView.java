@@ -21,7 +21,7 @@ import interface_adapter.profile.ProfileViewModel;
  * The View for the Profile Use Case.
  */
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
-    private final String viewName = "profile";
+    private final String viewName = "Profile";
 
     private final ProfileViewModel profileViewModel;
     private final JTextField allergiesInputField = new JTextField(20);

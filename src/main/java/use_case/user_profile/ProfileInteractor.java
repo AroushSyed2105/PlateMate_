@@ -21,16 +21,9 @@ public class ProfileInteractor implements ProfileInputBoundary{
             "Pistachios", "Dates", "Quinoa", "Amaranth", "Corn", "Chia seeds", "Red meat", "Gelatin", "Cinnamon",
             "Nutmeg", "Curry powder", "Paprika", "Mushrooms", "Processed soy products (Soy lecithin)",
             "Hydrolyzed wheat proteins", "Milk proteins in baked goods").toArray(new String[0]);
-    private static final String [] VALID_DIETARY_RESTRICTIONS = List.of("Vegan", "Vegetarian", "Gluten-Free",
-            "Dairy-Free", "Pescatarian", "Halal", "Kosher", "Keto").toArray(new String[0]);
     private final ProfileUserDataAccessInterface userDataAccessObject;
     private final ProfileOutputBoundary profilePresenter;
     private final ProfileFactory profileFactory;
-
-    public static String[] getValidAllergies() {
-
-        return VALID_ALLERGIES;
-    }
 
     public ProfileInteractor(ProfileUserDataAccessInterface profileUserDataAccessInterface,
                             ProfileOutputBoundary profileOutputBoundary,
@@ -53,19 +46,6 @@ public class ProfileInteractor implements ProfileInputBoundary{
         return validAllergies.toArray(new String[0]);
     }
 
-    public String[] processSelectedDietaryRestrictions(String[] selectedDietaryRestrictions) {
-        List<String> validDietaryRestrictions = new ArrayList<>();
-
-        for (String dietaryRestriction : selectedDietaryRestrictions) {
-            for (String validAllergy: VALID_DIETARY_RESTRICTIONS) {
-                if (validAllergy.contains(dietaryRestriction)) {
-                    validDietaryRestrictions.add(dietaryRestriction);
-                }
-            }
-        }
-        return validDietaryRestrictions.toArray(new String[0]);
-    }
-
     @Override
     public void execute(ProfileInputData profileInputData) {
         if (userDataAccessObject.existsByUsername(profileInputData.getUsername())) {
@@ -73,16 +53,21 @@ public class ProfileInteractor implements ProfileInputBoundary{
         } else {
 
             String[] validAllergies = processSelectedAllergies(profileInputData.getAllergies());
-            String[] validDietaryRestrictions = processSelectedDietaryRestrictions(profileInputData.getDietaryRestrictions());
 
-            final Profile profile = profileFactory.create( validAllergies, validDietaryRestrictions,
+            final Profile profile = profileFactory.create( validAllergies, profileInputData.getDietaryRestrictions(),
                     profileInputData.getHealthGoals(),profileInputData.getUsername());
             userDataAccessObject.saveProfile(profile);
 
-            final ProfileOutputData profileOutputData = new ProfileOutputData(validAllergies, validDietaryRestrictions,
+            final ProfileOutputData profileOutputData = new ProfileOutputData(validAllergies, profileInputData.getDietaryRestrictions(),
                     profileInputData.getHealthGoals(), profileInputData.getUsername());
             profilePresenter.prepareSuccessView(profileOutputData);
         }
     }
+
+    @Override
+    public void switchToMealPlanView() {
+
+    }
+
 
 }

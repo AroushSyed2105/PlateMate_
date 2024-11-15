@@ -3,11 +3,13 @@ package data_access;
 import java.util.HashMap;
 import java.util.Map;
 
+import entity.Profile;
 import entity.User;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.user_profile.ProfileUserDataAccessInterface;
 
 /**
  * In-memory implementation of the DAO for storing user data. This implementation does
@@ -16,7 +18,8 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface {
+        LogoutUserDataAccessInterface,
+        ProfileUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
 
@@ -51,5 +54,25 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public String getCurrentUsername() {
         return this.currentUsername;
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return false;
+    }
+
+    @Override
+    public User getProfileByUsername(String username) {
+        return null;
+    }
+
+    @Override
+    public void saveProfile(Profile profile) {
+
+    }
+
+    @Override
+    public void deleteProfile(String username) {
+
     }
 }

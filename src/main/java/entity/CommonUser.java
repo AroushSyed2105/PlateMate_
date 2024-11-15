@@ -9,10 +9,12 @@ public class CommonUser implements User {
 
     private final String name;
     private final String password;
+    private final Profile profile;
 
-    public CommonUser(String name, String password) {
+    public CommonUser(String name, String password, Profile profile) {
         this.name = name;
         this.password = password;
+        this.profile = profile;
     }
 
     @Override
@@ -25,19 +27,8 @@ public class CommonUser implements User {
         return password;
     }
 
-
-    public String[] getDietaryRestrictions() {
-        return new String[0];
+    public Profile getProfile() {
+        return profile;
     }
 
-
-    public String[] getAllergies() {
-        return new String[0];
     }
-
-
-    public String[] getHealthGoals() {
-        return new String[0];
-    }
-
-}

@@ -8,4 +8,6 @@ public interface ProfileInputBoundary {
      * @param profileInputData the input data
      */
     void execute(ProfileInputData profileInputData);
+
+    void switchToMealPlanView();
 }

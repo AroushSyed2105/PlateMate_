@@ -144,4 +144,3 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         return viewName;
     }
 }
-

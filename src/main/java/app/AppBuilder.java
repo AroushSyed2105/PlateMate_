@@ -14,21 +14,24 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.logged_in.LoggedInController;
+import interface_adapter.logged_in.LoggedInPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.meal_plan.MealPlanViewModel;
-import interface_adapter.profile.ProfileController;
-import interface_adapter.profile.ProfilePresenter;
-import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.profile.*;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.logged_in.LoggedInInputBoundary;
+import use_case.logged_in.LoggedInInteractor;
+import use_case.logged_in.LoggedInOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -114,6 +117,8 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
+        profileViewModel = new ProfileViewModel();
+        mealPlanViewModel = new MealPlanViewModel();
         loggedInView = new LoggedInView(profileViewModel, loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
@@ -145,6 +150,19 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addLoggedInUseCase() {
+        final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(viewManagerModel,
+                loggedInViewModel, profileViewModel);
+
+        final LoggedInInputBoundary loggedInInteractor = new LoggedInInteractor(
+               userDataAccessObject, loggedInOutputBoundary, userFactory);
+
+        final LoggedInController controller = new LoggedInController(loggedInInteractor);
+        loggedInView.setLoggedInController(controller);
+        return this;
+
+    }
+
     /**
      * Adds the Login Use Case to the application.
      * @return this builder
@@ -166,9 +184,9 @@ public class AppBuilder {
         final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
                 profileOutputBoundary, profileFactory);
 
-        final ProfileController profileController = new ProfileController(profileInteractor);
-        profileView.setProfileController(profileController);
-        return this;
+         final ProfileController profileController = new ProfileController(profileInteractor);
+         loggedInView.setProfileController(profileController);
+         return this;
     }
 
     /**

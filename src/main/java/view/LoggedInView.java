@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -18,7 +20,7 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.profile.ProfileController;
-import interface_adapter.profile.ProfileState;
+import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.profile.ProfileViewModel;
 
 /**
@@ -33,6 +35,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
     private ProfileController profileController;
+    private LoggedInController loggedInController;
+
 
     private final JLabel username;
 
@@ -94,18 +98,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         });
 
         toProfile.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(toProfile)) {
-                        final ProfileState currentState = profileViewModel.getState();
-
-                        this.profileController.execute(
-                                currentState.getAllergies(),
-                                currentState.getHealthGoals(),
-                                currentState.getDietaryRestrictions(),
-                                currentState.getUsername()
-
-                        );
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        loggedInController.switchToProfileView();
                     }
                 }
         );
@@ -167,7 +162,16 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.changePasswordController = changePasswordController;
     }
 
+    public void setProfileController(ProfileController profileController) {
+        this.profileController = profileController;
+    }
+
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
+
+    public void setLoggedInController(LoggedInController controller) {
+        this.loggedInController = controller;
+    }
+
 }

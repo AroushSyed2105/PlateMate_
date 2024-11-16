@@ -25,11 +25,6 @@ public class ProfileInteractor implements ProfileInputBoundary{
     private final ProfileOutputBoundary profilePresenter;
     private final ProfileFactory profileFactory;
 
-    public static String[] getValidAllergies() {
-
-        return VALID_ALLERGIES;
-    }
-
     public ProfileInteractor(ProfileUserDataAccessInterface profileUserDataAccessInterface,
                             ProfileOutputBoundary profileOutputBoundary,
                             ProfileFactory profileFactory) {
@@ -68,5 +63,11 @@ public class ProfileInteractor implements ProfileInputBoundary{
             profilePresenter.prepareSuccessView(profileOutputData);
         }
     }
+
+    @Override
+    public void switchToMealPlanView() {
+
+    }
+
 
 }

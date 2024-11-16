@@ -1,10 +1,7 @@
 package interface_adapter.profile;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
-import interface_adapter.login.LoginState;
-import interface_adapter.login.LoginViewModel;
 import interface_adapter.meal_plan.MealPlanViewModel;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileOutputData;
@@ -15,7 +12,7 @@ import use_case.user_profile.ProfileOutputData;
 public class ProfilePresenter implements ProfileOutputBoundary {
     private final ProfileViewModel profileViewModel;
     private final LoggedInViewModel loggedInViewModel;
-    private final MealPlanViewModel meanPlanViewModel;
+    private final MealPlanViewModel mealPlanViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public ProfilePresenter(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel,
@@ -25,7 +22,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         this.profileViewModel = profileViewModel;
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
-        this.meanPlanViewModel = mealPlanViewModel;
+        this.mealPlanViewModel = mealPlanViewModel;
     }
 
     @Override
@@ -54,7 +51,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         profileViewModel.firePropertyChanged();
 
         //switch to MealPlanView
-        this.viewManagerModel.setState(meanPlanViewModel.getViewName());
+        this.viewManagerModel.setState(mealPlanViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 

@@ -1,6 +1,8 @@
 package data_access;
 import org.json.JSONObject;
 
+// FOR CHATGPT API
+
 public class MealPlanParser {
 
     private JSONObject jsonResponse;

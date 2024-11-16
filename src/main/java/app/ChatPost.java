@@ -34,10 +34,10 @@ public class ChatPost {
     public String getResponseRecipes(String prompt, String MealResponse) {
         NonStreamedChatResponse response = cohere.chat(
                 ChatRequest.builder()
-                        .message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.")
+                        .message("Generate a recipe and grocery list for" + MealResponse)
                         .chatHistory(
-                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()),
-                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()))).build());
+                                List.of(Message.user(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()),
+                                        Message.chatbot(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()))).build());
 
         System.out.println(response); // Prints the full JSON response
 

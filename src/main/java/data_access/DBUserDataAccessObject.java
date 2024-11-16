@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import app.ChatPost; // Import ChatPost class
+import java.util.Scanner; // If you need user input
 import entity.User;
 import entity.UserFactory;
 import okhttp3.MediaType;
@@ -31,11 +32,19 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
+    private static final String API_KEY = "r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX";
     private final UserFactory userFactory;
+    private final ChatPost chatPost;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
+        this.chatPost = new ChatPost(API_KEY); // Pass the API key for Cohere
         // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
+    }
+
+    public String generateMealPlan(String userPreferences) {
+        System.out.println("Generating meal plan based on preferences: " + userPreferences);
+        return chatPost.getResponse(userPreferences); // Assumes `chatPost` is properly initialized in the constructor
     }
 
     @Override

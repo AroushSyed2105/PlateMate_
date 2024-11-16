@@ -14,4 +14,7 @@ public interface ProfileOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
+    void switchToMealPlanView();
+
+
 }

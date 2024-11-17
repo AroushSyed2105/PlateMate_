@@ -44,6 +44,20 @@ public class ChatPost {
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
     }
+
+    public String getResponseNutritionalFacts(String MealResponse) {
+        NonStreamedChatResponse response = cohere.chat(
+                ChatRequest.builder()
+                        .message("Generate a recipe and grocery list for" + MealResponse)
+                        .chatHistory(
+                                List.of(Message.user(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()),
+                                        Message.chatbot(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()))).build());
+
+        System.out.println(response); // Prints the full JSON response
+        return response.getText(); //  Returns only the text field as a String
+    }
+
+
     public Map<Integer, List<String>> getRecipes(String mealPlan) {
         MealMeal mealMeal = new MealMeal(mealPlan);
         Map<Integer, List<String>> parsedMealPlan = mealMeal.parseMealPlan();

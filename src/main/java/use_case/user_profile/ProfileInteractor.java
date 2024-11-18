@@ -4,7 +4,6 @@ import entity.ProfileFactory;
 import entity.Profile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ProfileInteractor implements ProfileInputBoundary{
@@ -21,6 +20,8 @@ public class ProfileInteractor implements ProfileInputBoundary{
             "Pistachios", "Dates", "Quinoa", "Amaranth", "Corn", "Chia seeds", "Red meat", "Gelatin", "Cinnamon",
             "Nutmeg", "Curry powder", "Paprika", "Mushrooms", "Processed soy products (Soy lecithin)",
             "Hydrolyzed wheat proteins", "Milk proteins in baked goods").toArray(new String[0]);
+    private static final String[] VALID_DIETARY_RESTRICTIONS = List.of("Vegan", "Vegetarian", "Pescatarian", "Halal",
+            "Kosher", "Gluten-Free", "Dairy-Free").toArray(new String[0]);
     private final ProfileUserDataAccessInterface userDataAccessObject;
     private final ProfileOutputBoundary profilePresenter;
     private final ProfileFactory profileFactory;
@@ -46,6 +47,27 @@ public class ProfileInteractor implements ProfileInputBoundary{
         return validAllergies.toArray(new String[0]);
     }
 
+    public String[] processSelectedDietaryRestrictions(String[] selectedDietaryRestrictions) {
+        List<String> validDietaryRestrictions = new ArrayList<>();
+
+        for (String dietaryRestriction : selectedDietaryRestrictions) {
+            for (String validDietaryRestriction: VALID_DIETARY_RESTRICTIONS) {
+                if (validDietaryRestriction.contains(dietaryRestriction)) {
+                    validDietaryRestrictions.add(dietaryRestriction);
+                }
+            }
+        }
+        return validDietaryRestrictions.toArray(new String[0]);
+    }
+
+    public String [] getValidAllergies() {
+        return processSelectedAllergies(VALID_ALLERGIES);
+    }
+
+    public String [] getValidDietaryRestrictions() {
+        return processSelectedDietaryRestrictions(VALID_ALLERGIES);
+    }
+
     @Override
     public void execute(ProfileInputData profileInputData) {
         if (userDataAccessObject.existsByUsername(profileInputData.getUsername())) {
@@ -53,6 +75,7 @@ public class ProfileInteractor implements ProfileInputBoundary{
         } else {
 
             String[] validAllergies = processSelectedAllergies(profileInputData.getAllergies());
+            String [] validDietaryRestrictions = processSelectedDietaryRestrictions(validAllergies);
 
             final Profile profile = profileFactory.create( validAllergies, profileInputData.getDietaryRestrictions(),
                     profileInputData.getHealthGoals(),profileInputData.getUsername());

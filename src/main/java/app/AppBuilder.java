@@ -8,23 +8,30 @@ import javax.swing.WindowConstants;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
+import entity.ProfileFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.logged_in.LoggedInController;
+import interface_adapter.logged_in.LoggedInPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.profile.ProfilePresenter;
+import interface_adapter.meal_plan.MealPlanViewModel;
+import interface_adapter.profile.*;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.logged_in.LoggedInInputBoundary;
+import use_case.logged_in.LoggedInInteractor;
+import use_case.logged_in.LoggedInOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -42,6 +49,7 @@ import view.LoginView;
 import view.SignupView;
 import view.ViewManager;
 import view.ProfileView;
+import view.MealView;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -59,6 +67,7 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     // thought question: is the hard dependency below a problem?
     private final UserFactory userFactory = new CommonUserFactory();
+    private final ProfileFactory profileFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
@@ -71,7 +80,10 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private ProfileViewModel profileViewModel;
     private ProfileView profileView;
+    private MealPlanViewModel mealPlanViewModel;
+    private MealView mealPlanView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -105,8 +117,21 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
+        profileViewModel = new ProfileViewModel();
+        mealPlanViewModel = new MealPlanViewModel();
+        loggedInView = new LoggedInView(profileViewModel, loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Profile View to the application.
+     * @return this builder
+     */
+    public AppBuilder addProfileView() {
+        profileViewModel = new ProfileViewModel();
+        profileView = new ProfileView(profileViewModel);
+        cardPanel.add(profileView, profileView.getViewName());
         return this;
     }
 
@@ -125,6 +150,19 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addLoggedInUseCase() {
+        final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(viewManagerModel,
+                loggedInViewModel, profileViewModel);
+
+        final LoggedInInputBoundary loggedInInteractor = new LoggedInInteractor(
+               userDataAccessObject, loggedInOutputBoundary, userFactory);
+
+        final LoggedInController controller = new LoggedInController(loggedInInteractor);
+        loggedInView.setLoggedInController(controller);
+        return this;
+
+    }
+
     /**
      * Adds the Login Use Case to the application.
      * @return this builder
@@ -138,6 +176,17 @@ public class AppBuilder {
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
         return this;
+    }
+
+    public AppBuilder addProfileUseCase() {
+        final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel, loggedInViewModel,
+                mealPlanViewModel, profileViewModel);
+        final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
+                profileOutputBoundary, profileFactory);
+
+         final ProfileController profileController = new ProfileController(profileInteractor);
+         loggedInView.setProfileController(profileController);
+         return this;
     }
 
     /**

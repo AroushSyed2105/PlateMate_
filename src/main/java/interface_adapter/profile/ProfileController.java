@@ -25,6 +25,7 @@ public class ProfileController {
      * Executes the "switch to MealView" Use Case.
      */
     public void switchToMealPlanView() {
+
         profileUseCaseInteractor.switchToMealPlanView();
     }
 

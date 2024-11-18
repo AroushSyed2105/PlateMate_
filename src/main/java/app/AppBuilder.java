@@ -131,7 +131,15 @@ public class AppBuilder {
     public AppBuilder addProfileView() {
         profileViewModel = new ProfileViewModel();
         profileView = new ProfileView(profileViewModel);
+        mealPlanViewModel = new MealPlanViewModel();
         cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMealPlanView() {
+        mealPlanViewModel = new MealPlanViewModel();
+        mealPlanView = new MealView();
+        cardPanel.add(mealPlanView, mealPlanView.getViewName());
         return this;
     }
 
@@ -186,6 +194,7 @@ public class AppBuilder {
 
          final ProfileController profileController = new ProfileController(profileInteractor);
          loggedInView.setProfileController(profileController);
+         profileView.setProfileController(profileController);
          return this;
     }
 

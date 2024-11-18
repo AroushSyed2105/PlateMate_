@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,7 +19,21 @@ import use_case.user_profile.ProfileInteractor;
  */
 public class ProfileView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Profile";
-
+    private static final String[] VALID_ALLERGIES = List.of("None", "Almonds", "Brazil nuts", "Cashews", "Hazelnuts", "Macadamia nuts",
+            "Pecans", "Pine nuts", "Pistachios", "Walnuts", "Peanuts", "Shrimp", "Lobster", "Crab", "Prawns", "Crayfish",
+            "Clams", "Oysters", "Scallops", "Mussels", "Squid", "Octopus", "Salmon", "Tuna", "Cod", "Haddock",
+            "Mackerel", "Halibut", "Milk (Cow, Goat, Sheep)", "Cheese", "Yogurt", "Butter", "Cream", "Ghee", "Egg whites",
+            "Egg yolks", "Wheat", "Rye", "Barley", "Oats", "Corn (Maize)", "Soybeans", "Soy milk", "Tofu", "Tempeh",
+            "Soy protein isolates", "Apples", "Bananas", "Kiwi", "Peaches", "Cherries", "Avocado", "Strawberries",
+            "Oranges", "Celery", "Carrots", "Potatoes", "Bell peppers", "Tomatoes", "Lentils", "Chickpeas", "Green peas",
+            "Beans (Kidney beans, Black beans)", "Sesame seeds", "Sunflower seeds", "Mustard seeds", "Poppy seeds",
+            "Flaxseeds (Linseeds)", "Beef", "Pork", "Chicken", "Turkey", "Lamb", "Buckwheat", "Seaweed", "Mango",
+            "Lotus seeds", "Durian", "Lupin", "Mustard", "Cassava", "Plantains", "Baobab fruit", "Chickpeas",
+            "Pistachios", "Dates", "Quinoa", "Amaranth", "Corn", "Chia seeds", "Red meat", "Gelatin", "Cinnamon",
+            "Nutmeg", "Curry powder", "Paprika", "Mushrooms", "Processed soy products (Soy lecithin)",
+            "Hydrolyzed wheat proteins", "Milk proteins in baked goods").toArray(new String[0]);
+    private static final String[] VALID_DIETARY_RESTRICTIONS = List.of("Vegan", "Vegetarian", "Pescatarian", "Halal",
+            "Kosher", "Gluten-Free", "Dairy-Free").toArray(new String[0]);
     private final ProfileViewModel profileViewModel;
     private final JTextField allergiesInputField = new JTextField(20);
     private final JTextField dietaryRestrictionsInputField = new JTextField(20);
@@ -39,11 +54,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Allergy options
-        String[] allergyOptions = {"Peanuts", "Shellfish", "Milk", "Eggs", "Wheat", "Soy", "Tree Nuts"};
-
         // Create the JList to allow multiple allergy selections
-        JList<String> allergiesList = new JList<>(allergyOptions);
+        JList<String> allergiesList = new JList<>(VALID_ALLERGIES);
         allergiesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         // Add JList to JScrollPane to enable scrolling
@@ -60,12 +72,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         final LabelTextPanel healthGoals = new LabelTextPanel(
                 new JLabel(profileViewModel.HEALTH_GOALS), healthGoalsInputField);
 
-        // Allergy options
-        String[] dietaryRestrictionOptions = {"Vegan", "Vegetarian", "Pescatarian", "Halal",
-                "Kosher", "Gluten-Free", "Dairy-Free"};
-
         // Create the JList to allow multiple allergy selections
-        JList<String> dietaryRestrictionsList = new JList<>(dietaryRestrictionOptions);
+        JList<String> dietaryRestrictionsList = new JList<>(VALID_DIETARY_RESTRICTIONS);
         dietaryRestrictionsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         // Add JList to JScrollPane to enable scrolling

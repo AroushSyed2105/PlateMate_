@@ -1,5 +1,5 @@
 package view;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -51,30 +51,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         final LabelTextPanel dietaryRestrictions = new LabelTextPanel(
                 new JLabel(profileViewModel.DIETARY_RESTRICTIONS), dietaryRestrictionsInputField);
 
-        JPanel allergiesPanel = new JPanel();
-        allergiesPanel.setLayout(new BoxLayout(allergiesPanel, BoxLayout.Y_AXIS));
-        allergiesPanel.add(new JLabel(ProfileViewModel.ALLERGIES));
-        allergiesPanel.add(allergiesInputField);
-
-        JPanel dietaryRestrictionsPanel = new JPanel();
-        dietaryRestrictionsPanel.setLayout(new BoxLayout(dietaryRestrictionsPanel,BoxLayout.Y_AXIS));
-        dietaryRestrictionsPanel.add(new JLabel(ProfileViewModel.DIETARY_RESTRICTIONS));
-        dietaryRestrictionsPanel.add(dietaryRestrictionsInputField);
-
-        JPanel healthGoalsPanel = new JPanel();
-        healthGoalsPanel.setLayout(new BoxLayout(healthGoalsPanel, BoxLayout.Y_AXIS));
-        healthGoalsPanel.add(new JLabel(ProfileViewModel.HEALTH_GOALS));
-        healthGoalsPanel.add(healthGoalsInputField);
-
-
-
         // Buttons
         final JPanel buttons = new JPanel();
-        saveButton = new JButton("Save");
-        profile = new JButton("Profile");
-        toMealPlan = new JButton("To Meal Plan");
+        saveButton = new JButton(ProfileViewModel.SAVE_BUTTON_LABEL);
         buttons.add(saveButton);
-        cancelButton = new JButton("Cancel");
+        profile = new JButton("Profile");
+        buttons.add(profile);
+        toMealPlan = new JButton("To Meal Plan");
+        buttons.add(toMealPlan);
+        cancelButton = new JButton(ProfileViewModel.CANCEL_BUTTON_LABEL);
         buttons.add(cancelButton);
 
         saveButton.addActionListener(new ActionListener() {

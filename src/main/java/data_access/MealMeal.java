@@ -3,6 +3,8 @@ package data_access;
 import java.util.*;
 import java.util.regex.*;
 
+// DATA PARSER FOR COHERE API
+
 public class MealMeal {
 
     private String mealPlan;
@@ -67,14 +69,32 @@ public class MealMeal {
         return String.join(" ", keyIngredients);
     }
 
-    // Method to display the parsed meal plan
-    public void displayMealPlan() {
-        Map<Integer, List<String>> parsedMealPlan = parseMealPlan();
+    public Map<Integer, List<String>> extractGroceryLists(Map<Integer, List<String>> recipesMap) {
+        Map<Integer, List<String>> groceryListsMap = new HashMap<>();
 
-        parsedMealPlan.forEach((day, meals) -> {
-            System.out.println("Day " + day + ":");
-            meals.forEach(System.out::println);
-            System.out.println();
+        recipesMap.forEach((day, meals) -> {
+            List<String> groceriesForDay = new ArrayList<>();
+
+            for (String mealResponse : meals) {
+                // Split the meal response at "Instructions"
+                String[] parts = mealResponse.split("Instructions", 2); // will be split into 2 things; before "Instructions" and AFTER instructions
+                if (parts.length > 0) { //incase API call is stupid and doesnt give us any grocery stuff
+                    String grocerySection = parts[0].trim();  // remooving white spaces
+
+                    // Split the grocerySection by commas or other delimiters to get individual items
+                    String[] groceryItems = grocerySection.split(",|and|-"); // Splits by commas or "and" or -
+                    for (String item : groceryItems) {
+                        item = item.trim(); // remooving white spaces
+                        groceriesForDay.add(item);
+                    }
+                }
+            }
+
+            // Add the list of groceries for the current day to the map
+            groceryListsMap.put(day, groceriesForDay);
         });
+
+        return groceryListsMap;
     }
+
 }

@@ -4,18 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import use_case.user_profile.ProfileInteractor;
 
 /**
  * The View for the Profile Use Case.
@@ -29,6 +25,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JTextField healthGoalsInputField = new JTextField(20);
     private final JTextField usernameInputField = new JTextField(20);
     private ProfileController profileController;
+    private ProfileInteractor profileInteractor;
 
     private final JButton profile;
     private final JButton toMealPlan;
@@ -37,19 +34,50 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     public ProfileView(ProfileViewModel profileViewModel) {
         this.profileViewModel = profileViewModel;
+        this.profileInteractor = profileInteractor;
         profileViewModel.addPropertyChangeListener(this);
-
         final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final LabelTextPanel allergiesInfo = new LabelTextPanel(
-                new JLabel(profileViewModel.ALLERGIES), allergiesInputField);
+        // Allergy options
+        String[] allergyOptions = {"Peanuts", "Shellfish", "Milk", "Eggs", "Wheat", "Soy", "Tree Nuts"};
+
+        // Create the JList to allow multiple allergy selections
+        JList<String> allergiesList = new JList<>(allergyOptions);
+        allergiesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        // Add JList to JScrollPane to enable scrolling
+        JScrollPane allergiesScrollPane = new JScrollPane(allergiesList);
+        allergiesScrollPane.setPreferredSize(new Dimension(200, 100));
+
+        // Create a panel for allergies selection with label
+        JPanel allergiesInfo = new JPanel();
+        allergiesInfo.setLayout(new BoxLayout(allergiesInfo, BoxLayout.Y_AXIS));
+        JLabel allergiesLabel = new JLabel(profileViewModel.ALLERGIES); // Label for allergies
+        allergiesInfo.add(allergiesLabel);
+        allergiesInfo.add(allergiesScrollPane); // Add the JList inside the scroll pane
 
         final LabelTextPanel healthGoals = new LabelTextPanel(
                 new JLabel(profileViewModel.HEALTH_GOALS), healthGoalsInputField);
 
-        final LabelTextPanel dietaryRestrictions = new LabelTextPanel(
-                new JLabel(profileViewModel.DIETARY_RESTRICTIONS), dietaryRestrictionsInputField);
+        // Allergy options
+        String[] dietaryRestrictionOptions = {"Vegan", "Vegetarian", "Pescatarian", "Halal",
+                "Kosher", "Gluten-Free", "Dairy-Free"};
+
+        // Create the JList to allow multiple allergy selections
+        JList<String> dietaryRestrictionsList = new JList<>(dietaryRestrictionOptions);
+        dietaryRestrictionsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        // Add JList to JScrollPane to enable scrolling
+        JScrollPane dietaryRestrictionsScrollPane = new JScrollPane(dietaryRestrictionsList);
+        dietaryRestrictionsScrollPane.setPreferredSize(new Dimension(200, 100));
+
+        // Create a panel for allergies selection with label
+        JPanel dietaryRestrictionsInfo = new JPanel();
+        dietaryRestrictionsInfo.setLayout(new BoxLayout(dietaryRestrictionsInfo, BoxLayout.Y_AXIS));
+        JLabel dietaryRestrictionsLabel = new JLabel(profileViewModel.DIETARY_RESTRICTIONS); // Label for allergies
+        dietaryRestrictionsInfo.add(dietaryRestrictionsLabel);
+        dietaryRestrictionsInfo.add(dietaryRestrictionsScrollPane); // Add the JList inside the scroll pane
 
         // Buttons
         final JPanel buttons = new JPanel();
@@ -98,7 +126,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(title);
         this.add(allergiesInfo);
-        this.add(dietaryRestrictions);
+        this.add(dietaryRestrictionsInfo);
         this.add(healthGoals);
         this.add(buttons);
     }

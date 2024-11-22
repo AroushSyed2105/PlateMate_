@@ -24,10 +24,10 @@ public class ChatPost {
     public String getResponse(String prompt) {
         NonStreamedChatResponse response = cohere.chat(
                 ChatRequest.builder()
-                        .message("Generate a simple 1 day meal plan for someone who is allergic to dairy, nuts and Halal.")
+                        .message("Generate a simple 1 day meal plan for someone with these restrictions" + prompt)
                         .chatHistory(
-                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()),
-                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()))).build());
+                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these restrictions" + prompt).build()),
+                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these restrictions" + prompt).build()))).build());
 
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
@@ -44,6 +44,19 @@ public class ChatPost {
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
     }
+
+    public String getResponseGivenGroceryList(String UseriIngrediants, String UserAllergies, String UserRestrictions) {
+        NonStreamedChatResponse response = cohere.chat(
+                ChatRequest.builder()
+                        .message("Generate a simple 1 day meal plan for someone with these ingredients" + UseriIngrediants + "allergies" + UserAllergies + " and restrictions" + UserRestrictions)
+                        .chatHistory(
+                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these ingredients" + UseriIngrediants + "allergies" + UserAllergies + " and restrictions" + UserRestrictions).build()),
+                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these ingredients" + UseriIngrediants + "allergies" + UserAllergies + " and restrictions" + UserRestrictions).build()))).build());
+
+        System.out.println(response); // Prints the full JSON response
+        return response.getText(); //  Returns only the text field as a String
+    }
+
 
     public String getResponseNutritionalFacts(String MealResponse) {
         NonStreamedChatResponse response = cohere.chat(

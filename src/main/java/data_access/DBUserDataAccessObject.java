@@ -5,6 +5,10 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import app.ChatPost; // Import ChatPost class
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner; // If you need user input
 import entity.User;
 import entity.UserFactory;
@@ -17,6 +21,7 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+
 
 /**
  * The DAO for user data.
@@ -45,6 +50,22 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     public String generateMealPlan(String userPreferences) {
         System.out.println("Generating meal plan based on preferences: " + userPreferences);
         return chatPost.getResponse(userPreferences); // Assumes `chatPost` is properly initialized in the constructor
+    }
+
+    public String generateMealPlanGivenGroceries(String UserGroceries, String UserFoodPreferences) {
+        System.out.println("Generating meal plan based on what you have at home!");
+        return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
+    }
+
+    public String printMasterGroceries(Map<Integer, List<String>> recipesMap) {
+        MealMeal mealMeal = new MealMeal();
+        Map<Integer, List<String>> groceryListsMap = mealMeal.extractGroceryLists(recipesMap);
+
+        List<String> masterGroceryList = new ArrayList<>();
+        groceryListsMap.values().forEach(masterGroceryList::addAll);
+
+        // Return as a formatted string
+        return String.join(", ", masterGroceryList);
     }
 
     @Override

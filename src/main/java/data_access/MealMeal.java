@@ -7,15 +7,8 @@ import java.util.regex.*;
 
 public class MealMeal {
 
-    private String mealPlan;
-
-    // Constructor to initialize the MealPlanParser with a meal plan string
-    public MealMeal(String mealPlan) {
-        this.mealPlan = mealPlan;
-    }
-
     // Method to parse the meal plan
-    public Map<Integer, List<String>> parseMealPlan() {
+    public Map<Integer, List<String>> parseMealPlan(String mealPlan) {
         Map<Integer, List<String>> mealPlanMap = new HashMap<>();
 
         // Split the meal plan by days (Day 1, Day 2, ..., Day 7)

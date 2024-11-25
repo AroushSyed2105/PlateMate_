@@ -2,11 +2,9 @@ package app;
 
 import com.cohere.api.Cohere;
 import com.cohere.api.requests.ChatRequest;
-import com.cohere.api.resources.v2.requests.V2ChatRequest;
 import com.cohere.api.types.*;
 import data_access.MealMeal;
 
-import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +22,10 @@ public class ChatPost {
     public String getResponse(String prompt) {
         NonStreamedChatResponse response = cohere.chat(
                 ChatRequest.builder()
-                        .message("Generate a simple 1 day meal plan for someone who is allergic to dairy, nuts and Halal.")
+                        .message("Generate a simple 1 day meal plan for someone with these restrictions" + prompt)
                         .chatHistory(
-                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()),
-                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()))).build());
+                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these restrictions" + prompt).build()),
+                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these restrictions" + prompt).build()))).build());
 
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
@@ -45,38 +43,34 @@ public class ChatPost {
         return response.getText(); //  Returns only the text field as a String
     }
 
-    public String getResponseNutritionalFacts(String MealResponse) {
+    public String getResponseGivenGroceryList(String UseriIngrediants, String UserPreferences) {
         NonStreamedChatResponse response = cohere.chat(
                 ChatRequest.builder()
-                        .message("Generate a recipe and grocery list for" + MealResponse)
+                        .message("Generate a simple 1 day meal plan for someone with these ingredients " + UseriIngrediants + "and preferences " + UserPreferences)
                         .chatHistory(
-                                List.of(Message.user(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()),
-                                        Message.chatbot(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()))).build());
+                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these ingredients " + UseriIngrediants + "and preferences " + UserPreferences).build()),
+                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these ingredients " + UseriIngrediants + "and preferences " + UserPreferences).build()))).build());
 
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
     }
 
+    public Map<String, String> getRecipes(String mealPlan) {
+        MealMeal mealMeal = new MealMeal();
+        Map<String, String> parsedMealPlan = mealMeal.parseSingleDayMealPlan(mealPlan);
 
-    public Map<Integer, List<String>> getRecipes(String mealPlan) {
-        MealMeal mealMeal = new MealMeal(mealPlan);
-        Map<Integer, List<String>> parsedMealPlan = mealMeal.parseMealPlan();
-
-        // Map to store the API responses for each day
-        Map<Integer, List<String>> recipesMap = new HashMap<>();
+        // Map to store the API responses for each meal type
+        Map<String, String> recipesMap = new HashMap<>();
 
         // Loop through the parsed meal plan and call the API for each meal
-        parsedMealPlan.forEach((day, meals) -> {
-            for (int i = 0; i < meals.size(); i++) {
-                String mealDescription = meals.get(i);
-                String recipeResponse = getResponseRecipes(mealDescription);
-                meals.set(i, recipeResponse); // Replace the meal description with the API response
-            }
-            recipesMap.put(day, meals); // Add the updated meals list to recipesMap
+        parsedMealPlan.forEach((mealType, mealDescription) -> {
+            // Get the API response for the current meal description
+            String recipeResponse = getResponseRecipes(mealDescription);
+            // Store the API response in the recipesMap
+            recipesMap.put(mealType, recipeResponse);
         });
 
         return recipesMap;
     }
-
 
 }

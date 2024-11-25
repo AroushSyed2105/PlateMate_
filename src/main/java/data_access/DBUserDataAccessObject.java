@@ -5,7 +5,12 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import app.ChatPost; // Import ChatPost class
-import java.util.Scanner; // If you need user input
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import entity.User;
 import entity.UserFactory;
 import okhttp3.MediaType;
@@ -17,6 +22,7 @@ import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+
 
 /**
  * The DAO for user data.
@@ -45,6 +51,85 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     public String generateMealPlan(String userPreferences) {
         System.out.println("Generating meal plan based on preferences: " + userPreferences);
         return chatPost.getResponse(userPreferences); // Assumes `chatPost` is properly initialized in the constructor
+    }
+
+    public String generateMealPlanGivenGroceries(String UserGroceries, String UserFoodPreferences) {
+        System.out.println("Generating meal plan based on what you have at home!");
+        return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
+    }
+
+    public Map<String,String> fullMealPlan(String planPlan) {
+        System.out.println("Full meal plan based on preferences: " + planPlan);
+        MealMeal planMeal = new MealMeal();
+        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
+
+        Map<String, String> masterMealPlan = new HashMap<>();
+
+        // Use keys from cleanedPlan and responses from chatPost as values
+        for (Map.Entry<String, String> entry : cleanedPlan.entrySet()) {
+            String mealType = entry.getKey(); // "Breakfast", "Lunch", "Dinner"
+            String mealDescription = entry.getValue(); // cleaned description
+
+            // Get response for the meal description
+            String response = chatPost.getResponseRecipes(mealDescription);
+
+            // Add the key (mealType) and value (response) to masterMealPlan
+            masterMealPlan.put(mealType, response);
+        }
+
+        return masterMealPlan;
+    }
+
+    // Method to generate and print the master grocery list
+
+    public String printMasterGroceries(String userPreferences) {
+        // Generate the full meal plan based on user preferences
+        Map<String, String> fullMealPlan = fullMealPlan(userPreferences);
+
+        // Create a master grocery list from the meal plan
+        StringBuilder masterGroceryList = new StringBuilder();
+
+        for (Map.Entry<String, String> entry : fullMealPlan.entrySet()) {
+            String mealType = entry.getKey();
+            String mealDescription = entry.getValue();
+
+            // Extract the grocery list for this meal
+            String groceryList = extractGroceryList(mealDescription);
+            if (!groceryList.isEmpty()) {
+                masterGroceryList.append(mealType).append(": ").append(groceryList).append("\n");
+            }
+        }
+
+        return masterGroceryList.toString().trim();
+    }
+
+
+    // helper method to extract the grocery list from a single meal's description
+    public String extractGroceryList(String mealResponse) {
+        // Look for the "## Grocery List:" section in the meal response
+        String[] parts = mealResponse.split("## Grocery List:", 2);
+        if (parts.length > 1) {
+            String grocerySection = parts[1].trim(); // Everything after "## Grocery List:"
+
+            // Split the grocerySection into individual items by newlines or other delimiters
+            String[] groceryItems = grocerySection.split("\n|-");
+            StringBuilder groceryList = new StringBuilder();
+
+            for (String item : groceryItems) {
+                String trimmedItem = item.trim();
+                if (!trimmedItem.isEmpty() && !trimmedItem.startsWith("##")) { // Ignore empty lines and headings
+                    groceryList.append(trimmedItem).append(", ");
+                }
+            }
+
+            // Remove trailing comma and space
+            if (groceryList.length() > 0) {
+                groceryList.setLength(groceryList.length() - 2);
+            }
+            return groceryList.toString();
+        }
+
+        return ""; // Return an empty string if no grocery list is found
     }
 
     @Override

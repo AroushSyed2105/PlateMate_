@@ -42,6 +42,7 @@ import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import use_case.user_profile.ProfileInputBoundary;
+import use_case.user_profile.ProfileInputData;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileInteractor;
 import view.LoggedInView;
@@ -185,7 +186,7 @@ public class AppBuilder {
                 profileOutputBoundary, profileFactory);
 
          final ProfileController profileController = new ProfileController(profileInteractor);
-         loggedInView.setProfileController(profileController);
+         profileView.setProfileController(profileController);
          return this;
     }
 

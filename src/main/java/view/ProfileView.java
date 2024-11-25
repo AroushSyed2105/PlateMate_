@@ -12,6 +12,7 @@ import javax.swing.event.DocumentListener;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import org.jetbrains.annotations.NotNull;
 import use_case.user_profile.ProfileInteractor;
 
 /**
@@ -41,7 +42,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JTextField usernameInputField = new JTextField(20);
     private ProfileController profileController;
     private ProfileInteractor profileInteractor;
-
     private final JButton profile;
     private final JButton toMealPlan;
     private final JButton saveButton;
@@ -49,7 +49,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     public ProfileView(ProfileViewModel profileViewModel) {
         this.profileViewModel = profileViewModel;
-        this.profileInteractor = profileInteractor;
         profileViewModel.addPropertyChangeListener(this);
         final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -86,6 +85,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         JLabel dietaryRestrictionsLabel = new JLabel(profileViewModel.DIETARY_RESTRICTIONS); // Label for allergies
         dietaryRestrictionsInfo.add(dietaryRestrictionsLabel);
         dietaryRestrictionsInfo.add(dietaryRestrictionsScrollPane); // Add the JList inside the scroll pane
+        dietaryRestrictionsList.getSelectedValuesList();
 
         // Buttons
         final JPanel buttons = new JPanel();
@@ -100,18 +100,28 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         saveButton.addActionListener(new ActionListener() {
                                          public void actionPerformed(ActionEvent evt) {
-                                             if (evt.getSource().equals(profile)) {
-                                                 final ProfileState currentState = profileViewModel.getState();
-
+                                             if (evt.getSource().equals(saveButton)) {
+                                                 final ProfileState currentState = getProfileState();
                                                  profileController.execute(
                                                          currentState.getAllergies(),
                                                          currentState.getHealthGoals(),
                                                          currentState.getDietaryRestrictions(),
                                                          currentState.getUsername()
                                                  );
-
+                                                 JOptionPane.showMessageDialog(null, "Save button clicked!");
                                              }
                                          }
+
+            @NotNull
+            private ProfileState getProfileState() {
+                String[] selectedAllergies = allergiesList.getSelectedValuesList().toArray(new String[0]);
+                String[] selectedDietaryRestrictions = dietaryRestrictionsList.getSelectedValuesList().toArray(new String[0]);
+                final ProfileState currentState = profileViewModel.getState();
+
+                currentState.setAllergies(selectedAllergies);
+                currentState.setDietaryRestrictions(selectedDietaryRestrictions);
+                return currentState;
+            }
                                      }
         );
 

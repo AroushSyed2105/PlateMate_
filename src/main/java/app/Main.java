@@ -22,6 +22,7 @@ public class Main {
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addProfileView()
+                                            .addMealPlanView()
                                             .addProfileUseCase()
                                             .build();
 

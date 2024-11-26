@@ -2,7 +2,7 @@ package use_case.meal_plan;
 
 import use_case.user_profile.ProfileInputData;
 
-public class MealPlanInputBoundary {
+public interface MealPlanInputBoundary {
 
     /**
      * Executes the profile use case.
@@ -10,5 +10,5 @@ public class MealPlanInputBoundary {
      */
     void execute(MealPlanInputData mealPLanInputData);
 
-    void switchToCalorieTracker();
+    void switchToCalorieTrackerView();
 }

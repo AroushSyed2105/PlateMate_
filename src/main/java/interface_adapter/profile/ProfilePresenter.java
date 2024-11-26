@@ -32,14 +32,6 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         //final LoggedInState loggedInState = loggedInViewModel.getState();
         final ProfileState profileState = profileViewModel.getState();
 
-//        //not sure what purpose this block is serving right now
-//        // 2. set the username in the state to the empty string
-//        loggedInState.setUsername("");
-//        // 3. set the state in the LoggedInViewModel to the updated state
-//        loggedInViewModel.setState(loggedInState);
-//        // 4. firePropertyChanged so that the View that is listening is updated.
-//        loggedInViewModel.firePropertyChanged();
-
         //Update the profile information
         profileState.setUsername(response.getUsername());
         profileState.setAllergies(response.getAllergies());

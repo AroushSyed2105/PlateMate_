@@ -13,7 +13,6 @@ import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import org.jetbrains.annotations.NotNull;
-import use_case.user_profile.ProfileInteractor;
 
 /**
  * The View for the Profile Use Case.
@@ -41,62 +40,56 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JTextField healthGoalsInputField = new JTextField(20);
     private final JTextField usernameInputField = new JTextField(20);
     private ProfileController profileController;
-    private ProfileInteractor profileInteractor;
-    private final JButton profile;
     private final JButton toMealPlan;
     private final JButton saveButton;
-    private final JButton cancelButton;
+    private final JButton backButton;
 
     public ProfileView(ProfileViewModel profileViewModel) {
+        Color customColor = new Color(191, 218, 164); // Replace with your hex code
+        this.setBackground(customColor);
         this.profileViewModel = profileViewModel;
         profileViewModel.addPropertyChangeListener(this);
         final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Create the JList to allow multiple allergy selections
+        // Allergies input field
         JList<String> allergiesList = new JList<>(VALID_ALLERGIES);
         allergiesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        // Add JList to JScrollPane to enable scrolling
         JScrollPane allergiesScrollPane = new JScrollPane(allergiesList);
         allergiesScrollPane.setPreferredSize(new Dimension(200, 100));
 
-        // Create a panel for allergies selection with label
         JPanel allergiesInfo = new JPanel();
         allergiesInfo.setLayout(new BoxLayout(allergiesInfo, BoxLayout.Y_AXIS));
-        JLabel allergiesLabel = new JLabel(profileViewModel.ALLERGIES); // Label for allergies
+        JLabel allergiesLabel = new JLabel(profileViewModel.ALLERGIES);
         allergiesInfo.add(allergiesLabel);
-        allergiesInfo.add(allergiesScrollPane); // Add the JList inside the scroll pane
+        allergiesInfo.add(allergiesScrollPane);
 
         final LabelTextPanel healthGoals = new LabelTextPanel(
                 new JLabel(profileViewModel.HEALTH_GOALS), healthGoalsInputField);
 
-        // Create the JList to allow multiple allergy selections
+        // Dietary restrictions input field
         JList<String> dietaryRestrictionsList = new JList<>(VALID_DIETARY_RESTRICTIONS);
         dietaryRestrictionsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        // Add JList to JScrollPane to enable scrolling
         JScrollPane dietaryRestrictionsScrollPane = new JScrollPane(dietaryRestrictionsList);
         dietaryRestrictionsScrollPane.setPreferredSize(new Dimension(200, 100));
 
-        // Create a panel for allergies selection with label
         JPanel dietaryRestrictionsInfo = new JPanel();
         dietaryRestrictionsInfo.setLayout(new BoxLayout(dietaryRestrictionsInfo, BoxLayout.Y_AXIS));
-        JLabel dietaryRestrictionsLabel = new JLabel(profileViewModel.DIETARY_RESTRICTIONS); // Label for allergies
+        JLabel dietaryRestrictionsLabel = new JLabel(profileViewModel.DIETARY_RESTRICTIONS);
         dietaryRestrictionsInfo.add(dietaryRestrictionsLabel);
-        dietaryRestrictionsInfo.add(dietaryRestrictionsScrollPane); // Add the JList inside the scroll pane
+        dietaryRestrictionsInfo.add(dietaryRestrictionsScrollPane);
         dietaryRestrictionsList.getSelectedValuesList();
 
         // Buttons
         final JPanel buttons = new JPanel();
         saveButton = new JButton(ProfileViewModel.SAVE_BUTTON_LABEL);
         buttons.add(saveButton);
-        profile = new JButton("Profile");
-        buttons.add(profile);
         toMealPlan = new JButton("To Meal Plan");
         buttons.add(toMealPlan);
-        cancelButton = new JButton(ProfileViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancelButton);
+        backButton = new JButton(ProfileViewModel.BACK_BUTTON_LABEL);
+        buttons.add(backButton);
 
         saveButton.addActionListener(new ActionListener() {
                                          public void actionPerformed(ActionEvent evt) {
@@ -108,7 +101,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                                                          currentState.getDietaryRestrictions(),
                                                          currentState.getUsername()
                                                  );
-                                                 JOptionPane.showMessageDialog(null, "Save button clicked!");
                                              }
                                          }
 
@@ -126,15 +118,17 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         );
 
         toMealPlan.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        profileController.switchToMealPlanView();
-                    }
-                }
+                evt -> profileController.switchToMealPlanView()
         );
 
 
-        cancelButton.addActionListener(this);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(backButton)) {
+
+                }
+            }
+        })
 
         addAllergiesListener();
         addDietaryRestrictionsListener();

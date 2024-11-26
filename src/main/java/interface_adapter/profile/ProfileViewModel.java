@@ -7,7 +7,7 @@ public class ProfileViewModel extends ViewModel<ProfileState> {
     public static final String ALLERGIES = "Allergies";
     public static final String DIETARY_RESTRICTIONS = "Restrictions";
     public static final String HEALTH_GOALS = "Health Goals";
-    public static final String CANCEL_BUTTON_LABEL = "Cancel";
+    public static final String BACK_BUTTON_LABEL = "Back to menu";
     public static final String SAVE_BUTTON_LABEL = "Save";
 
 

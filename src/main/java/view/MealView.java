@@ -1,36 +1,40 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.profile.ProfileController;
-import interface_adapter.logged_in.LoggedInController;
-import interface_adapter.profile.ProfileViewModel;
 
 public class MealView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "MealPlan";
 
+    public MealView() {
+        // Set layout for the panel
+        this.setLayout(new BorderLayout());
+
+        // Add a label to the panel to display a test message
+        JLabel testLabel = new JLabel("MealView is working!", JLabel.CENTER);
+        testLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Optional: styling the text
+        this.add(testLabel, BorderLayout.CENTER);
+    }
+
     public static void main(String[] args) {
         // Create the frame
-        JFrame frame = new JFrame("Temporary Screen");
-        // Add a label with the text
-        JLabel label = new JLabel("Temporary Meal Plan", JLabel.CENTER);
+        JFrame frame = new JFrame("MealView Test Screen");
+
+        // Create an instance of MealView
+        MealView mealView = new MealView();
+
+        // Add MealView to the frame
+        frame.add(mealView);
+
         // Set up the frame
-        frame.add(label); // Add label to the frame
-        frame.setSize(300, 200); // Set the frame size
+        frame.setSize(400, 300); // Slightly larger for better visibility
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close the application on exit
         frame.setLocationRelativeTo(null); // Center the frame on the screen
+
         // Display the frame
         frame.setVisible(true);
     }
@@ -41,11 +45,13 @@ public class MealView extends JPanel implements ActionListener, PropertyChangeLi
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        // Placeholder for handling actions
+        System.out.println("Action performed: " + e.getActionCommand());
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        // Placeholder for handling property changes
+        System.out.println("Property changed: " + evt.getPropertyName());
     }
 }

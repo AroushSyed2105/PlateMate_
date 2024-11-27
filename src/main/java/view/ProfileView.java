@@ -101,6 +101,10 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
                                                          currentState.getDietaryRestrictions(),
                                                          currentState.getUsername()
                                                  );
+                                                 System.out.println("Allergies: " + String.join(", ", currentState.getAllergies()));
+                                                 System.out.println("Health Goals: " + currentState.getHealthGoals());
+                                                 System.out.println("Dietary Restrictions: " + String.join(", ", currentState.getDietaryRestrictions()));
+                                                 System.out.println("Username: " + currentState.getUsername());
                                              }
                                          }
 
@@ -128,7 +132,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
                 }
             }
-        })
+        });
 
         addAllergiesListener();
         addDietaryRestrictionsListener();

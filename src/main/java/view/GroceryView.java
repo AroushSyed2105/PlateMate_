@@ -3,8 +3,6 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,23 +19,28 @@ public class GroceryView extends JPanel {
         groceryCategories.put("Dairy", new DefaultListModel<>());
         groceryCategories.put("Spices & Condiments", new DefaultListModel<>());
 
-        // Set up the main layout
+        // Set the main layout and background color
+        Color customBackgroundColor = new Color(219, 232, 215); // Desired background color
         this.setLayout(new BorderLayout());
+        this.setBackground(customBackgroundColor);
         this.setPreferredSize(new Dimension(600, 400));
 
-        // Create a title
+        // Create a title with custom background
         JLabel titleLabel = new JLabel("Grocery List", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        titleLabel.setOpaque(true);
+        titleLabel.setBackground(customBackgroundColor);
         this.add(titleLabel, BorderLayout.NORTH);
 
         // Create the main panel for categories
         JPanel categoryPanel = new JPanel();
         categoryPanel.setLayout(new GridLayout(2, 3, 10, 10)); // Adjust rows/cols as needed
+        categoryPanel.setBackground(customBackgroundColor); // Apply background color
         this.add(categoryPanel, BorderLayout.CENTER);
 
         // Populate the panel with categories
         for (String category : groceryCategories.keySet()) {
-            categoryPanel.add(createCategoryPanel(category));
+            categoryPanel.add(createCategoryPanel(category, customBackgroundColor));
         }
 
         // Add a "Save & Exit" button
@@ -47,29 +50,29 @@ public class GroceryView extends JPanel {
     }
 
     // Helper method to create individual category panels
-    private JPanel createCategoryPanel(String categoryName) {
+    private JPanel createCategoryPanel(String categoryName, Color backgroundColor) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder(categoryName)); // Category name as the title
+        panel.setBackground(backgroundColor); // Apply background color
 
         // List for displaying items
         JList<String> itemList = new JList<>(groceryCategories.get(categoryName));
         JScrollPane scrollPane = new JScrollPane(itemList);
+        scrollPane.getViewport().setBackground(backgroundColor); // Set background for the scroll pane viewport
         panel.add(scrollPane, BorderLayout.CENTER);
 
         // Input field and button to add items
         JPanel inputPanel = new JPanel(new BorderLayout());
+        inputPanel.setBackground(backgroundColor); // Apply background color
         JTextField inputField = new JTextField();
         JButton addButton = new JButton("Add");
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String newItem = inputField.getText().trim();
-                if (!newItem.isEmpty()) {
-                    groceryCategories.get(categoryName).addElement(newItem);
-                    inputField.setText("");
-                }
+        addButton.addActionListener((ActionEvent e) -> {
+            String newItem = inputField.getText().trim();
+            if (!newItem.isEmpty()) {
+                groceryCategories.get(categoryName).addElement(newItem);
+                inputField.setText("");
             }
         });
 

@@ -66,6 +66,7 @@ public class MealView extends JPanel {
                 sectionHeaderLabel.setFont(new Font("SansSerif ", Font.BOLD, 14));
                 sectionHeaderLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // that shit aint moving oopp
                 sectionHeaderLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 0)); //idk chat said this was good idea....
+                mealPlanPanel.add(sectionHeaderLabel);
 
                 // all the subheaders shit
                 JTextArea sectionContentText = new JTextArea(sectionContent);

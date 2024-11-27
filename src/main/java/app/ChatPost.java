@@ -52,10 +52,10 @@ public class ChatPost {
     public String getResponseNutritionalFacts(String MealResponse) {
         NonStreamedChatResponse response = cohere.chat(
                 ChatRequest.builder()
-                        .message("Generate a recipe and grocery list for" + MealResponse)
+                        .message("Generate a recipe and grocery list and nutrient breakdown for" + MealResponse)
                         .chatHistory(
-                                List.of(Message.user(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()),
-                                        Message.chatbot(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()))).build());
+                                List.of(Message.user(ChatMessage.builder().message("Generate a recipe and grocery list and nutrient breakdown for" + MealResponse).build()),
+                                        Message.chatbot(ChatMessage.builder().message("Generate a recipe and grocery list and nutrient breakdown for" + MealResponse).build()))).build());
 
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String

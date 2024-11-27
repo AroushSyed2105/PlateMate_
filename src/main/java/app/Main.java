@@ -22,7 +22,9 @@ public class Main {
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addProfileView()
+                                            .addHealthyRemindersView()
                                             .addProfileUseCase()
+                                            .addHealthyRemindersUseCase()
                                             .build();
 
         application.pack();

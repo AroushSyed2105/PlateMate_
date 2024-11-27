@@ -34,6 +34,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton toMealPlan;
     private final JButton saveButton;
     private final JButton cancelButton;
+    // add button
 
     public ProfileView(ProfileViewModel profileViewModel) {
         this.profileViewModel = profileViewModel;

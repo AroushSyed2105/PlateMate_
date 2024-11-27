@@ -14,6 +14,9 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.healthyreminders.HealthyRemindersController;
+import interface_adapter.healthyreminders.HealthyRemindersPresenter;
+import interface_adapter.healthyreminders.HealthyRemindersViewModel;
 import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInPresenter;
 import interface_adapter.login.LoginController;
@@ -29,6 +32,10 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.healthy_reminders.HealthyRemindersInputBoundary;
+import use_case.healthy_reminders.HealthyRemindersInteractor;
+import use_case.healthy_reminders.HealthyRemindersOutputBoundary;
+import use_case.healthy_reminders.HealthyRemindersUserDataAccessInterface;
 import use_case.logged_in.LoggedInInputBoundary;
 import use_case.logged_in.LoggedInInteractor;
 import use_case.logged_in.LoggedInOutputBoundary;
@@ -44,12 +51,7 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.user_profile.ProfileInputBoundary;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileInteractor;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
-import view.ProfileView;
-import view.MealView;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -63,6 +65,7 @@ import view.MealView;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
+    private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
     // thought question: is the hard dependency below a problem?
@@ -74,6 +77,8 @@ public class AppBuilder {
     // thought question: is the hard dependency below a problem?
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
 
+    private JPanel views = new JPanel(new CardLayout());
+
     private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -84,8 +89,11 @@ public class AppBuilder {
     private ProfileView profileView;
     private MealPlanViewModel mealPlanViewModel;
     private MealView mealPlanView;
+    private HealthyRemindersViewModel healthyRemindersViewModel;
+    private HealthyRemindersView healthyRemindersView;
 
     public AppBuilder() {
+        this.views = views;
         cardPanel.setLayout(cardLayout);
     }
 
@@ -119,7 +127,8 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         profileViewModel = new ProfileViewModel();
         mealPlanViewModel = new MealPlanViewModel();
-        loggedInView = new LoggedInView(profileViewModel, loggedInViewModel);
+        healthyRemindersViewModel = new HealthyRemindersViewModel();
+        loggedInView = new LoggedInView(profileViewModel, loggedInViewModel, healthyRemindersViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
@@ -135,6 +144,12 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addHealthyRemindersView() {
+        healthyRemindersViewModel = new HealthyRemindersViewModel();
+        healthyRemindersView = new HealthyRemindersView(healthyRemindersViewModel);
+        cardPanel.add(healthyRemindersView, healthyRemindersView.getViewName());
+        return this;
+    }
     /**
      * Adds the Signup Use Case to the application.
      * @return this builder
@@ -149,19 +164,53 @@ public class AppBuilder {
         signupView.setSignupController(controller);
         return this;
     }
-
     public AppBuilder addLoggedInUseCase() {
-        final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(viewManagerModel,
-                loggedInViewModel, profileViewModel);
-
+        // Initialize dependencies for LoggedInUseCase
+        final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(
+                viewManagerModel, loggedInViewModel, profileViewModel, healthyRemindersViewModel
+        );
         final LoggedInInputBoundary loggedInInteractor = new LoggedInInteractor(
-               userDataAccessObject, loggedInOutputBoundary, userFactory);
-
+                userDataAccessObject, loggedInOutputBoundary, userFactory
+        );
         final LoggedInController controller = new LoggedInController(loggedInInteractor);
-        loggedInView.setLoggedInController(controller);
-        return this;
 
+        // Properly initialize HealthyRemindersInteractor
+        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
+        final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
+                loggedInViewModel,
+                healthyRemindersViewModel);
+        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(
+                userDataAccessObject, healthyRemindersPresenter, chatPost
+        );
+
+        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
+
+        // Set the HealthyRemindersController in the LoggedInController
+        controller.setHealthyRemindersController(healthyRemindersController);
+
+        // Set the controller for the LoggedInView
+        loggedInView.setLoggedInController(controller);
+
+        return this;
     }
+
+//    public AppBuilder addLoggedInUseCase() {
+//        final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(viewManagerModel,
+//                loggedInViewModel, profileViewModel, healthyRemindersViewModel);
+//
+//        final LoggedInInputBoundary loggedInInteractor = new LoggedInInteractor(
+//               userDataAccessObject, loggedInOutputBoundary, userFactory);
+//
+//        final LoggedInController controller = new LoggedInController(loggedInInteractor);
+//
+//        HealthyRemindersInputBoundary healthyRemindersInteractor = null;
+//        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
+//        controller.setHealthyRemindersController(healthyRemindersController);
+//
+//        loggedInView.setLoggedInController(controller);
+//        return this;
+//
+//    }
 
     /**
      * Adds the Login Use Case to the application.
@@ -222,6 +271,17 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addHealthyRemindersUseCase() {
+        final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,
+                loggedInViewModel, healthyRemindersViewModel);
+
+         final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX");
+        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(userDataAccessObject, healthyRemindersOutputBoundary, chatPost);
+
+        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
+        loggedInView.setHealthyRemindersController(healthyRemindersController);
+        return this;
+    }
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
      * @return the application

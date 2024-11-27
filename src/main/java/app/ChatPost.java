@@ -32,6 +32,10 @@ public class ChatPost {
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
     }
+    public String getReminder(String prompt) {
+
+        return prompt;
+    }
 
     public String getResponseRecipes(String MealResponse) {
         NonStreamedChatResponse response = cohere.chat(

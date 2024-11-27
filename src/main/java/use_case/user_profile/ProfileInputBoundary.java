@@ -10,4 +10,6 @@ public interface ProfileInputBoundary {
     void execute(ProfileInputData profileInputData);
 
     void switchToMealPlanView();
+
+    void switchToGroceryView();
 }

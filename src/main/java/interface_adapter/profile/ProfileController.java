@@ -29,4 +29,9 @@ public class ProfileController {
         profileUseCaseInteractor.switchToMealPlanView();
     }
 
+    public void switchToGroceryView() {
+
+        profileUseCaseInteractor.switchToGroceryView();
+    }
+
 }

@@ -51,7 +51,7 @@ public class MealView extends JPanel {
 
             // add header as bolded and bigger font - breakie,lunchie and dindin
             JLabel mealHeaderLabel = new JLabel(mealName.toUpperCase(), SwingConstants.CENTER); // titles are centered like a baddie
-            mealHeaderLabel.setFont(new Font("Arial", Font.BOLD, 18)); // bold that shittttt
+            mealHeaderLabel.setFont(new Font("SansSerif ", Font.BOLD, 18)); // bold that shittttt
             mealHeaderLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0)); // spacing shit around the header
             mealPlanPanel.add(mealHeaderLabel); // add that shit :D
 
@@ -63,13 +63,13 @@ public class MealView extends JPanel {
 
                 // making subheaders bold and on left side of page
                 JLabel sectionHeaderLabel = new JLabel(sectionName);
-                sectionHeaderLabel.setFont(new Font("Arial", Font.BOLD, 14));
+                sectionHeaderLabel.setFont(new Font("SansSerif ", Font.BOLD, 14));
                 sectionHeaderLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // that shit aint moving oopp
                 sectionHeaderLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 0)); //idk chat said this was good idea....
 
                 // all the subheaders shit
                 JTextArea sectionContentText = new JTextArea(sectionContent);
-                sectionContentText.setFont(new Font("Arial", Font.PLAIN, 12));
+                sectionContentText.setFont(new Font("SansSerif ", Font.PLAIN, 12));
                 sectionContentText.setLineWrap(true); // style shit
                 sectionContentText.setWrapStyleWord(true); // style shit
                 sectionContentText.setEditable(false); // opp u aint changing

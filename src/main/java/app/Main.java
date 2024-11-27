@@ -23,6 +23,7 @@ public class Main {
                                             .addLogoutUseCase()
                                             .addProfileView()
                                             .addMealPlanView()
+                                            .addGroceryPlanView()
                                             .addProfileUseCase()
                                             .build();
 

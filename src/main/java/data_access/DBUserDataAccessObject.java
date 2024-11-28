@@ -117,77 +117,49 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     public Map<String,String> fullMealPlan(String planPlan) {
-        System.out.println("Full meal plan based on preferences: " + planPlan);
-        MealMeal planMeal = new MealMeal(planPlan);
-        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
 
-        Map<String, String> masterMealPlan = new HashMap<>();
+        Map<String, String> mealPlanMap = new HashMap<>();
 
-        // Use keys from cleanedPlan and responses from chatPost as values
-        for (Map.Entry<String, String> entry : cleanedPlan.entrySet()) {
-            String mealType = entry.getKey(); // "Breakfast", "Lunch", "Dinner"
-            String mealDescription = entry.getValue(); // cleaned description
+        // Splits the input into sections by "**<MealType>:"
+        String[] meals = planPlan.split("\\*\\*");
 
-            // Get response for the meal description
-            String response = chatPost.getResponseRecipes(mealDescription);
-
-            // Add the key (mealType) and value (response) to masterMealPlan
-            masterMealPlan.put(mealType, response);
-        }
-
-        return masterMealPlan;
-    }
-
-    // Method to generate and print the master grocery list
-
-    public String printMasterGroceries(String userPreferences) {
-        // Generate the full meal plan based on user preferences
-        Map<String, String> fullMealPlan = fullMealPlan(userPreferences);
-
-        // Create a master grocery list from the meal plan
-        StringBuilder masterGroceryList = new StringBuilder();
-
-        for (Map.Entry<String, String> entry : fullMealPlan.entrySet()) {
-            String mealType = entry.getKey();
-            String mealDescription = entry.getValue();
-
-            // Extract the grocery list for this meal
-            String groceryList = extractGroceryList(mealDescription);
-            if (!groceryList.isEmpty()) {
-                masterGroceryList.append(mealType).append(": ").append(groceryList).append("\n");
+        for (String meal : meals) {
+            if (meal.contains(":")) {
+                String[] parts = meal.split(":", 2);
+                String mealType = parts[0].trim(); // Extract the meal type
+                String details = parts[1].trim(); // Extract the details
+                mealPlanMap.put(mealType, details);
             }
         }
-
-        return masterGroceryList.toString().trim();
+        return mealPlanMap;
     }
-
 
     // helper method to extract the grocery list from a single meal's description
-    public String extractGroceryList(String mealResponse) {
-        // Look for the "## Grocery List:" section in the meal response
-        String[] parts = mealResponse.split("## Grocery List:", 2);
-        if (parts.length > 1) {
-            String grocerySection = parts[1].trim(); // Everything after "## Grocery List:"
+    public List<String> extractGroceryList(Map<String, String> mealPlanMap) {
+        Set<String> grocerySet = new HashSet<>();
 
-            // Split the grocerySection into individual items by newlines or other delimiters
-            String[] groceryItems = grocerySection.split("\n|-");
-            StringBuilder groceryList = new StringBuilder();
-
-            for (String item : groceryItems) {
-                String trimmedItem = item.trim();
-                if (!trimmedItem.isEmpty() && !trimmedItem.startsWith("##")) { // Ignore empty lines and headings
-                    groceryList.append(trimmedItem).append(", ");
+        for (String details : mealPlanMap.values()) {
+            // Find the "Ingredients" section in the meal details
+            if (details.contains("**Ingredients:**")) {
+                String[] parts = details.split("\\*\\*Ingredients:\\*\\*", 2);
+                if (parts.length > 1) {
+                    String ingredientsSection = parts[1].split("\\*\\*", 2)[0].trim(); // Extract only the ingredients section
+                    // Split the ingredients into individual items and add them to the set
+                    String[] ingredients = ingredientsSection.split("\n");
+                    for (String ingredient : ingredients) {
+                        ingredient = ingredient.replaceFirst("- ", "").trim(); // Remove leading "- " and extra spaces
+                        if (!ingredient.isEmpty()) {
+                            grocerySet.add(ingredient);
+                        }
+                    }
                 }
             }
-
-            // Remove trailing comma and space
-            if (groceryList.length() > 0) {
-                groceryList.setLength(groceryList.length() - 2);
-            }
-            return groceryList.toString();
         }
 
-        return ""; // Return an empty string if no grocery list is found
+        // Convert the set to a sorted list for final output
+        List<String> groceryList = new ArrayList<>(grocerySet);
+        Collections.sort(groceryList); // Optional: Sort alphabetically
+        return groceryList;
     }
 
     @Override
@@ -315,3 +287,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return null;
     }
 }
+
+
+
+

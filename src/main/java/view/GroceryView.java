@@ -44,7 +44,7 @@ public class GroceryView extends JPanel {
         }
 
         // Add a "Save & Exit" button
-        JButton saveButton = new JButton("Save & Exit");
+        JButton saveButton = new JButton("Exit");
         saveButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Grocery list saved!"));
         this.add(saveButton, BorderLayout.SOUTH);
     }

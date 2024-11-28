@@ -57,13 +57,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
     }
 
-    public Map<String,String> tester(String planPlan) {
-        System.out.println("Full meal plan based on preferences: " + planPlan);
-        MealMeal planMeal = new MealMeal(planPlan);
-        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
-        return cleanedPlan;
-    }
-
     public static Map<String, Map<String, String>> formatMealDetails(Map<String, String> rawMealDetails) {
         Map<String, Map<String, String>> formattedMealDetails = new LinkedHashMap<>();
 

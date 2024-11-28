@@ -109,6 +109,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         signUp.setFont(customFont);
         buttons.add(signUp);
         shutDown = new JButton(SignupViewModel.EXIT_BUTTON_LABEL);
+        shutDown.setFont(customFont);
         buttons.add(shutDown);
 
         signUp.addActionListener(evt -> {

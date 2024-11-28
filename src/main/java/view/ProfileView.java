@@ -12,9 +12,7 @@ import javax.swing.event.DocumentListener;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
-import org.jetbrains.annotations.NotNull;
 
-import use_case.user_profile.ProfileInteractor;
 /**
  * The View for the Profile Use Case.
  */
@@ -44,7 +42,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton toMealPlan;
     private final JButton toGrocery;
     private final JButton saveButton;
-    private final JButton backButton;
+    private final JButton backToMenuButton;
 
     public ProfileView(ProfileViewModel profileViewModel) {
         // Define font and background color
@@ -109,20 +107,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         saveButton = new JButton(ProfileViewModel.SAVE_BUTTON_LABEL);
         saveButton.setFont(customFont);
         buttons.add(saveButton);
-        profile = new JButton("Profile");
-        profile.setFont(customFont);
-        buttons.add(profile);
         toMealPlan = new JButton("To Meal Plan");
         toMealPlan.setFont(customFont);
         buttons.add(toMealPlan);
-        backButton = new JButton(ProfileViewModel.BACK_BUTTON_LABEL);
-        buttons.add(backButton);
+        backToMenuButton = new JButton(ProfileViewModel.BACK_BUTTON_LABEL);
+        buttons.add(backToMenuButton);
+        backToMenuButton.setFont(customFont);
         toGrocery = new JButton("To Grocery List");
         toGrocery.setFont(customFont);
         buttons.add(toGrocery);
-        cancelButton = new JButton(ProfileViewModel.CANCEL_BUTTON_LABEL);
-        cancelButton.setFont(customFont);
-        buttons.add(cancelButton);
 
         saveButton.addActionListener(evt -> {
             if (evt.getSource().equals(saveButton)) {
@@ -138,7 +131,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
         toGrocery.addActionListener(evt -> profileController.switchToGroceryView());
-        cancelButton.addActionListener(this);
+        backToMenuButton.addActionListener(evt -> profileController.switchToLoggedInView());
 
         // Add listeners
         addAllergiesListener();

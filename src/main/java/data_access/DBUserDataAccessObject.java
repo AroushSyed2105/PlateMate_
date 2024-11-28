@@ -6,10 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import app.ChatPost; // Import ChatPost class
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import entity.User;
 import entity.UserFactory;
@@ -58,9 +57,68 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
     }
 
+    public Map<String,String> tester(String planPlan) {
+        System.out.println("Full meal plan based on preferences: " + planPlan);
+        MealMeal planMeal = new MealMeal(planPlan);
+        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
+        return cleanedPlan;
+    }
+
+    public static Map<String, Map<String, String>> formatMealDetails(Map<String, String> rawMealDetails) {
+        Map<String, Map<String, String>> formattedMealDetails = new LinkedHashMap<>();
+
+        for (Map.Entry<String, String> entry : rawMealDetails.entrySet()) {
+            String mealName = entry.getKey(); // e.g., Breakfast, Lunch, Dinner
+            String mealContent = entry.getValue();
+
+            Map<String, String> sections = new LinkedHashMap<>();
+
+            // Extract Recipe, Instructions, Grocery List, Ingredients
+            String[] headers = {"Recipe", "Instructions", "Grocery List", "Ingredients"};
+            for (String header : headers) {
+                Pattern headerPattern = Pattern.compile("- \\*\\*" + header + ":\\*\\* (.*?)(?=\\n- |$)", Pattern.DOTALL);
+                Matcher headerMatcher = headerPattern.matcher(mealContent);
+
+                if (headerMatcher.find()) {
+                    String content = headerMatcher.group(1).trim();
+
+                    // For Instructions: split sentences into separate lines
+                    if (header.equals("Instructions")) {
+                        String[] sentences = content.split("\\.\\s+");
+                        StringBuilder formattedInstructions = new StringBuilder();
+                        for (String sentence : sentences) {
+                            formattedInstructions.append("- ").append(sentence.trim()).append(".\n");
+                        }
+                        sections.put(header, formattedInstructions.toString().trim());
+                    } else {
+                        sections.put(header, content);
+                    }
+                }
+            }
+
+            formattedMealDetails.put(mealName, sections);
+        }
+
+        return formattedMealDetails;
+    }
+
+    public static void printFormattedMealPlan(Map<String, Map<String, String>> formattedMealDetails) {
+        for (Map.Entry<String, Map<String, String>> mealEntry : formattedMealDetails.entrySet()) { // main headers - breakfast,lunch,dinner
+            System.out.println("\n=======================");
+            System.out.println("   " + mealEntry.getKey().toUpperCase());
+            System.out.println("=======================\n");
+
+            for (Map.Entry<String, String> sectionEntry : mealEntry.getValue().entrySet()) { // subheaders - recipe, instructions
+                System.out.println("  --- " + sectionEntry.getKey() + " ---");
+                System.out.println("    " + sectionEntry.getValue());
+                System.out.println();
+            }
+        }
+    }
+
     public Map<String,String> fullMealPlan(String planPlan) {
         System.out.println("Full meal plan based on preferences: " + planPlan);
-        MealMeal planMeal = new MealMeal();
+        MealMeal planMeal = new MealMeal(planPlan);
         Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
 
         Map<String, String> masterMealPlan = new HashMap<>();

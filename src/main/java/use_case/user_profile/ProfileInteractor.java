@@ -39,4 +39,9 @@ public class ProfileInteractor implements ProfileInputBoundary{
 
     public void switchToLoggedInView() { profilePresenter.switchToLoggedInView(); }
 
+    @Override
+    public void switchToGroceryView() {
+        profilePresenter.switchToGroceryView();
+    }
+
 }

@@ -1,17 +1,11 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -38,43 +32,78 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private LoginController loginController;
 
     public LoginView(LoginViewModel loginViewModel) {
+        // Define custom font and background color
+        Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
+        Color customBackgroundColor = new Color(219, 232, 215);
 
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
 
+        // Set layout and background for the main panel
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(customBackgroundColor);
+
+        // Title label
         final JLabel title = new JLabel("Login Screen");
+        title.setFont(new Font("Times New Roman", Font.BOLD, 24));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setOpaque(true);
+        title.setBackground(customBackgroundColor);
 
-        final LabelTextPanel usernameInfo = new LabelTextPanel(
-                new JLabel("Username"), usernameInputField);
-        final LabelTextPanel passwordInfo = new LabelTextPanel(
-                new JLabel("Password"), passwordInputField);
+        // Username field and label
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(customFont);
+        usernameLabel.setOpaque(true);
+        usernameLabel.setBackground(customBackgroundColor);
 
+        usernameInputField.setFont(customFont);
+        usernameInputField.setBackground(new Color(238, 238, 238)); // Set to grey
+        usernameInputField.setOpaque(true);
+
+        LabelTextPanel usernameInfo = new LabelTextPanel(usernameLabel, usernameInputField);
+        usernameInfo.setBackground(customBackgroundColor);
+
+        // Password field and label
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(customFont);
+        passwordLabel.setOpaque(true);
+        passwordLabel.setBackground(customBackgroundColor);
+
+        passwordInputField.setFont(customFont);
+        passwordInputField.setBackground(new Color(238, 238, 238)); // Set to grey
+        passwordInputField.setOpaque(true);
+
+        LabelTextPanel passwordInfo = new LabelTextPanel(passwordLabel, passwordInputField);
+        passwordInfo.setBackground(customBackgroundColor);
+
+        // Buttons
         final JPanel buttons = new JPanel();
-        logIn = new JButton("log in");
+        buttons.setBackground(customBackgroundColor);
+
+        logIn = new JButton("Log In");
+        logIn.setFont(customFont);
         buttons.add(logIn);
-        cancel = new JButton("cancel");
+
+        cancel = new JButton("Cancel");
+        cancel.setFont(customFont);
         buttons.add(cancel);
 
-        logIn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(logIn)) {
-                            final LoginState currentState = loginViewModel.getState();
+        // Add ActionListener for buttons
+        logIn.addActionListener(evt -> {
+            if (evt.getSource().equals(logIn)) {
+                final LoginState currentState = loginViewModel.getState();
 
-                            loginController.execute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword()
-                            );
-                        }
-                    }
-                }
-        );
+                loginController.execute(
+                        currentState.getUsername(),
+                        currentState.getPassword()
+                );
+            }
+        });
 
         cancel.addActionListener(evt -> loginController.switchToSignUpView());
 
+        // Username input field document listener
         usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
-
             private void documentListenerHelper() {
                 final LoginState currentState = loginViewModel.getState();
                 currentState.setUsername(usernameInputField.getText());
@@ -97,10 +126,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             }
         });
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+        // Password input field document listener
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
-
             private void documentListenerHelper() {
                 final LoginState currentState = loginViewModel.getState();
                 currentState.setPassword(new String(passwordInputField.getPassword()));
@@ -123,11 +150,22 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
             }
         });
 
+        // Add components to the panel
         this.add(title);
         this.add(usernameInfo);
         this.add(usernameErrorField);
         this.add(passwordInfo);
+        this.add(passwordErrorField);
         this.add(buttons);
+
+        // Set error field fonts and background
+        usernameErrorField.setFont(customFont);
+        usernameErrorField.setBackground(customBackgroundColor);
+        usernameErrorField.setOpaque(true);
+
+        passwordErrorField.setFont(customFont);
+        passwordErrorField.setBackground(customBackgroundColor);
+        passwordErrorField.setOpaque(true);
     }
 
     /**
@@ -159,3 +197,4 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     }
 
 }
+

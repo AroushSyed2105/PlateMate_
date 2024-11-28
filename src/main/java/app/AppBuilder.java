@@ -35,7 +35,6 @@ import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.healthy_reminders.HealthyRemindersInputBoundary;
 import use_case.healthy_reminders.HealthyRemindersInteractor;
 import use_case.healthy_reminders.HealthyRemindersOutputBoundary;
-import use_case.healthy_reminders.HealthyRemindersUserDataAccessInterface;
 import use_case.logged_in.LoggedInInputBoundary;
 import use_case.logged_in.LoggedInInteractor;
 import use_case.logged_in.LoggedInOutputBoundary;
@@ -65,6 +64,7 @@ import view.*;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
+    private static String apiKey = "r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX";
     private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -92,6 +92,10 @@ public class AppBuilder {
     private HealthyRemindersViewModel healthyRemindersViewModel;
     private HealthyRemindersView healthyRemindersView;
 
+    public void ChatPost(String apiKey) {
+        this.apiKey = apiKey;
+        System.out.println("ChatPost initialized with API key: " + apiKey);
+    }
     public AppBuilder() {
         this.views = views;
         cardPanel.setLayout(cardLayout);
@@ -146,8 +150,8 @@ public class AppBuilder {
 
     public AppBuilder addHealthyRemindersView() {
         healthyRemindersViewModel = new HealthyRemindersViewModel();
-        healthyRemindersView = new HealthyRemindersView(healthyRemindersViewModel);
-        cardPanel.add(healthyRemindersView, healthyRemindersView.getViewName());
+        healthyRemindersView = new HealthyRemindersView(healthyRemindersViewModel); // Pass ViewModel
+        cardPanel.add(healthyRemindersView, healthyRemindersViewModel.getViewName());
         return this;
     }
     /**

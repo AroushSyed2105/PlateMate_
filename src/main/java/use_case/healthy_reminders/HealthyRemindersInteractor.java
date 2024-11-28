@@ -29,14 +29,37 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
             outputBoundary.prepareFailView("Failed to generate a reminder.");
         }
     }
-
     @Override
     public String generateReminder() {
-        String prompt = "Generate a random daily healthy reminder.";
+        String prompt = "Generate a daily healthy reminder.";
+        System.out.println("Prompt sent to ChatPost: " + prompt);
         String reminder = chatPost.getResponse(prompt);
-        HealthyRemindersOutputData outputData = new HealthyRemindersOutputData(reminder);
-        outputBoundary.prepareSuccessView(outputData);
+        if (reminder == null || reminder.isEmpty()) {
+            System.out.println("Reminder generation failed or returned empty.");
+            return null;
+        }
+        System.out.println("Generated reminder: " + reminder);
         return reminder;
     }
+
+//    @Override
+//    public String generateReminder() {
+//        String prompt = "Generate a random daily healthy reminder.";
+//        String reminder = chatPost.getResponse(prompt); // Use ChatPost to fetch the reminder
+//        if (reminder == null || reminder.isEmpty()) {
+//            System.out.println("Reminder generation failed.");
+//            return null;
+//        }
+//        return reminder;
+//    }
+
+//    @Override
+//    public String generateReminder() {
+//        String prompt = "Generate a random daily healthy reminder.";
+//        String reminder = chatPost.getResponse(prompt);
+//        HealthyRemindersOutputData outputData = new HealthyRemindersOutputData(reminder);
+//        outputBoundary.prepareSuccessView(outputData);
+//        return reminder;
+//    }
 
 }

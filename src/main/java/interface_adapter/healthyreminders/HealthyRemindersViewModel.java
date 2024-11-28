@@ -5,16 +5,22 @@ import interface_adapter.ViewModel;
 public class HealthyRemindersViewModel extends ViewModel<HealthyRemindersState> {
 
     public HealthyRemindersViewModel() {
-        super("HealthyReminders");
-        setState(new HealthyRemindersState());
+        super("HealthyReminders"); // Set the view name
+        setState(new HealthyRemindersState()); // Initialize the state
     }
 
+    /**
+     * Updates the reminder in the state and notifies listeners.
+     * @param reminder The new healthy reminder
+     */
     public void setReminder(String reminder) {
-        HealthyRemindersState state = getState();
-        state.setCurrentReminder(reminder);
-        firePropertyChanged();
+        System.out.println("Setting reminder in ViewModel: " + reminder); // Add this line
+        HealthyRemindersState state = getState(); // Get the current state
+        state.setCurrentReminder(reminder); // Update the reminder
+        firePropertyChanged(); // Notify listeners of the state change
     }
 }
+
 
 //package interface_adapter.healthyreminders;
 //

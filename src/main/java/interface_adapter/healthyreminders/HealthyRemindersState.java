@@ -3,6 +3,7 @@ package interface_adapter.healthyreminders;
 public class HealthyRemindersState {
     private String currentReminder = "";
 
+
     public String getCurrentReminder() {
         return currentReminder;
     }

@@ -28,8 +28,10 @@ public class HealthyRemindersPresenter implements HealthyRemindersOutputBoundary
     @Override
     public void prepareSuccessView(HealthyRemindersOutputData response) {
         String reminder = response.getReminder();
+        System.out.println("Presenter received reminder: " + reminder); // Fixed the variable name
         viewModel.setReminder(reminder); // Update the ViewModel
     }
+
 
     public void setViewModel(HealthyRemindersViewModel viewModel) {
         this.viewModel = viewModel;

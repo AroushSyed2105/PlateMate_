@@ -7,8 +7,10 @@ import entity.CommonUserFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import interface_adapter.profile.ProfileState;
 
 public class MealView extends JPanel {
 
@@ -229,5 +231,14 @@ public class MealView extends JPanel {
 
     public Object getViewName() {
         return viewName;
+    }
+
+    public Map<String, String[]> getUserPreferences() {
+        ProfileState currentState = new ProfileState();
+        Map<String, String[]> userPreferences = new HashMap<>();
+        userPreferences.put("Allergies", currentState.getAllergies());
+        userPreferences.put("Dietary Restrictions", currentState.getDietaryRestrictions());
+        userPreferences.put("Health Goals", currentState.getHealthGoals());
+        return userPreferences;
     }
 }

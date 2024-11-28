@@ -10,6 +10,7 @@ import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.ProfileFactory;
 import entity.UserFactory;
+import interface_adapter.Calorie.CalorieViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
@@ -44,12 +45,7 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.user_profile.ProfileInputBoundary;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileInteractor;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
-import view.ProfileView;
-import view.MealView;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -78,12 +74,14 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private CalorieViewModel calorieViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private ProfileViewModel profileViewModel;
     private ProfileView profileView;
     private MealPlanViewModel mealPlanViewModel;
     private MealView mealPlanView;
+    private CalorieView calorieView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -143,6 +141,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addCalorieView() {
+        calorieViewModel = new CalorieViewModel();
+        calorieView = new CalorieView();
+        cardPanel.add(calorieView, calorieView.getViewName());
+        return this;
+    }
+
     /**
      * Adds the Signup Use Case to the application.
      * @return this builder
@@ -188,7 +193,7 @@ public class AppBuilder {
 
     public AppBuilder addProfileUseCase() {
         final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel, loggedInViewModel,
-                mealPlanViewModel, profileViewModel);
+                mealPlanViewModel,calorieViewModel, profileViewModel);
         final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
                 profileOutputBoundary, profileFactory);
 

@@ -40,6 +40,7 @@ public class MealView extends JPanel {
                 "- **Grocery List:** Salmon, lemons, dill, olive oil, salt, pepper, broccoli, quinoa.\n" +
                 "- **Ingredients:** Salmon, lemons, dill, olive oil, salt, pepper, broccoli, quinoa.\n");
 
+
         Map<String, Map<String, String>> formattedMealPlan = dao.formatMealDetails(rawMealDetails);
 
         displayFormattedMealPlan(formattedMealPlan, mealPlanPanel); // add the stupid formatted meal plan to the view

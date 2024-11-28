@@ -71,7 +71,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
-        cancel.addActionListener(this);
+        cancel.addActionListener(evt -> loginController.switchToSignUpView());
 
         usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -157,4 +157,5 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
     }
+
 }

@@ -58,5 +58,10 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         this.viewManagerModel.setState(mealPlanViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
+
+    public void switchToLoggedInView() {
+        this.viewManagerModel.setState(loggedInViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+    }
 }
 

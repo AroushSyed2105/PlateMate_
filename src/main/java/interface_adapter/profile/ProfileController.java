@@ -29,4 +29,8 @@ public class ProfileController {
         profileUseCaseInteractor.switchToMealPlanView();
     }
 
+    public void switchToLoggedInView() {
+        profileUseCaseInteractor.switchToLoggedInView();
+    }
+
 }

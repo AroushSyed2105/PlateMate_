@@ -212,8 +212,7 @@ public class AppBuilder {
 
     public AppBuilder addProfileUseCase() {
         final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel, loggedInViewModel,
-                mealPlanViewModel,calorieViewModel, profileViewModel);
-                mealPlanViewModel, profileViewModel, groceryViewModel);
+                mealPlanViewModel,calorieViewModel, profileViewModel, groceryViewModel);
         final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
                 profileOutputBoundary, profileFactory);
 

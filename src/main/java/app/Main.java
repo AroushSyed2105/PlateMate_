@@ -23,7 +23,7 @@ public class Main {
                                             .addLogoutUseCase()
                                             .addProfileView()
                                             .addMealPlanView()
-                .addCalorieView()
+                                            .addCalorieView()
                                             .addGroceryPlanView()
                                             .addProfileUseCase()
                                             .build();

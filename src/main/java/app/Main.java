@@ -24,6 +24,7 @@ public class Main {
                                             .addProfileView()
                                             .addMealPlanView()
                 .addCalorieView()
+                                            .addGroceryPlanView()
                                             .addProfileUseCase()
                                             .build();
 

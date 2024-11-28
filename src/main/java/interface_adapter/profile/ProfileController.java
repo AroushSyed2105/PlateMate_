@@ -30,6 +30,13 @@ public class ProfileController {
     }
 
     public void switchtoCalorieView() {
+
         profileUseCaseInteractor.switchToCalorieView();
     }
+
+    public void switchToGroceryView() {
+
+        profileUseCaseInteractor.switchToGroceryView();
+    }
+
 }

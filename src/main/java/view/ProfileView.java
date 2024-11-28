@@ -13,7 +13,6 @@ import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import use_case.user_profile.ProfileInteractor;
-
 /**
  * The View for the Profile Use Case.
  */
@@ -45,79 +44,101 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton profile;
     private final JButton toMealPlan;
     private final JButton toCalorie;
+    private final JButton toGrocery;
     private final JButton saveButton;
     private final JButton cancelButton;
 
     public ProfileView(ProfileViewModel profileViewModel) {
+        // Define font and background color
+        Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
+        Color customBackgroundColor = new Color(219, 232, 215);
+
         this.profileViewModel = profileViewModel;
         this.profileInteractor = profileInteractor;
         profileViewModel.addPropertyChangeListener(this);
-        final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Create the JList to allow multiple allergy selections
+        // Set layout and background color for the main panel
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(customBackgroundColor);
+
+        final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
+        title.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setOpaque(true);
+        title.setBackground(customBackgroundColor);
+
+        // Create the JList for allergies with scroll pane
         JList<String> allergiesList = new JList<>(VALID_ALLERGIES);
         allergiesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-        // Add JList to JScrollPane to enable scrolling
         JScrollPane allergiesScrollPane = new JScrollPane(allergiesList);
         allergiesScrollPane.setPreferredSize(new Dimension(200, 100));
+        allergiesScrollPane.getViewport().setBackground(customBackgroundColor); // Set green background
 
-        // Create a panel for allergies selection with label
+        // Allergies panel
         JPanel allergiesInfo = new JPanel();
         allergiesInfo.setLayout(new BoxLayout(allergiesInfo, BoxLayout.Y_AXIS));
-        JLabel allergiesLabel = new JLabel(profileViewModel.ALLERGIES); // Label for allergies
+        allergiesInfo.setBackground(customBackgroundColor);
+        JLabel allergiesLabel = new JLabel(profileViewModel.ALLERGIES);
+        allergiesLabel.setFont(customFont);
         allergiesInfo.add(allergiesLabel);
-        allergiesInfo.add(allergiesScrollPane); // Add the JList inside the scroll pane
+        allergiesInfo.add(allergiesScrollPane);
 
-        final LabelTextPanel healthGoals = new LabelTextPanel(
+        // Health goals
+        LabelTextPanel healthGoals = new LabelTextPanel(
                 new JLabel(profileViewModel.HEALTH_GOALS), healthGoalsInputField);
+        healthGoals.setBackground(customBackgroundColor);
 
-        // Create the JList to allow multiple allergy selections
+        // Create the JList for dietary restrictions
         JList<String> dietaryRestrictionsList = new JList<>(VALID_DIETARY_RESTRICTIONS);
         dietaryRestrictionsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-        // Add JList to JScrollPane to enable scrolling
         JScrollPane dietaryRestrictionsScrollPane = new JScrollPane(dietaryRestrictionsList);
         dietaryRestrictionsScrollPane.setPreferredSize(new Dimension(200, 100));
+        dietaryRestrictionsScrollPane.getViewport().setBackground(customBackgroundColor); // Set green background
 
-        // Create a panel for allergies selection with label
+        // Dietary restrictions panel
         JPanel dietaryRestrictionsInfo = new JPanel();
         dietaryRestrictionsInfo.setLayout(new BoxLayout(dietaryRestrictionsInfo, BoxLayout.Y_AXIS));
-        JLabel dietaryRestrictionsLabel = new JLabel(profileViewModel.DIETARY_RESTRICTIONS); // Label for allergies
+        dietaryRestrictionsInfo.setBackground(customBackgroundColor);
+        JLabel dietaryRestrictionsLabel = new JLabel(profileViewModel.DIETARY_RESTRICTIONS);
+        dietaryRestrictionsLabel.setFont(customFont);
         dietaryRestrictionsInfo.add(dietaryRestrictionsLabel);
-        dietaryRestrictionsInfo.add(dietaryRestrictionsScrollPane); // Add the JList inside the scroll pane
+        dietaryRestrictionsInfo.add(dietaryRestrictionsScrollPane);
 
-        // Buttons
+        // Buttons panel
         final JPanel buttons = new JPanel();
+        buttons.setBackground(customBackgroundColor);
         saveButton = new JButton(ProfileViewModel.SAVE_BUTTON_LABEL);
+        saveButton.setFont(customFont);
         buttons.add(saveButton);
         profile = new JButton("Profile");
+        profile.setFont(customFont);
         buttons.add(profile);
         toMealPlan = new JButton("To Meal Plan");
+        toMealPlan.setFont(customFont);
         buttons.add(toMealPlan);
         toCalorie = new JButton("Calorie Tracker");
         buttons.add(toCalorie);
+        toGrocery = new JButton("To Grocery List");
+        toGrocery.setFont(customFont);
+        buttons.add(toGrocery);
         cancelButton = new JButton(ProfileViewModel.CANCEL_BUTTON_LABEL);
+        cancelButton.setFont(customFont);
         buttons.add(cancelButton);
 
-        saveButton.addActionListener(new ActionListener() {
-                                         public void actionPerformed(ActionEvent evt) {
-                                             if (evt.getSource().equals(profile)) {
-                                                 final ProfileState currentState = profileViewModel.getState();
+        saveButton.addActionListener(evt -> {
+            if (evt.getSource().equals(saveButton)) {
+                ProfileState currentState = profileViewModel.getState();
+                profileController.execute(
+                        currentState.getAllergies(),
+                        currentState.getHealthGoals(),
+                        currentState.getDietaryRestrictions(),
+                        currentState.getUsername()
+                );
+            }
+        });
 
-                                                 profileController.execute(
-                                                         currentState.getAllergies(),
-                                                         currentState.getHealthGoals(),
-                                                         currentState.getDietaryRestrictions(),
-                                                         currentState.getUsername()
-                                                 );
-
-                                             }
-                                         }
-                                     }
-        );
-
+        toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
+        toGrocery.addActionListener(evt -> profileController.switchToGroceryView());
         toMealPlan.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
@@ -135,19 +156,18 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         cancelButton.addActionListener(this);
 
+        // Add listeners
         addAllergiesListener();
         addDietaryRestrictionsListener();
         addHealthGoalsListener();
 
-        // Layout
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        // Add components to the main panel
         this.add(title);
         this.add(allergiesInfo);
         this.add(dietaryRestrictionsInfo);
         this.add(healthGoals);
         this.add(buttons);
     }
-
     private void addAllergiesListener() {
         allergiesInputField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
@@ -203,6 +223,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         });
     }
 
+
     @Override
     public void actionPerformed(ActionEvent evt) {
         JOptionPane.showMessageDialog(this, "Cancel not implemented yet.");
@@ -220,6 +241,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public void setProfileController(ProfileController controller) {
         this.profileController = controller;
     }
-
 }
+
+
 

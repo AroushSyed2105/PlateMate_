@@ -43,6 +43,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     private final JButton profile;
     private final JButton toMealPlan;
+    private final JButton toCalorie;
     private final JButton toGrocery;
     private final JButton saveButton;
     private final JButton cancelButton;
@@ -115,6 +116,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         toMealPlan = new JButton("To Meal Plan");
         toMealPlan.setFont(customFont);
         buttons.add(toMealPlan);
+        toCalorie = new JButton("Calorie Tracker");
+        buttons.add(toCalorie);
         toGrocery = new JButton("To Grocery List");
         toGrocery.setFont(customFont);
         buttons.add(toGrocery);
@@ -136,6 +139,21 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
         toGrocery.addActionListener(evt -> profileController.switchToGroceryView());
+        toMealPlan.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        profileController.switchToMealPlanView();
+                    }
+                }
+        );
+
+        toCalorie.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {profileController.switchtoCalorieView();}
+                }
+        );
+
+
         cancelButton.addActionListener(this);
 
         // Add listeners

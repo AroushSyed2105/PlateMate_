@@ -41,15 +41,24 @@ public class MealView extends JPanel {
         rawMealDetails.put("Breakfast", "- **Recipe:** Halal Scrambled Eggs\n" +
                 "- **Instructions:** Whisk eggs, milk (dairy or plant-based), salt, and pepper. Scramble in a pan with halal-certified cooking oil. Serve with toasted pita bread and sliced fresh fruit.\n" +
                 "- **Grocery List:** Eggs, milk, salt, pepper, halal-certified cooking oil, pita bread, apples, pears.\n" +
-                "- **Ingredients:** Eggs, milk, salt, pepper, pita bread, fresh fruit.\n");
-        rawMealDetails.put("Lunch", "- **Recipe:** Grilled Chicken and Vegetable Skewers\n" +
+                "- **Ingredients:** Eggs, milk, salt, pepper, pita bread, fresh fruit.\n" +
+                "- **Nutrient Breakdown (per serving):\n" +
+                "- Calories: 300\n- Carbohydrates: 50g\n- Fat: 10g\n- Protein: 5g\n- Fiber: 7g");
+
+                rawMealDetails.put("Lunch", "- **Recipe:** Grilled Chicken and Vegetable Skewers\n" +
                 "- **Instructions:** Marinate chicken cubes in olive oil, garlic, lemon juice, and spices. Skewer with bell peppers, onions, and tomatoes. Grill or bake until cooked. Serve with quinoa and salad.\n" +
                 "- **Grocery List:** Chicken, olive oil, garlic, lemon, paprika, cumin, bell peppers, onions, cherry tomatoes, quinoa, mixed greens.\n" +
-                "- **Ingredients:** Chicken, olive oil, garlic, lemon, vegetables, quinoa, salad greens.\n");
+                "- **Ingredients:** Chicken, olive oil, garlic, lemon, vegetables, quinoa, salad greens.\n" +
+                "- **Nutrient Breakdown (per serving):\n" +
+                "- Calories: 300\n- Carbohydrates: 5g\n- Fat: 10g\n- Protein: 5g\n- Fiber: 7g");
+
         rawMealDetails.put("Dinner", "- **Recipe:** Baked Salmon with Lemon and Dill\n" +
                 "- **Instructions:** Place salmon on lemon slices and dill. Drizzle olive oil, season with salt and pepper, and bake until flaky. Serve with steamed broccoli and quinoa.\n" +
                 "- **Grocery List:** Salmon, lemons, dill, olive oil, salt, pepper, broccoli, quinoa.\n" +
-                "- **Ingredients:** Salmon, lemons, dill, olive oil, salt, pepper, broccoli, quinoa.\n");
+                "- **Ingredients:** Salmon, lemons, dill, olive oil, salt, pepper, broccoli, quinoa.\n" +
+                "- **Nutrient Breakdown (per serving):\n" +
+                "- Calories: 300\n- Carbohydrates: 50g\n- Fat: 10g\n- Protein: 5g\n- Fiber: 7g");
+
 
         Map<String, Map<String, String>> formattedMealPlan = dao.formatMealDetails(rawMealDetails);
 

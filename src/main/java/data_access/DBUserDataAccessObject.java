@@ -67,7 +67,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             Map<String, String> sections = new LinkedHashMap<>();
 
             // Extract Recipe, Instructions, Grocery List, Ingredients
-            String[] headers = {"Recipe", "Instructions", "Grocery List", "Ingredients"};
+            String[] headers = {"Ingredients","Instructions", "Nutritional Facts"};
             for (String header : headers) {
                 Pattern headerPattern = Pattern.compile("- \\*\\*" + header + ":\\*\\* (.*?)(?=\\n- |$)", Pattern.DOTALL);
                 Matcher headerMatcher = headerPattern.matcher(mealContent);
@@ -109,23 +109,19 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         }
     }
 
-    public Map<String,String> fullMealPlan(String planPlan) {
+    public static Map<String, String> fullMealPlan(String input) {
+        Map<String, String> mealMap = new LinkedHashMap<>();
+        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):.*?\\*\\*(.*?)((?=\\*\\*(Breakfast|Lunch|Dinner):)|$)", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
 
-        Map<String, String> mealPlanMap = new HashMap<>();
-
-        // Splits the input into sections by "**<MealType>:"
-        String[] meals = planPlan.split("\\*\\*");
-
-        for (String meal : meals) {
-            if (meal.contains(":")) {
-                String[] parts = meal.split(":", 2);
-                String mealType = parts[0].trim(); // Extract the meal type
-                String details = parts[1].trim(); // Extract the details
-                mealPlanMap.put(mealType, details);
-            }
+        while (matcher.find()) {
+            String mealType = matcher.group(1).trim();
+            String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
+            mealMap.put(mealType, mealDetails);
         }
-        return mealPlanMap;
+        return mealMap;
     }
+
 
     // helper method to extract the grocery list from a single meal's description
     public List<String> extractGroceryList(Map<String, String> mealPlanMap) {

@@ -1,5 +1,3 @@
-
-
 package view;
 
 import data_access.DBUserDataAccessObject;
@@ -7,7 +5,6 @@ import entity.CommonUserFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MealView extends JPanel {
@@ -36,19 +33,11 @@ public class MealView extends JPanel {
 
         this.add(scrollPane, BorderLayout.CENTER);
 
-        CommonUserFactory commonuserFactory = new CommonUserFactory();
-        DBUserDataAccessObject dao = new DBUserDataAccessObject(commonuserFactory);
+        // Initialize DAO and parse meal plan
+        CommonUserFactory commonUserFactory = new CommonUserFactory();
+        DBUserDataAccessObject dao = new DBUserDataAccessObject(commonUserFactory);
 
-        // TEMP USER PREFERENCE VARIABLES
-        String tempAllergies = "halal";
-        String TempFoodRestrictions = "dairy,nuts";
-
-        // UNCOMMENT AFTER
-        //String tempRestrctions = tempAllergies + TempFoodRestrictions;
-
-        //String mealmeal = dao.generateMealPlan(TempFoodRestrictions);
-        //Map<String,String> unformattedPlan = dao.fullMealPlan(mealmeal);
-
+        // Sample meal plan string
         String TempMeal = "Welcome to PlateMate!\n" +
                 "Generated Meal Plan:\n" +
                 "Certainly! Here is a precise meal plan for one day that is halal, nut-free, and dairy-free:\n" +
@@ -134,100 +123,41 @@ public class MealView extends JPanel {
                 "- Protein: 20g\n" +
                 "- Carbohydrates: 60g\n" +
                 "- Fat: 5g\n" +
-                "- Fiber: 15g\n" +
-                "\n" +
-                "**Grocery List:**\n" +
-                "- Whole grain bread\n" +
-                "- Avocado\n" +
-                "- Tomato\n" +
-                "- Mixed greens\n" +
-                "- Cucumber\n" +
-                "- Red bell pepper\n" +
-                "- Red onion\n" +
-                "- Chicken breast\n" +
-                "- Quinoa\n" +
-                "- Lemon\n" +
-                "- Olive oil\n" +
-                "- Dried lentils\n" +
-                "- Can of diced tomatoes\n" +
-                "- Onion\n" +
-                "- Garlic\n" +
-                "- Ground cumin\n" +
-                "- Ground coriander\n" +
-                "- Turmeric\n" +
-                "- Paprika\n" +
-                "- Vegetable broth\n" +
-                "- Mixed vegetables\n" +
-                "- Fresh parsley or cilantro\n" +
-                "\n" +
-                "Enjoy your delicious and nutritious day of meals!\n" +
-                "\n" +
-                "Process finished with exit code 0\n" +
-                "\n";
+                "- Fiber: 15g\n";
 
-        Map<String,String> unformattedPlan = dao.fullMealPlan(TempMeal);
+        // Parse the meal plan
+        Map<String, String> unformattedPlan = dao.fullMealPlan(TempMeal);
 
-        Map<String, Map<String, String>> formattedMealPlan = dao.formatMealDetails(unformattedPlan);
+        // Display parsed meal plan in the mealPlanPanel
+        for (Map.Entry<String, String> entry : unformattedPlan.entrySet()) {
+            String mealType = entry.getKey();
+            String mealInfo = entry.getValue();
 
-        displayFormattedMealPlan(formattedMealPlan, mealPlanPanel); // add the stupid formatted meal plan to the view
-    }
+            // Add a label for the meal type
+            JLabel mealTypeLabel = new JLabel(mealType);
+            mealTypeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+            mealTypeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            mealPlanPanel.add(mealTypeLabel);
 
-    private void displayFormattedMealPlan(Map<String, Map<String, String>> formattedMealPlan, JPanel mealPlanPanel) {
-        for (Map.Entry<String, Map<String, String>> mealEntry : formattedMealPlan.entrySet()) {
-            String mealName = mealEntry.getKey(); // Breakfast, Lunch, Dinner
+            // Add a text area for the meal information
+            JTextArea mealInfoText = new JTextArea(mealInfo);
+            mealInfoText.setWrapStyleWord(true);
+            mealInfoText.setLineWrap(true);
+            mealInfoText.setEditable(false);
+            mealInfoText.setBackground(customBackgroundColor);
+            mealInfoText.setFont(new Font("Arial", Font.PLAIN, 14));
+            mealPlanPanel.add(mealInfoText);
 
-            // Add header as bolded and bigger font - breakie, lunchie, and dindin
-            JLabel mealHeaderLabel = new JLabel(mealName.toUpperCase(), SwingConstants.CENTER); // titles are centered like a baddie
-            mealHeaderLabel.setFont(new Font("Times New Roman", Font.BOLD, 22)); // bold that shittttt
-            mealHeaderLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0)); // spacing shit around the header
-            mealHeaderLabel.setOpaque(true); // Required to apply background color
-            mealHeaderLabel.setBackground(new Color(219, 232, 215)); // Custom background color
-            mealPlanPanel.add(mealHeaderLabel); // add that shit :D
-
-            // Subheaders - recipe, instructions.....
-            Map<String, String> sections = mealEntry.getValue(); // all the info shit from each meal - breakie....
-            for (Map.Entry<String, String> sectionEntry : sections.entrySet()) {
-                String sectionName = sectionEntry.getKey(); // recipe, instructions .....
-                String sectionContent = sectionEntry.getValue();
-
-                // Making subheaders bold and on left side of page
-                JLabel sectionHeaderLabel = new JLabel(sectionName);
-                sectionHeaderLabel.setFont(new Font("Times New Roman", Font.BOLD, 18));
-                sectionHeaderLabel.setAlignmentX(Component.LEFT_ALIGNMENT); // that shit aint moving oopp
-                sectionHeaderLabel.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 0)); // adding space for readability
-                sectionHeaderLabel.setOpaque(true); // Required to apply background color
-                sectionHeaderLabel.setBackground(new Color(219, 232, 215)); // Custom background color
-
-                // Add the subheader label to the panel
-                mealPlanPanel.add(sectionHeaderLabel); // Add subheader to the panel
-
-                // All the subheaders shit
-                JTextArea sectionContentText = new JTextArea(sectionContent);
-                sectionContentText.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-                sectionContentText.setLineWrap(true); // style shit
-                sectionContentText.setWrapStyleWord(true); // style shit
-                sectionContentText.setEditable(false); // opp u aint changing
-                sectionContentText.setBackground(new Color(219, 232, 215)); // Custom background color for text area
-                sectionContentText.setAlignmentX(Component.LEFT_ALIGNMENT); // that shit aint moving oopp
-                sectionContentText.setBorder(BorderFactory.createEmptyBorder(0, 40, 10, 10)); // indent that shit cuz i can
-
-                // Add the content text to the panel
-                mealPlanPanel.add(sectionContentText);
-            }
+            // Add some space between meals
+            mealPlanPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
+
+        // Refresh the panel to display the content
+        revalidate();
+        repaint();
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("MealView Test Screen");
-        MealView mealView = new MealView();
-        frame.add(mealView);
-        frame.setSize(600, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-
-    public Object getViewName() {
+    public String getViewName() {
         return viewName;
     }
 }

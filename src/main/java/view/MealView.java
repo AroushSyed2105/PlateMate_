@@ -196,9 +196,11 @@ package view;
 
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
+import interface_adapter.profile.ProfileState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MealView extends JPanel {
@@ -349,6 +351,15 @@ public class MealView extends JPanel {
         // Refresh the panel to display the content
         revalidate();
         repaint();
+    }
+
+    public Map<String, String[]> getUserPreferences() {
+        ProfileState currentState = new ProfileState();
+        Map<String, String[]> userPreferences = new HashMap<>();
+        userPreferences.put("Allergies", currentState.getAllergies());
+        userPreferences.put("Dietary Restrictions", currentState.getDietaryRestrictions());
+        userPreferences.put("Health Goals", currentState.getHealthGoals());
+        return userPreferences;
     }
 
     public String getViewName() {

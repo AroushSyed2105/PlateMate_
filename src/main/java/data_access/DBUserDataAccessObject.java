@@ -57,43 +57,29 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
     }
 
-    public static Map<String, Map<String, String>> formatMealDetails(Map<String, String> rawMealDetails) {
-        Map<String, Map<String, String>> formattedMealDetails = new LinkedHashMap<>();
+    public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {
+        Map<String, Map<String, String>> parsedPlan = new LinkedHashMap<>();
 
-        for (Map.Entry<String, String> entry : rawMealDetails.entrySet()) {
-            String mealName = entry.getKey(); // e.g., Breakfast, Lunch, Dinner
-            String mealContent = entry.getValue();
+        for (Map.Entry<String, String> mealEntry : mealPlan.entrySet()) {
+            String mealType = mealEntry.getKey();
+            String mealDetails = mealEntry.getValue();
 
-            Map<String, String> sections = new LinkedHashMap<>();
+            Map<String, String> subheaderMap = new LinkedHashMap<>();
+            Pattern subheaderPattern = Pattern.compile("\\*\\*(Ingredients|Instructions|Nutritional Facts):\\*\\*(.*?)((?=\\*\\*(Ingredients|Instructions|Nutritional Facts):)|$)", Pattern.DOTALL);
+            Matcher subheaderMatcher = subheaderPattern.matcher(mealDetails);
 
-            // Extract Recipe, Instructions, Grocery List, Ingredients
-            String[] headers = {"Ingredients","Instructions", "Nutritional Facts"};
-            for (String header : headers) {
-                Pattern headerPattern = Pattern.compile("- \\*\\*" + header + ":\\*\\* (.*?)(?=\\n- |$)", Pattern.DOTALL);
-                Matcher headerMatcher = headerPattern.matcher(mealContent);
-
-                if (headerMatcher.find()) {
-                    String content = headerMatcher.group(1).trim();
-
-                    // For Instructions: split sentences into separate lines
-                    if (header.equals("Instructions")) {
-                        String[] sentences = content.split("\\.\\s+");
-                        StringBuilder formattedInstructions = new StringBuilder();
-                        for (String sentence : sentences) {
-                            formattedInstructions.append("- ").append(sentence.trim()).append(".\n");
-                        }
-                        sections.put(header, formattedInstructions.toString().trim());
-                    } else {
-                        sections.put(header, content);
-                    }
-                }
+            while (subheaderMatcher.find()) {
+                String subheader = subheaderMatcher.group(1).trim();
+                String content = subheaderMatcher.group(2).trim();
+                subheaderMap.put(subheader, content);
             }
 
-            formattedMealDetails.put(mealName, sections);
+            parsedPlan.put(mealType, subheaderMap);
         }
 
-        return formattedMealDetails;
+        return parsedPlan;
     }
+
 
     public static void printFormattedMealPlan(Map<String, Map<String, String>> formattedMealDetails) {
         for (Map.Entry<String, Map<String, String>> mealEntry : formattedMealDetails.entrySet()) { // main headers - breakfast,lunch,dinner
@@ -119,6 +105,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
             mealMap.put(mealType, mealDetails);
         }
+        System.out.println("Full meal plan output: " + mealMap);
         return mealMap;
     }
 

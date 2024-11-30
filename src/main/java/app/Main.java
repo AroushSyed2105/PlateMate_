@@ -22,6 +22,9 @@ public class Main {
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addProfileView()
+                                            .addMealPlanView()
+                                            .addCalorieView()
+                                            .addGroceryPlanView()
                                             .addProfileUseCase()
                                             .build();
 

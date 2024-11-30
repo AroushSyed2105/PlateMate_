@@ -10,6 +10,7 @@ import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.ProfileFactory;
 import entity.UserFactory;
+import interface_adapter.Calorie.CalorieViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
@@ -22,6 +23,7 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.meal_plan.MealPlanViewModel;
+import interface_adapter.groceries.GroceryViewModel;
 import interface_adapter.profile.*;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
@@ -50,6 +52,8 @@ import view.SignupView;
 import view.ViewManager;
 import view.ProfileView;
 import view.MealView;
+import view.GroceryView;
+import view.CalorieView;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -78,12 +82,16 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private CalorieViewModel calorieViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private ProfileViewModel profileViewModel;
     private ProfileView profileView;
     private MealPlanViewModel mealPlanViewModel;
     private MealView mealPlanView;
+    private GroceryViewModel groceryViewModel;
+    private GroceryView groceryView;
+    private CalorieView calorieView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -119,6 +127,7 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         profileViewModel = new ProfileViewModel();
         mealPlanViewModel = new MealPlanViewModel();
+        groceryViewModel = new GroceryViewModel();
         loggedInView = new LoggedInView(profileViewModel, loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
@@ -131,7 +140,30 @@ public class AppBuilder {
     public AppBuilder addProfileView() {
         profileViewModel = new ProfileViewModel();
         profileView = new ProfileView(profileViewModel);
+        mealPlanViewModel = new MealPlanViewModel();
+        groceryViewModel = new GroceryViewModel();
         cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMealPlanView() {
+        mealPlanViewModel = new MealPlanViewModel();
+        mealPlanView = new MealView();
+        cardPanel.add(mealPlanView, mealPlanView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addGroceryPlanView() {
+        groceryViewModel = new GroceryViewModel();
+        groceryView = new GroceryView();
+        cardPanel.add(groceryView, groceryView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addCalorieView() {
+        calorieViewModel = new CalorieViewModel();
+        calorieView = new CalorieView();
+        cardPanel.add(calorieView, calorieView.getViewName());
         return this;
     }
 
@@ -180,12 +212,13 @@ public class AppBuilder {
 
     public AppBuilder addProfileUseCase() {
         final ProfileOutputBoundary profileOutputBoundary = new ProfilePresenter(viewManagerModel, loggedInViewModel,
-                mealPlanViewModel, profileViewModel);
+                mealPlanViewModel,calorieViewModel, profileViewModel, groceryViewModel);
         final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccessObject,
                 profileOutputBoundary, profileFactory);
 
          final ProfileController profileController = new ProfileController(profileInteractor);
          loggedInView.setProfileController(profileController);
+         profileView.setProfileController(profileController);
          return this;
     }
 

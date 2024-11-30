@@ -13,9 +13,13 @@ import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import interface_adapter.meal_plan.MealPlanController;
+
 public class MealView extends JPanel {
 
     private final String viewName = "MealPlan";
+    private final JButton backButton = new JButton("Back");
+    private MealPlanController mealPlanController;
 
     public MealView() {
         // Set layout for the panel
@@ -172,6 +176,11 @@ public class MealView extends JPanel {
             mealCard.add(Box.createRigidArea(new Dimension(0, 15)));
             mealPlanPanel.add(mealCard);
             mealPlanPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between cards
+
+            // Back button
+            backButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+            backButton.addActionListener(evt -> mealPlanController.switchToProfileView());
+            mealCard.add(backButton);
         }
 
         // Refresh the panel to display the content
@@ -182,4 +191,8 @@ public class MealView extends JPanel {
     public String getViewName() {
         return viewName;
     }
-}
+
+    public void setMealPlanController(MealPlanController mealPlanController) {
+        this.mealPlanController = mealPlanController; }
+    }
+

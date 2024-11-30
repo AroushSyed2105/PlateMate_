@@ -22,6 +22,8 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.meal_plan.MealPlanController;
+import interface_adapter.meal_plan.MealPlanPresenter;
 import interface_adapter.meal_plan.MealPlanViewModel;
 import interface_adapter.groceries.GroceryViewModel;
 import interface_adapter.profile.*;
@@ -40,11 +42,13 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.meal_plan.MealPlanInputBoundary;
+import use_case.meal_plan.MealPlanInteractor;
+import use_case.meal_plan.MealPlanOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import use_case.user_profile.ProfileInputBoundary;
-import use_case.user_profile.ProfileInputData;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileInteractor;
 import view.LoggedInView;
@@ -252,6 +256,14 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
+        return this;
+    }
+
+    public AppBuilder addMealPlanUseCase() {
+        final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel);
+        final MealPlanInputBoundary mealPlanInteractor = new MealPlanInteractor(mealPlanOutputBoundary);
+        final MealPlanController mealPlanController = new MealPlanController(mealPlanInteractor);
+        mealPlanView.setMealPlanController(mealPlanController);
         return this;
     }
 

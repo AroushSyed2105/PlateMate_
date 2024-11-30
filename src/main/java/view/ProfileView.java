@@ -115,6 +115,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         buttons.add(backToMenuButton);
         backToMenuButton.setFont(customFont);
         toCalorie = new JButton("Calorie Tracker");
+        toCalorie.setFont(customFont);
         buttons.add(toCalorie);
         toGrocery = new JButton("To Grocery List");
         toGrocery.setFont(customFont);

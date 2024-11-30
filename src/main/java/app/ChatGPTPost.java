@@ -27,7 +27,7 @@ public class ChatGPTPost {
                 .put(new JSONObject().put("role", "user").put("content", prompt));
         payload.put("messages", messages);
 
-        payload.put("temperature", 0.0);
+        payload.put("temperature", 0.5);
 
         // Create the request body
         RequestBody body = RequestBody.create(

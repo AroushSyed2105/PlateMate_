@@ -38,7 +38,7 @@ public class MealView extends JPanel {
         // Initialize DAO and parse meal plan
         CommonUserFactory commonUserFactory = new CommonUserFactory();
         DBUserDataAccessObject dao = new DBUserDataAccessObject(commonUserFactory);
-        String TempMeal = dao.generateMealPlan("Halal, almonds");
+        String TempMeal = dao.generateMealPlan("Halal, avocado");
         // Sample meal plan string
 //        // Parse the meal plan
         Map<String, String> unformattedPlan = dao.fullMealPlan(TempMeal);
@@ -62,7 +62,7 @@ public class MealView extends JPanel {
             // Add meal type label as a header
             JLabel mealTypeLabel = new JLabel(mealType);
             mealTypeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30)); // Modern font
-            mealTypeLabel.setForeground(new Color(34, 139, 34)); // Forest green for headers
+            mealTypeLabel.setForeground(new Color(0, 0, 0)); // Forest green for headers
             mealTypeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             mealCard.add(mealTypeLabel);
 

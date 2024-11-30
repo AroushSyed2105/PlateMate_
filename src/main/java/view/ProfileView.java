@@ -53,6 +53,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton saveButton;
     private final JButton cancelButton;
     private Image backgroundImage; // Background image variable
+    // add button
 
     public ProfileView(ProfileViewModel profileViewModel) {
         try {

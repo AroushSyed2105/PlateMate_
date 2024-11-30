@@ -52,11 +52,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatPost.getResponse(userPreferences); // Assumes `chatPost` is properly initialized in the constructor
     }
 
-    public String generateMealPlanGivenGroceries(String UserGroceries, String UserFoodPreferences) {
-        System.out.println("Generating meal plan based on what you have at home!");
-        return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
-    }
-
     public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {
         Map<String, Map<String, String>> parsedPlan = new LinkedHashMap<>();
 

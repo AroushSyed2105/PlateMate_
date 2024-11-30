@@ -67,14 +67,7 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.user_profile.ProfileInputBoundary;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileInteractor;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
-import view.ProfileView;
-import view.MealView;
-import view.GroceryView;
-import view.CalorieView;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -160,7 +153,6 @@ public class AppBuilder {
         profileViewModel = new ProfileViewModel();
         mealPlanViewModel = new MealPlanViewModel();
         groceryViewModel = new GroceryViewModel();
-        loggedInView = new LoggedInView(profileViewModel, loggedInViewModel);
         healthyRemindersViewModel = new HealthyRemindersViewModel();
         loggedInView = new LoggedInView(profileViewModel, loggedInViewModel, healthyRemindersViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());

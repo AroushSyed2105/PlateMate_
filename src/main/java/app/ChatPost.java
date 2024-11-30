@@ -87,27 +87,4 @@ public class ChatPost {
         System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
     }
-
-
-    public Map<Integer, List<String>> getRecipes(String mealPlan) {
-        MealMeal mealMeal = new MealMeal(mealPlan);
-        Map<Integer, List<String>> parsedMealPlan = mealMeal.parseMealPlan();
-
-        // Map to store the API responses for each day
-        Map<Integer, List<String>> recipesMap = new HashMap<>();
-
-        // Loop through the parsed meal plan and call the API for each meal
-        parsedMealPlan.forEach((day, meals) -> {
-            for (int i = 0; i < meals.size(); i++) {
-                String mealDescription = meals.get(i);
-                String recipeResponse = getResponseRecipes(mealDescription);
-                meals.set(i, recipeResponse); // Replace the meal description with the API response
-            }
-            recipesMap.put(day, meals); // Add the updated meals list to recipesMap
-        });
-
-        return recipesMap;
-    }
-
-
 }

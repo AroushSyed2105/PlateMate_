@@ -38,4 +38,14 @@ public class ProfileInteractor implements ProfileInputBoundary{
         profilePresenter.switchToMealPlanView();
     }
 
+    @Override
+    public void switchToCalorieView() {
+        profilePresenter.switchToCalorieView();
+    }
+
+    @Override
+    public void switchToGroceryView() {
+        profilePresenter.switchToGroceryView();
+    }
+
 }

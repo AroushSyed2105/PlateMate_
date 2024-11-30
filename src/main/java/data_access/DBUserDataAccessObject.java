@@ -6,10 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import app.ChatPost; // Import ChatPost class
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import entity.User;
 import entity.UserFactory;
@@ -58,79 +57,98 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
     }
 
-    public Map<String,String> fullMealPlan(String planPlan) {
-        System.out.println("Full meal plan based on preferences: " + planPlan);
-        MealMeal planMeal = new MealMeal();
-        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
+    public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {
+        Map<String, Map<String, String>> parsedPlan = new LinkedHashMap<>();
 
-        Map<String, String> masterMealPlan = new HashMap<>();
+        for (Map.Entry<String, String> mealEntry : mealPlan.entrySet()) {
+            String mealType = mealEntry.getKey();
+            String mealDetails = mealEntry.getValue();
 
-        // Use keys from cleanedPlan and responses from chatPost as values
-        for (Map.Entry<String, String> entry : cleanedPlan.entrySet()) {
-            String mealType = entry.getKey(); // "Breakfast", "Lunch", "Dinner"
-            String mealDescription = entry.getValue(); // cleaned description
+            Map<String, String> subheaderMap = new LinkedHashMap<>();
+            Pattern subheaderPattern = Pattern.compile("\\*\\*(Ingredients|Instructions|Nutritional Facts):\\*\\*(.*?)((?=\\*\\*(Ingredients|Instructions|Nutritional Facts):)|$)", Pattern.DOTALL);
+            Matcher subheaderMatcher = subheaderPattern.matcher(mealDetails);
 
-            // Get response for the meal description
-            String response = chatPost.getResponseRecipes(mealDescription);
+            while (subheaderMatcher.find()) {
+                String subheader = subheaderMatcher.group(1).trim();
+                String content = subheaderMatcher.group(2).trim();
+                subheaderMap.put(subheader, content);
+            }
 
-            // Add the key (mealType) and value (response) to masterMealPlan
-            masterMealPlan.put(mealType, response);
+            parsedPlan.put(mealType, subheaderMap);
         }
 
-        return masterMealPlan;
+        return parsedPlan;
     }
 
-    // Method to generate and print the master grocery list
 
-    public String printMasterGroceries(String userPreferences) {
-        // Generate the full meal plan based on user preferences
-        Map<String, String> fullMealPlan = fullMealPlan(userPreferences);
+    public static void printFormattedMealPlan(Map<String, Map<String, String>> formattedMealDetails) {
+        for (Map.Entry<String, Map<String, String>> mealEntry : formattedMealDetails.entrySet()) { // main headers - breakfast,lunch,dinner
+            System.out.println("\n=======================");
+            System.out.println("   " + mealEntry.getKey().toUpperCase());
+            System.out.println("=======================\n");
 
-        // Create a master grocery list from the meal plan
-        StringBuilder masterGroceryList = new StringBuilder();
-
-        for (Map.Entry<String, String> entry : fullMealPlan.entrySet()) {
-            String mealType = entry.getKey();
-            String mealDescription = entry.getValue();
-
-            // Extract the grocery list for this meal
-            String groceryList = extractGroceryList(mealDescription);
-            if (!groceryList.isEmpty()) {
-                masterGroceryList.append(mealType).append(": ").append(groceryList).append("\n");
+            for (Map.Entry<String, String> sectionEntry : mealEntry.getValue().entrySet()) { // subheaders - recipe, instructions
+                System.out.println("  --- " + sectionEntry.getKey() + " ---");
+                System.out.println("    " + sectionEntry.getValue());
+                System.out.println();
             }
         }
-
-        return masterGroceryList.toString().trim();
     }
+    public static Map<String, String> fullMealPlan(String input) {
+        Map<String, String> mealMap = new LinkedHashMap<>();
+        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)\n", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
 
+        while (matcher.find()) {
+            String mealType = matcher.group(1).trim();
+            String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
+            mealMap.put(mealType, mealDetails);
+        }
+        return mealMap;
+    }
 
     // helper method to extract the grocery list from a single meal's description
-    public String extractGroceryList(String mealResponse) {
-        // Look for the "## Grocery List:" section in the meal response
-        String[] parts = mealResponse.split("## Grocery List:", 2);
-        if (parts.length > 1) {
-            String grocerySection = parts[1].trim(); // Everything after "## Grocery List:"
+    public List<String> extractGroceryList(Map<String, String> mealPlanMap) {
+        Set<String> grocerySet = new HashSet<>();
 
-            // Split the grocerySection into individual items by newlines or other delimiters
-            String[] groceryItems = grocerySection.split("\n|-");
-            StringBuilder groceryList = new StringBuilder();
-
-            for (String item : groceryItems) {
-                String trimmedItem = item.trim();
-                if (!trimmedItem.isEmpty() && !trimmedItem.startsWith("##")) { // Ignore empty lines and headings
-                    groceryList.append(trimmedItem).append(", ");
+        for (String details : mealPlanMap.values()) {
+            // Find the "Ingredients" section in the meal details
+            if (details.contains("**Ingredients:**")) {
+                String[] parts = details.split("\\*\\*Ingredients:\\*\\*", 2);
+                if (parts.length > 1) {
+                    String ingredientsSection = parts[1].split("\\*\\*", 2)[0].trim(); // Extract only the ingredients section
+                    // Split the ingredients into individual items and add them to the set
+                    String[] ingredients = ingredientsSection.split("\n");
+                    for (String ingredient : ingredients) {
+                        ingredient = ingredient.replaceFirst("- ", "").trim(); // Remove leading "- " and extra spaces
+                        if (!ingredient.isEmpty()) {
+                            grocerySet.add(ingredient);
+                        }
+                    }
                 }
             }
-
-            // Remove trailing comma and space
-            if (groceryList.length() > 0) {
-                groceryList.setLength(groceryList.length() - 2);
-            }
-            return groceryList.toString();
         }
 
-        return ""; // Return an empty string if no grocery list is found
+        // Convert the set to a sorted list for final output
+        List<String> groceryList = new ArrayList<>(grocerySet);
+        Collections.sort(groceryList); // Optional: Sort alphabetically
+        return groceryList;
     }
+
+    public List<Integer> extractCalories(String planPlan) {
+        //MealMeal object
+        MealMeal planMeal = new MealMeal(planPlan);
+        Map<String, String> fullPlan = fullMealPlan(planPlan);
+        List<String> mealDescriptions = new ArrayList<>(fullPlan.values());
+
+        //Extract the calories using extractCalories
+        List<Integer> plannedCalories = planMeal.extractCalories(mealDescriptions);
+        System.out.println("plannedCalories"+ plannedCalories);
+
+        //Return the list of calories for each meal
+        return plannedCalories;
+    }
+
 
     @Override
     public User get(String username) {
@@ -257,3 +275,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return null;
     }
 }
+
+
+
+

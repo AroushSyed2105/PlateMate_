@@ -4,6 +4,7 @@ import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class CalorieView extends JPanel {
                 6. Serve the lentil and vegetable curry garnished with fresh cilantro.
                 
                 **Nutritional Facts:**
-                - Calories: 380
+                - Calories: 4000
                 - Protein: 20g
                 - Carbohydrates: 60g
                 - Fat: 5g
@@ -153,56 +154,84 @@ public class CalorieView extends JPanel {
         // Initialize actualCalories (initially empty)
         actualCalories = new LinkedHashMap<>();
 
-        // Set up layout
-        Color customBackgroundColor = new Color(219, 232, 215); // Background color
         this.setLayout(new BorderLayout());
+        Color customBackgroundColor = new Color(219, 232, 215);
         this.setBackground(customBackgroundColor);
-        this.setPreferredSize(new Dimension(600, 400));
 
-        // Title label
-        JLabel titleLabel = new JLabel("Calorie Tracker", JLabel.CENTER);
-        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
-        titleLabel.setOpaque(true);
-        titleLabel.setBackground(customBackgroundColor);
-        this.add(titleLabel, BorderLayout.NORTH);
+        // Main panel to hold meal plan and summary
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(customBackgroundColor);
 
-        // Main panel to hold meal sections
-        JPanel mealPanel = new JPanel();
-        mealPanel.setLayout(new GridLayout(3, 1, 10, 10));
-        mealPanel.setBackground(customBackgroundColor);
-        this.add(mealPanel, BorderLayout.CENTER);
+        // Meal Plan Section
+        JPanel mealPlanPanel = new JPanel();
+        mealPlanPanel.setLayout(new BoxLayout(mealPlanPanel, BoxLayout.Y_AXIS));
+        mealPlanPanel.setOpaque(false); // Transparent to show parent background
 
-        // Add meal sections dynamically
+        // Add meal panels dynamically
         for (String mealName : plannedCalories.keySet()) {
-            mealPanel.add(createMealPanel(mealName, plannedCalories.get(mealName), customBackgroundColor));
+            mealPlanPanel.add(createMealPanel(mealName, plannedCalories.get(mealName), customBackgroundColor));
+            mealPlanPanel.add(Box.createRigidArea(new Dimension(0, 5))); // Add spacing between panels
         }
 
-        // Add a text area for displaying the summary
+        // Summary Section
         summaryTextArea = new JTextArea();
         summaryTextArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         summaryTextArea.setEditable(false);
-        summaryTextArea.setBackground(new Color(240, 240, 240));
-        this.add(summaryTextArea, BorderLayout.SOUTH);
-
-        // Initialize the summary area
+        summaryTextArea.setBackground(customBackgroundColor); // Slightly darker green
         updateSummary();
+        summaryTextArea.setAlignmentX(JComponent.CENTER_ALIGNMENT); // Center the text in JTextArea
+
+
+        JScrollPane summaryScrollPane = new JScrollPane(summaryTextArea);
+        summaryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        summaryScrollPane.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.BLACK), // Border style (black line)
+                "Summary", // Title text
+                TitledBorder.DEFAULT_JUSTIFICATION, // Title justification (left, center, etc.)
+                TitledBorder.DEFAULT_POSITION, // Title position (above the border)
+                new Font("Arial", Font.BOLD, 20), // Font of the title ("Summary")
+                new Color(34, 139, 34) // Font color
+        ));
+        summaryScrollPane.setPreferredSize(new Dimension(400, 300));
+
+        // Add meal plan and summary to the main panel
+        mainPanel.add(mealPlanPanel);
+        mainPanel.add(summaryScrollPane);
+
+        // Wrap mainPanel in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder()); // Remove scroll pane border
+        scrollPane.getViewport().setOpaque(false); // Transparent viewport
+        scrollPane.setOpaque(false); // Transparent scroll pane
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        // Add scrollable panel to the view
+        this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    // Helper method to create individual meal panels
+    // Create individual meal panels
     private JPanel createMealPanel(String mealName, int plannedCal, Color backgroundColor) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(mealName)); // Meal name as the title
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(new Color(34, 139, 34)),
+                mealName,
+                TitledBorder.DEFAULT_JUSTIFICATION,
+                TitledBorder.DEFAULT_POSITION,
+                new Font("Times New Roman", Font.BOLD, 20) // Change the font size here
+        ));
         panel.setBackground(backgroundColor);
 
-        // Display planned calories
-        JLabel plannedLabel = new JLabel("Planned: " + plannedCal + " kcal", JLabel.CENTER);
+        // Planned Calories Label
+        JLabel plannedLabel = new JLabel("Planned: " + plannedCal + " kcal");
         plannedLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         panel.add(plannedLabel, BorderLayout.NORTH);
 
-        // Input field and button for actual calories
+        // Input Field and Button
         JPanel inputPanel = new JPanel(new BorderLayout());
         inputPanel.setBackground(backgroundColor);
+        JLabel inputLabel = new JLabel("Enter actual amount here:");
+        inputLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         JTextField inputField = new JTextField();
         JButton submitButton = new JButton("Submit");
 
@@ -211,8 +240,8 @@ public class CalorieView extends JPanel {
             try {
                 int actualCal = Integer.parseInt(input);
                 actualCalories.put(mealName, actualCal);
-                updateSummary(); // Refresh summary
-                inputField.setText(""); // Clear input
+                updateSummary();
+                inputField.setText("");
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(
                         this,
@@ -223,14 +252,15 @@ public class CalorieView extends JPanel {
             }
         });
 
+        inputPanel.add(inputLabel, BorderLayout.NORTH);
         inputPanel.add(inputField, BorderLayout.CENTER);
         inputPanel.add(submitButton, BorderLayout.EAST);
-        panel.add(inputPanel, BorderLayout.SOUTH);
 
+        panel.add(inputPanel, BorderLayout.SOUTH);
         return panel;
     }
 
-    // Method to update the summary display
+    // Update the summary display
     private void updateSummary() {
         StringBuilder summary = new StringBuilder();
         int totalPlanned = 0;
@@ -252,7 +282,6 @@ public class CalorieView extends JPanel {
                 "%n%-10s: Planned = %4d kcal, Actual = %4d kcal%n",
                 "Total", totalPlanned, totalActual
         ));
-
         summaryTextArea.setText(summary.toString());
     }
 
@@ -265,7 +294,7 @@ public class CalorieView extends JPanel {
             JFrame frame = new JFrame("Calorie Tracker");
             CalorieView calorieView = new CalorieView();
             frame.add(calorieView);
-            frame.setSize(600, 500);
+            frame.setSize(800, 600);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

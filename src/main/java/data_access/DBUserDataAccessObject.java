@@ -44,7 +44,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
-        this.chatGPTPost = new ChatGPTPost(API_KEY);
+        this.chatGPTPost = new ChatGPTPost("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");
         // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
     }
 

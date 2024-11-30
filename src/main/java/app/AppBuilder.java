@@ -75,7 +75,7 @@ import view.*;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
-    private static String apiKey = "API_KEY";
+    private static String apiKey = "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";
     private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -224,7 +224,7 @@ public class AppBuilder {
 
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_KEY"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);

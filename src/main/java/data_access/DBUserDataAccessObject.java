@@ -57,50 +57,29 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
     }
 
-    public Map<String,String> tester(String planPlan) {
-        System.out.println("Full meal plan based on preferences: " + planPlan);
-        MealMeal planMeal = new MealMeal(planPlan);
-        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
-        return cleanedPlan;
-    }
+    public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {
+        Map<String, Map<String, String>> parsedPlan = new LinkedHashMap<>();
 
-    public static Map<String, Map<String, String>> formatMealDetails(Map<String, String> rawMealDetails) {
-        Map<String, Map<String, String>> formattedMealDetails = new LinkedHashMap<>();
+        for (Map.Entry<String, String> mealEntry : mealPlan.entrySet()) {
+            String mealType = mealEntry.getKey();
+            String mealDetails = mealEntry.getValue();
 
-        for (Map.Entry<String, String> entry : rawMealDetails.entrySet()) {
-            String mealName = entry.getKey(); // e.g., Breakfast, Lunch, Dinner
-            String mealContent = entry.getValue();
+            Map<String, String> subheaderMap = new LinkedHashMap<>();
+            Pattern subheaderPattern = Pattern.compile("\\*\\*(Ingredients|Instructions|Nutritional Facts):\\*\\*(.*?)((?=\\*\\*(Ingredients|Instructions|Nutritional Facts):)|$)", Pattern.DOTALL);
+            Matcher subheaderMatcher = subheaderPattern.matcher(mealDetails);
 
-            Map<String, String> sections = new LinkedHashMap<>();
-
-            // Extract Recipe, Instructions, Grocery List, Ingredients
-            String[] headers = {"Recipe", "Instructions", "Grocery List", "Ingredients"};
-            for (String header : headers) {
-                Pattern headerPattern = Pattern.compile("- \\*\\*" + header + ":\\*\\* (.*?)(?=\\n- |$)", Pattern.DOTALL);
-                Matcher headerMatcher = headerPattern.matcher(mealContent);
-
-                if (headerMatcher.find()) {
-                    String content = headerMatcher.group(1).trim();
-
-                    // For Instructions: split sentences into separate lines
-                    if (header.equals("Instructions")) {
-                        String[] sentences = content.split("\\.\\s+");
-                        StringBuilder formattedInstructions = new StringBuilder();
-                        for (String sentence : sentences) {
-                            formattedInstructions.append("- ").append(sentence.trim()).append(".\n");
-                        }
-                        sections.put(header, formattedInstructions.toString().trim());
-                    } else {
-                        sections.put(header, content);
-                    }
-                }
+            while (subheaderMatcher.find()) {
+                String subheader = subheaderMatcher.group(1).trim();
+                String content = subheaderMatcher.group(2).trim();
+                subheaderMap.put(subheader, content);
             }
 
-            formattedMealDetails.put(mealName, sections);
+            parsedPlan.put(mealType, subheaderMap);
         }
 
-        return formattedMealDetails;
+        return parsedPlan;
     }
+
 
     public static void printFormattedMealPlan(Map<String, Map<String, String>> formattedMealDetails) {
         for (Map.Entry<String, Map<String, String>> mealEntry : formattedMealDetails.entrySet()) { // main headers - breakfast,lunch,dinner
@@ -115,23 +94,17 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             }
         }
     }
+    public static Map<String, String> fullMealPlan(String input) {
+        Map<String, String> mealMap = new LinkedHashMap<>();
+        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)\n", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
 
-    public Map<String,String> fullMealPlan(String planPlan) {
-
-        Map<String, String> mealPlanMap = new HashMap<>();
-
-        // Splits the input into sections by "**<MealType>:"
-        String[] meals = planPlan.split("\\*\\*");
-
-        for (String meal : meals) {
-            if (meal.contains(":")) {
-                String[] parts = meal.split(":", 2);
-                String mealType = parts[0].trim(); // Extract the meal type
-                String details = parts[1].trim(); // Extract the details
-                mealPlanMap.put(mealType, details);
-            }
+        while (matcher.find()) {
+            String mealType = matcher.group(1).trim();
+            String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
+            mealMap.put(mealType, mealDetails);
         }
-        return mealPlanMap;
+        return mealMap;
     }
 
     // helper method to extract the grocery list from a single meal's description

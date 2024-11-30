@@ -94,10 +94,9 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             }
         }
     }
-
     public static Map<String, String> fullMealPlan(String input) {
         Map<String, String> mealMap = new LinkedHashMap<>();
-        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):.*?\\*\\*(.*?)((?=\\*\\*(Breakfast|Lunch|Dinner):)|$)", Pattern.DOTALL);
+        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)\n", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
@@ -105,10 +104,8 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
             mealMap.put(mealType, mealDetails);
         }
-        System.out.println("Full meal plan output: " + mealMap);
         return mealMap;
     }
-
 
     // helper method to extract the grocery list from a single meal's description
     public List<String> extractGroceryList(Map<String, String> mealPlanMap) {

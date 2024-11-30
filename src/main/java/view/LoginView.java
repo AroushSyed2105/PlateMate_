@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -30,9 +33,28 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton logIn;
     private final JButton cancel;
     private LoginController loginController;
+    private Image backgroundImage; // Background image variable
 
     public LoginView(LoginViewModel loginViewModel) {
         // Define custom font and background color
+
+        try {
+            backgroundImage = ImageIO.read(new File("images/background3.png")); // Replace with the path to your image
+            if (backgroundImage == null) {
+                System.out.println("Error: Image not found.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception if image is not found
+        }
+
+        // Set layout and make the background transparent
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // Ensure the panel is transparent
+        this.setOpaque(false);
+
+
+
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
         Color customBackgroundColor = new Color(219, 232, 215);
 
@@ -40,8 +62,11 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.loginViewModel.addPropertyChangeListener(this);
 
         // Set layout and background for the main panel
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //this.setBackground(customBackgroundColor);
+        // Set layout and make the background transparent
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(customBackgroundColor);
+        this.add(Box.createVerticalStrut(200));
 
         // Title label
         final JLabel title = new JLabel("Login Screen");
@@ -49,6 +74,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setOpaque(true);
         title.setBackground(customBackgroundColor);
+        this.add(Box.createVerticalStrut(20));
 
         // Username field and label
         JLabel usernameLabel = new JLabel("Username:");
@@ -166,6 +192,30 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         passwordErrorField.setFont(customFont);
         passwordErrorField.setBackground(customBackgroundColor);
         passwordErrorField.setOpaque(true);
+
+        this.add(Box.createVerticalGlue());
+        setComponentTransparency();
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            // Draw the background image to cover the entire panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    // Add this in the constructor, after all components are initialized:
+    private void setComponentTransparency() {
+        usernameInputField.setOpaque(false);
+        passwordInputField.setOpaque(false);
+      ;
+        // Ensure all panels are transparent
+        for (Component c : this.getComponents()) {
+            if (c instanceof JPanel) {
+                ((JPanel) c).setOpaque(false);
+            }
+        }
     }
 
     /**

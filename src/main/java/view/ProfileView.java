@@ -51,7 +51,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public ProfileView(ProfileViewModel profileViewModel) {
         // Define font and background color
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
-        Color customBackgroundColor = new Color(219, 232, 215);
+        Color customBackgroundColor = new Color(182, 212, 169);
 
         this.profileViewModel = profileViewModel;
         this.profileInteractor = profileInteractor;

@@ -42,7 +42,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     public SignupView(SignupViewModel signupViewModel) {
         try {
-            backgroundImage = ImageIO.read(new File("images/background.png")); // Replace with the path to your image
+            backgroundImage = ImageIO.read(new File("images/background4.png")); // Replace with the path to your image
             if (backgroundImage == null) {
                 System.out.println("Error: Image not found.");
             }

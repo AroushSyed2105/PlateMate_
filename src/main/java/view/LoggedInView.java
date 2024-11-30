@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -36,12 +39,32 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JButton toProfile;
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
+    private Image backgroundImage; // Background image variable
 
     public LoggedInView(ProfileViewModel profileViewModel, LoggedInViewModel loggedInViewModel) {
         // Set the custom font and background color
+        try {
+            backgroundImage = ImageIO.read(new File("images/BG3.png")); // Replace with the path to your image
+            if (backgroundImage == null) {
+                System.out.println("Error: Image not found.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception if image is not found
+        }
+
+        // Set layout and make the background transparent
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // Ensure the panel is transparent
+        this.setOpaque(false);
+
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
+        //Color customBackgroundColor = new Color(219, 232, 215);
         Color customBackgroundColor = new Color(219, 232, 215);
         Color plainColour = new Color(238, 238, 238);
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(Box.createVerticalStrut(200));
 
         this.profileViewModel = profileViewModel;
         this.loggedInViewModel = loggedInViewModel;
@@ -57,6 +80,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setOpaque(true);
         title.setBackground(customBackgroundColor);
+        this.add(Box.createVerticalStrut(20));
 
        // Password Info
         JLabel passwordLabel = new JLabel("Password:");
@@ -74,8 +98,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         passwordInfo.setOpaque(true); // Allow the background to show
 
         // Username Info
-        JLabel usernameInfo = new JLabel("Currently logged in: ");
+        JLabel usernameInfo = new JLabel("Currently Logged in: ");
         usernameInfo.setFont(customFont);
+        usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
         usernameInfo.setOpaque(true);
         usernameInfo.setBackground(customBackgroundColor);
 
@@ -144,11 +169,37 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         // Add components to the panel
         this.add(title);
+        this.add(Box.createVerticalStrut(30));
         this.add(usernameInfo);
+        this.add(Box.createVerticalStrut(30));
         this.add(username);
         this.add(passwordInfo);
         this.add(passwordErrorField);
         this.add(buttons);
+
+        this.add(Box.createVerticalGlue());
+        setComponentTransparency();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            // Draw the background image to cover the entire panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    // Add this in the constructor, after all components are initialized:
+    private void setComponentTransparency() {
+        passwordInputField.setOpaque(false);
+        ;
+        // Ensure all panels are transparent
+        for (Component c : this.getComponents()) {
+            if (c instanceof JPanel) {
+                ((JPanel) c).setOpaque(false);
+            }
+        }
     }
 
     @Override
@@ -182,4 +233,5 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.loggedInController = controller;
     }
 }
+
 

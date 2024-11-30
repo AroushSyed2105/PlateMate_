@@ -39,7 +39,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         // Define custom font and background color
 
         try {
-            backgroundImage = ImageIO.read(new File("images/background3.png")); // Replace with the path to your image
+            backgroundImage = ImageIO.read(new File("images/BG3.png")); // Replace with the path to your image
             if (backgroundImage == null) {
                 System.out.println("Error: Image not found.");
             }
@@ -53,18 +53,12 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         // Ensure the panel is transparent
         this.setOpaque(false);
 
-
-
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
         Color customBackgroundColor = new Color(219, 232, 215);
 
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
 
-        // Set layout and background for the main panel
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        //this.setBackground(customBackgroundColor);
-        // Set layout and make the background transparent
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(Box.createVerticalStrut(200));
 
@@ -74,13 +68,14 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setOpaque(true);
         title.setBackground(customBackgroundColor);
-        this.add(Box.createVerticalStrut(20));
+        //this.add(Box.createVerticalStrut(70));
 
         // Username field and label
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(customFont);
         usernameLabel.setOpaque(true);
         usernameLabel.setBackground(customBackgroundColor);
+        usernameLabel.add(Box.createVerticalStrut(70));
 
         usernameInputField.setFont(customFont);
         usernameInputField.setBackground(new Color(238, 238, 238)); // Set to grey
@@ -178,6 +173,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         // Add components to the panel
         this.add(title);
+        this.add(Box.createVerticalStrut(30));
         this.add(usernameInfo);
         this.add(usernameErrorField);
         this.add(passwordInfo);

@@ -47,6 +47,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton toGrocery;
     private final JButton saveButton;
     private final JButton cancelButton;
+    // add button
 
     public ProfileView(ProfileViewModel profileViewModel) {
         // Define font and background color

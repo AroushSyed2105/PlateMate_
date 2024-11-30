@@ -3,6 +3,7 @@ package use_case.logged_in;
 import entity.Profile;
 import entity.User;
 import entity.UserFactory;
+import interface_adapter.logged_in.LoggedInPresenter;
 import use_case.signup.SignupOutputData;
 import use_case.user_profile.ProfileInputData;
 import use_case.user_profile.ProfileOutputData;
@@ -34,4 +35,7 @@ public class LoggedInInteractor implements LoggedInInputBoundary {
     public void switchToProfileView() {
         userPresenter.switchToProfileView();
     }
+
+    @Override
+    public void switchToHealthyRemindersView() { userPresenter.switchToHealthyRemindersView(); }
 }

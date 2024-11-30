@@ -165,7 +165,7 @@ public class MealView extends JPanel {
             mealInfoText.setEditable(false);
             mealInfoText.setBackground(new Color(255, 255, 240)); // Matches card background
             mealInfoText.setFont(new Font("Times New Roman", Font.PLAIN, 16)); // Modern plain font
-            mealInfoText.setForeground(new Color(60, 90, 60)); // Darker green for text
+            mealInfoText.setForeground(new Color(0, 0, 0)); // Darker green for text
             mealCard.add(mealInfoText);
 
             // Add some space between meals

@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -33,6 +36,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             "Hydrolyzed wheat proteins", "Milk proteins in baked goods").toArray(new String[0]);
     private static final String[] VALID_DIETARY_RESTRICTIONS = List.of("Vegan", "Vegetarian", "Pescatarian", "Halal",
             "Kosher", "Gluten-Free", "Dairy-Free").toArray(new String[0]);
+
+
     private final ProfileViewModel profileViewModel;
     private final JTextField allergiesInputField = new JTextField(20);
     private final JTextField dietaryRestrictionsInputField = new JTextField(20);
@@ -47,24 +52,42 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JButton toGrocery;
     private final JButton saveButton;
     private final JButton cancelButton;
+    private Image backgroundImage; // Background image variable
 
     public ProfileView(ProfileViewModel profileViewModel) {
+        try {
+            backgroundImage = ImageIO.read(new File("images/BG5.png")); // Replace with the path to your image
+            if (backgroundImage == null) {
+                System.out.println("Error: Image not found.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception if image is not found
+        }
+
+        // Set layout and make the background transparent
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // Ensure the panel is transparent
+        this.setOpaque(false);
+
         // Define font and background color
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
-        Color customBackgroundColor = new Color(182, 212, 169);
+        Color customBackgroundColor = new Color(255, 255, 240);
 
         this.profileViewModel = profileViewModel;
         this.profileInteractor = profileInteractor;
         profileViewModel.addPropertyChangeListener(this);
 
-        // Set layout and background color for the main panel
+        // Set layout and make the background transparent
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(Box.createVerticalStrut(120));
+
         this.setBackground(customBackgroundColor);
 
         final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
         title.setFont(new Font("Times New Roman", Font.BOLD, 24));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setOpaque(true);
+        title.setOpaque(false);
         title.setBackground(customBackgroundColor);
 
         // Create the JList for allergies with scroll pane
@@ -79,9 +102,11 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         allergiesInfo.setLayout(new BoxLayout(allergiesInfo, BoxLayout.Y_AXIS));
         allergiesInfo.setBackground(customBackgroundColor);
         JLabel allergiesLabel = new JLabel(profileViewModel.ALLERGIES);
+        allergiesLabel.setHorizontalAlignment(SwingConstants.CENTER); // Align to the left
         allergiesLabel.setFont(customFont);
         allergiesInfo.add(allergiesLabel);
         allergiesInfo.add(allergiesScrollPane);
+
 
         // Health goals
         LabelTextPanel healthGoals = new LabelTextPanel(
@@ -168,6 +193,28 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         this.add(dietaryRestrictionsInfo);
         this.add(healthGoals);
         this.add(buttons);
+        //this.add(Box.createVerticalGlue());
+        setComponentTransparency();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            // Draw the background image to cover the entire panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    // Add this in the constructor, after all components are initialized:
+    private void setComponentTransparency() {
+        usernameInputField.setOpaque(false);
+        // Ensure all panels are transparent
+        for (Component c : this.getComponents()) {
+            if (c instanceof JPanel) {
+                ((JPanel) c).setOpaque(false);
+            }
+        }
     }
     private void addAllergiesListener() {
         allergiesInputField.getDocument().addDocumentListener(new DocumentListener() {

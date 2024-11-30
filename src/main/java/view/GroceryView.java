@@ -1,5 +1,6 @@
 package view;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -8,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +18,25 @@ public class GroceryView extends JPanel {
     private final String viewName = "Grocery";
     private final Map<String, JPanel> groceryCategoryPanels;
 
+    private Image backgroundImage; //
+
     public GroceryView() {
+        try {
+            backgroundImage = ImageIO.read(new File("images/BG6.png")); // Replace with the path to your image
+            if (backgroundImage == null) {
+                System.out.println("Error: Image not found.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception if image is not found
+        }
+
+        // Set layout and make the background transparent
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // Ensure the panel is transparent
+        this.setOpaque(false);
+
+
         groceryCategoryPanels = new HashMap<>();
 
         // Initialize categories
@@ -23,7 +44,12 @@ public class GroceryView extends JPanel {
         addCategory("🌾 Grains");
         addCategory("🍖 Proteins");
         addCategory("🥛 Dairy");
-        addCategory(" Spices & Condiments");
+        addCategory(" \uD83C\uDF36\uFE0F Spices");
+        addCategory(" Condiments");
+
+        // Set layout and make the background transparent
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(Box.createVerticalStrut(100));
 
         // Set up the main layout and background
         Color customBackgroundColor = new Color(219, 232, 215);
@@ -37,13 +63,13 @@ public class GroceryView extends JPanel {
         titleLabel.setOpaque(true);
         titleLabel.setBackground(customBackgroundColor);
         titleLabel.setBorder(new EmptyBorder(10, 0, 10, 0));
-        this.add(titleLabel, BorderLayout.NORTH);
+
 
         // Category Panel
         JPanel categoryPanel = new JPanel();
         categoryPanel.setLayout(new GridLayout(2, 3, 15, 15));
         categoryPanel.setBackground(customBackgroundColor);
-        this.add(categoryPanel, BorderLayout.CENTER);
+
 
         for (String category : groceryCategoryPanels.keySet()) {
             categoryPanel.add(groceryCategoryPanels.get(category));
@@ -52,11 +78,27 @@ public class GroceryView extends JPanel {
         // Save & Exit Button
         JButton saveButton = new JButton("Save & Exit");
         saveButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        saveButton.setBackground(new Color(173, 216, 230));
+        saveButton.setBackground(new Color(255, 255, 240));
         saveButton.setBorder(new LineBorder(Color.GRAY, 1, true));
         saveButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Grocery list saved!"));
+
+        //this.add(Box.createVerticalGlue());
+
+        this.add(titleLabel, BorderLayout.NORTH);
+        this.add(categoryPanel, BorderLayout.CENTER);
         this.add(saveButton, BorderLayout.SOUTH);
+
+
     }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            // Draw the background image to cover the entire panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
 
     private void addCategory(String categoryName) {
         JPanel panel = new JPanel(new BorderLayout());

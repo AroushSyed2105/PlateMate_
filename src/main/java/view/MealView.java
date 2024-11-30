@@ -22,6 +22,7 @@ public class MealView extends JPanel {
     private final String viewName = "MealPlan";
     private final JButton backButton = new JButton("Back");
     private MealPlanController mealPlanController;
+    private ProfileState profileState;
 
     public MealView() {
         // Set layout for the panel
@@ -195,11 +196,14 @@ public class MealView extends JPanel {
     }
 
     public String getUserPreferences() {
-        ProfileState currentState = new ProfileState();
+        System.out.println("Statement" + String.join(", ",
+                String.join(", ", profileState.getAllergies()),              // Allergies
+                String.join(", ", profileState.getDietaryRestrictions()),    // Dietary Restrictions
+                String.join(", ", profileState.getHealthGoals())));
         return String.join(", ",
-                String.join(", ", currentState.getAllergies()),              // Allergies
-                String.join(", ", currentState.getDietaryRestrictions()),    // Dietary Restrictions
-                String.join(", ", currentState.getHealthGoals())             // Health Goals
+                String.join(", ", profileState.getAllergies()),              // Allergies
+                String.join(", ", profileState.getDietaryRestrictions()),    // Dietary Restrictions
+                String.join(", ", profileState.getHealthGoals())// Health Goals
         );
     }
 

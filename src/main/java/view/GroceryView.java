@@ -23,7 +23,7 @@ public class GroceryView extends JPanel {
         addCategory("🌾 Grains");
         addCategory("🍖 Proteins");
         addCategory("🥛 Dairy");
-        addCategory("🧂 Spices & Condiments");
+        addCategory(" Spices & Condiments");
 
         // Set up the main layout and background
         Color customBackgroundColor = new Color(219, 232, 215);
@@ -32,7 +32,7 @@ public class GroceryView extends JPanel {
         this.setPreferredSize(new Dimension(600, 400));
 
         // Title
-        JLabel titleLabel = new JLabel("Grocery List", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Your Grocery List", JLabel.CENTER);
         titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 28));
         titleLabel.setOpaque(true);
         titleLabel.setBackground(customBackgroundColor);
@@ -51,7 +51,7 @@ public class GroceryView extends JPanel {
 
         // Save & Exit Button
         JButton saveButton = new JButton("Save & Exit");
-        saveButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        saveButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         saveButton.setBackground(new Color(173, 216, 230));
         saveButton.setBorder(new LineBorder(Color.GRAY, 1, true));
         saveButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Grocery list saved!"));
@@ -69,7 +69,6 @@ public class GroceryView extends JPanel {
         // List of checkboxes for items
         JPanel itemListPanel = new JPanel();
         itemListPanel.setLayout(new BoxLayout(itemListPanel, BoxLayout.Y_AXIS));
-        itemListPanel.setBackground(new Color(255, 255, 240));
         JScrollPane scrollPane = new JScrollPane(itemListPanel);
         scrollPane.setBorder(new LineBorder(Color.LIGHT_GRAY, 1, true));
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -98,7 +97,7 @@ public class GroceryView extends JPanel {
         });
 
         JButton addButton = new JButton("Add");
-        addButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        addButton.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         addButton.setBackground(new Color(192, 192, 192));
         addButton.setBorder(new LineBorder(Color.GRAY, 1, true));
         addButton.addActionListener((ActionEvent e) -> {

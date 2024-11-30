@@ -1,4 +1,4 @@
-package view;
+package view;//package view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,10 +9,16 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.Box;
 
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
+
+
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.io.File;
 
 /**
  * The View for the Signup Use Case.
@@ -32,74 +38,75 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JButton cancel;
     private final JButton toLogin;
 
+    private Image backgroundImage; // Background image variable
+
     public SignupView(SignupViewModel signupViewModel) {
-        // Define font and background color
+        try {
+            backgroundImage = ImageIO.read(new File("images/background.png")); // Replace with the path to your image
+            if (backgroundImage == null) {
+                System.out.println("Error: Image not found.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception if image is not found
+        }
+
+        // Set layout and make the background transparent
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // Ensure the panel is transparent
+        this.setOpaque(false);
+
+        // Define font for labels
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
-        Color customBackgroundColor = new Color(219, 232, 215);
-        Color inputFieldColor = new Color(238, 238, 238); // Light grey color
+
 
         this.signupViewModel = signupViewModel;
         signupViewModel.addPropertyChangeListener(this);
 
-        // Set layout and background color for the main panel
+        // Set layout and make the background transparent
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(customBackgroundColor);
+        this.add(Box.createVerticalStrut(200));
 
         // Title
         final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
-        title.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        title.setFont(new Font("Times New Roman", Font.BOLD, 22));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setOpaque(true);
-        title.setBackground(customBackgroundColor);
+        this.add(title);
+        this.add(Box.createVerticalStrut(20));
 
         // Email Info
         JLabel emailLabel = new JLabel(signupViewModel.EMAIL_LABEL);
         emailLabel.setFont(customFont);
         emailInputField.setFont(customFont);
-        emailInputField.setBackground(inputFieldColor);
-        emailInputField.setOpaque(true);
         final LabelTextPanel emailInfo = new LabelTextPanel(emailLabel, emailInputField);
-        emailInfo.setBackground(customBackgroundColor);
 
         // Address Info
         JLabel addressLabel = new JLabel(SignupViewModel.ADDRESS_LABEL);
         addressLabel.setFont(customFont);
         addressInputField.setFont(customFont);
-        addressInputField.setBackground(inputFieldColor);
-        addressInputField.setOpaque(true);
         final LabelTextPanel addressInfo = new LabelTextPanel(addressLabel, addressInputField);
-        addressInfo.setBackground(customBackgroundColor);
 
         // Username Info
         JLabel usernameLabel = new JLabel(SignupViewModel.USERNAME_LABEL);
         usernameLabel.setFont(customFont);
         usernameInputField.setFont(customFont);
-        usernameInputField.setBackground(inputFieldColor);
-        usernameInputField.setOpaque(true);
         final LabelTextPanel usernameInfo = new LabelTextPanel(usernameLabel, usernameInputField);
-        usernameInfo.setBackground(customBackgroundColor);
 
         // Password Info
         JLabel passwordLabel = new JLabel(SignupViewModel.PASSWORD_LABEL);
         passwordLabel.setFont(customFont);
         passwordInputField.setFont(customFont);
-        passwordInputField.setBackground(inputFieldColor);
-        passwordInputField.setOpaque(true);
         final LabelTextPanel passwordInfo = new LabelTextPanel(passwordLabel, passwordInputField);
-        passwordInfo.setBackground(customBackgroundColor);
 
         // Repeat Password Info
         JLabel repeatPasswordLabel = new JLabel(SignupViewModel.REPEAT_PASSWORD_LABEL);
         repeatPasswordLabel.setFont(customFont);
         repeatPasswordInputField.setFont(customFont);
-        repeatPasswordInputField.setBackground(inputFieldColor);
-        repeatPasswordInputField.setOpaque(true);
         final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(repeatPasswordLabel, repeatPasswordInputField);
-        repeatPasswordInfo.setBackground(customBackgroundColor);
 
         // Buttons
         final JPanel buttons = new JPanel();
-        buttons.setBackground(customBackgroundColor);
 
         toLogin = new JButton(SignupViewModel.TO_LOGIN_BUTTON_LABEL);
         toLogin.setFont(customFont);
@@ -116,7 +123,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         signUp.addActionListener(evt -> {
             if (evt.getSource().equals(signUp)) {
                 final SignupState currentState = signupViewModel.getState();
-
                 signupController.execute(
                         currentState.getUsername(),
                         currentState.getPassword(),
@@ -137,16 +143,46 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         addEmailListener();
         addAddressListener();
 
-        // Add components to the panel
-        this.add(title);
+        title.setOpaque(false);
+
         this.add(usernameInfo);
         this.add(passwordInfo);
         this.add(repeatPasswordInfo);
         this.add(emailInfo);
         this.add(addressInfo);
         this.add(buttons);
+
+        this.add(Box.createVerticalGlue());
+        setComponentTransparency();
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            // Draw the background image to cover the entire panel
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    // Add this in the constructor, after all components are initialized:
+    private void setComponentTransparency() {
+        usernameInputField.setOpaque(false);
+        passwordInputField.setOpaque(false);
+        repeatPasswordInputField.setOpaque(false);
+        emailInputField.setOpaque(false);
+        addressInputField.setOpaque(false);
+
+        // Ensure all panels are transparent
+        for (Component c : this.getComponents()) {
+            if (c instanceof JPanel) {
+                ((JPanel) c).setOpaque(false);
+            }
+        }
+    }
+
+
+    // Document listeners for input fields (unchanged)
     private void addEmailListener() {
         emailInputField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
@@ -275,25 +311,24 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         });
     }
 
+    // Action listener for cancel button (unchanged)
     @Override
-    public void actionPerformed(ActionEvent evt) {
-        JOptionPane.showMessageDialog(this, "Cancel not implemented yet.");
+    public void actionPerformed(ActionEvent e) {
+        signupController.switchToLoginView();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final SignupState state = (SignupState) evt.getNewValue();
-        if (state.getUsernameError() != null) {
-            JOptionPane.showMessageDialog(this, state.getUsernameError());
-        }
+        // Handle changes in the model state if needed
     }
 
     public String getViewName() {
         return viewName;
     }
 
-    public void setSignupController(SignupController controller) {
-        this.signupController = controller;
+    // Setter for SignupController
+    public void setSignupController(SignupController signupController) {
+        this.signupController = signupController;
     }
 }
 

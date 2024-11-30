@@ -75,7 +75,7 @@ import view.*;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
-//    private static String apiKey = "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";
+//  add key
     private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();

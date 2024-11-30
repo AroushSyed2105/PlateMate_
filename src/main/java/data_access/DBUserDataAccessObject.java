@@ -38,7 +38,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-//    private static final String API_KEY = "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";
+// add key
     private final UserFactory userFactory;
     private final ChatGPTPost chatGPTPost;
 

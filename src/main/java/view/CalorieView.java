@@ -2,6 +2,7 @@ package view;
 
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
+import interface_adapter.Calorie.CalorieController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -16,7 +17,8 @@ public class CalorieView extends JPanel {
     private final String viewName = "CalorieView";
     private final Map<String, Integer> plannedCalories; // Planned calorie data
     private final Map<String, Integer> actualCalories; // Actual calorie data entered by the user
-    private final JTextArea summaryTextArea; // To display progress summary
+    private final JTextArea summaryTextArea;
+    private CalorieController calorieController;
     CommonUserFactory commonuserFactory = new CommonUserFactory();
     DBUserDataAccessObject dao = new DBUserDataAccessObject(commonuserFactory);
 
@@ -174,9 +176,13 @@ public class CalorieView extends JPanel {
             mealPlanPanel.add(Box.createRigidArea(new Dimension(0, 5))); // Add spacing between panels
         }
 
+        // Add back button
+        JButton backButton = new JButton("Back to Profile");
+        backButton.addActionListener(e -> calorieController.switchToProfileView());
+
         // Summary Section
         summaryTextArea = new JTextArea();
-        summaryTextArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        summaryTextArea.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         summaryTextArea.setEditable(false);
         summaryTextArea.setBackground(customBackgroundColor); // Slightly darker green
         updateSummary();
@@ -198,7 +204,7 @@ public class CalorieView extends JPanel {
         // Add meal plan and summary to the main panel
         mainPanel.add(mealPlanPanel);
         mainPanel.add(summaryScrollPane);
-
+        mainPanel.add(backButton);
         // Wrap mainPanel in a JScrollPane
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder()); // Remove scroll pane border
@@ -297,5 +303,9 @@ public class CalorieView extends JPanel {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+    }
+
+    public void setCalorieController(CalorieController calorieController) {
+        this.calorieController = calorieController;
     }
 }

@@ -1,14 +1,11 @@
 package use_case.calorie;
 
-import use_case.meal_plan.MealPlanInputBoundary;
-import use_case.meal_plan.MealPlanOutputBoundary;
+public class CalorieInteractor implements CalorieInputBoundary {
+    private final CalorieOutputBoundary caloriePresenter;
 
-public class CalorieInteractor implements MealPlanInputBoundary {
-    private final MealPlanOutputBoundary mealPlanPresenter;
-
-    public CalorieInteractor(MealPlanOutputBoundary mealPlanPresenter) {
-        this.mealPlanPresenter = mealPlanPresenter;
+    public CalorieInteractor(CalorieOutputBoundary caloriePresenter) {
+        this.caloriePresenter = caloriePresenter;
     }
-    public void switchToProfileView() { mealPlanPresenter.switchToProfileView(); }
+    public void switchToProfileView() { caloriePresenter.switchToProfileView(); }
     }
 

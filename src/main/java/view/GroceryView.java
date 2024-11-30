@@ -1,5 +1,7 @@
 package view;
 
+import interface_adapter.groceries.GroceryController;
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -56,6 +58,7 @@ public class GroceryView extends JPanel {
         saveButton.setBackground(new Color(173, 216, 230));
         saveButton.setBorder(new LineBorder(Color.GRAY, 1, true));
         saveButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Grocery list saved!"));
+        saveButton.addActionListener(evt-> groceryController.switchToProfileView());
         this.add(saveButton, BorderLayout.SOUTH);
     }
 

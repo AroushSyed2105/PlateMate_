@@ -10,11 +10,15 @@ import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.ProfileFactory;
 import entity.UserFactory;
+import interface_adapter.Calorie.CalorieController;
+import interface_adapter.Calorie.CaloriePresenter;
 import interface_adapter.Calorie.CalorieViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.groceries.GroceryController;
+import interface_adapter.groceries.GroceryPresenter;
 import interface_adapter.logged_in.LoggedInController;
 import interface_adapter.logged_in.LoggedInPresenter;
 import interface_adapter.login.LoginController;
@@ -30,9 +34,15 @@ import interface_adapter.profile.*;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.calorie.CalorieInputBoundary;
+import use_case.calorie.CalorieInteractor;
+import use_case.calorie.CalorieOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.grocery.GroceryInputBoundary;
+import use_case.grocery.GroceryInteractor;
+import use_case.grocery.GroceryOutputBoundary;
 import use_case.logged_in.LoggedInInputBoundary;
 import use_case.logged_in.LoggedInInteractor;
 import use_case.logged_in.LoggedInOutputBoundary;
@@ -264,6 +274,22 @@ public class AppBuilder {
         final MealPlanInputBoundary mealPlanInteractor = new MealPlanInteractor(mealPlanOutputBoundary);
         final MealPlanController mealPlanController = new MealPlanController(mealPlanInteractor);
         mealPlanView.setMealPlanController(mealPlanController);
+        return this;
+    }
+
+    public AppBuilder addCalorieUseCase() {
+        final CalorieOutputBoundary calorieOutputBoundary = new CaloriePresenter(viewManagerModel, profileViewModel);
+        final CalorieInputBoundary calorieInteractor = new CalorieInteractor(calorieOutputBoundary);
+        final CalorieController calorieController = new CalorieController(calorieInteractor);
+        calorieView.setCalorieController(calorieController);
+        return this;
+    }
+
+    public AppBuilder addGroceryUseCase() {
+        final GroceryOutputBoundary groceryOutputBoundary = new GroceryPresenter(viewManagerModel, profileViewModel);
+        final GroceryInputBoundary groceryInteractor = new GroceryInteractor(groceryOutputBoundary);
+        final GroceryController groceryController = new GroceryController(groceryInteractor);
+        groceryView.setGroceryController(groceryController);
         return this;
     }
 

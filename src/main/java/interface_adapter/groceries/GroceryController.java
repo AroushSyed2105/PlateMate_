@@ -1,11 +1,11 @@
 package interface_adapter.groceries;
 
-import use_case.meal_plan.MealPlanInputBoundary;
+import use_case.grocery.GroceryInputBoundary;
 
 public class GroceryController {
-    private final MealPlanInputBoundary mealPlanUseCaseInteractor;
-    public GroceryController(MealPlanInputBoundary mealPlanUseCaseInteractor) {
-        this.mealPlanUseCaseInteractor = mealPlanUseCaseInteractor;
+    private final GroceryInputBoundary groceryUseCaseInteractor;
+    public GroceryController(GroceryInputBoundary groceryUseCaseInteractor) {
+        this.groceryUseCaseInteractor = groceryUseCaseInteractor;
     }
-    public void switchToProfileView() { mealPlanUseCaseInteractor.switchToProfileView();}
+    public void switchToProfileView() { groceryUseCaseInteractor.switchToProfileView();}
 }

@@ -2,13 +2,12 @@ package interface_adapter.groceries;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.profile.ProfileViewModel;
-import use_case.meal_plan.MealPlanOutputBoundary;
-import use_case.user_profile.ProfileOutputData;
+import use_case.grocery.GroceryOutputBoundary;
 
 /**
  * The Presenter for the Login Use Case.
  */
-public class GroceryPresenter implements MealPlanOutputBoundary {
+public class GroceryPresenter implements GroceryOutputBoundary {
     private final ProfileViewModel profileViewModel;
     private final ViewManagerModel viewManagerModel;
 
@@ -17,16 +16,6 @@ public class GroceryPresenter implements MealPlanOutputBoundary {
     ) {
         this.profileViewModel = profileViewModel;
         this.viewManagerModel = viewManagerModel;
-    }
-
-    @Override
-    public void prepareSuccessView(ProfileOutputData outputData) {
-        // Taken care of by MealPlanView.
-    }
-
-    @Override
-    public void prepareFailView(String error) {
-        // Assumes view cannot fail.
     }
 
     @Override

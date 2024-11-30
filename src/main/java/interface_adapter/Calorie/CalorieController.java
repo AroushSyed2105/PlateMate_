@@ -1,11 +1,11 @@
 package interface_adapter.Calorie;
 
-import use_case.meal_plan.MealPlanInputBoundary;
+import use_case.calorie.CalorieInputBoundary;
 
 public class CalorieController {
-    private final MealPlanInputBoundary mealPlanUseCaseInteractor;
-    public CalorieController(MealPlanInputBoundary mealPlanUseCaseInteractor) {
-        this.mealPlanUseCaseInteractor = mealPlanUseCaseInteractor;
+    private final CalorieInputBoundary CalorieUseCaseInteractor;
+    public CalorieController(CalorieInputBoundary calorieUseCaseInteractor) {
+        this.CalorieUseCaseInteractor = calorieUseCaseInteractor;
     }
-    public void switchToProfileView() { mealPlanUseCaseInteractor.switchToProfileView();}
+    public void switchToProfileView() { CalorieUseCaseInteractor.switchToProfileView();}
 }

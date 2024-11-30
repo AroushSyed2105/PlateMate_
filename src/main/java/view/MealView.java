@@ -10,10 +10,12 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import interface_adapter.meal_plan.MealPlanController;
+import interface_adapter.profile.ProfileState;
 
 public class MealView extends JPanel {
 
@@ -190,6 +192,15 @@ public class MealView extends JPanel {
 
     public String getViewName() {
         return viewName;
+    }
+
+    public String getUserPreferences() {
+        ProfileState currentState = new ProfileState();
+        return String.join(", ",
+                String.join(", ", currentState.getAllergies()),              // Allergies
+                String.join(", ", currentState.getDietaryRestrictions()),    // Dietary Restrictions
+                String.join(", ", currentState.getHealthGoals())             // Health Goals
+        );
     }
 
     public void setMealPlanController(MealPlanController mealPlanController) {

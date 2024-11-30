@@ -195,12 +195,4 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     public void setLoggedInController(LoggedInController controller) {
         this.loggedInController = controller;
     }
-
-    public void setHealthyRemindersController(HealthyRemindersController healthyRemindersController) {
-        this.healthyRemindersController = healthyRemindersController;
-    }
-//   public void switchToHealthyRemindersView() {
-//        viewManagerModel.setState("HealthyReminders");
-//        viewManagerModel.firePropertyChanged();
-//    }
 }

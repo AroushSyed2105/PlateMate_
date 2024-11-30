@@ -330,12 +330,12 @@ public class AppBuilder {
     public AppBuilder addHealthyRemindersUseCase() {
         final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel, healthyRemindersViewModel);
-
          final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX");
-        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(userDataAccessObject, healthyRemindersOutputBoundary, chatPost);
-
-        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
-        loggedInView.setHealthyRemindersController(healthyRemindersController);
+        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(
+                userDataAccessObject, healthyRemindersOutputBoundary, chatPost);
+        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(
+                healthyRemindersInteractor);
+        healthyRemindersView.setHealthyRemindersController(healthyRemindersController);
         return this;
     }
     /**

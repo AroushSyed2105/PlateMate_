@@ -9,6 +9,7 @@ public interface HealthyRemindersInputBoundary {
 
     void execute(HealthyRemindersInputData healthyRemindersInputData);
 
+    void switchToLoggedInView();
 }
 //package use_case.healthy_reminders;
 //

@@ -53,19 +53,21 @@
 package use_case.healthy_reminders;
 
 import app.ChatPost;
+import interface_adapter.healthyreminders.HealthyRemindersPresenter;
 
 public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary {
     private final HealthyRemindersUserDataAccessInterface userDataAccessObject;
-    private final HealthyRemindersOutputBoundary outputBoundary;
+    private final HealthyRemindersOutputBoundary healthyRemindersPresenter;
     private final ChatPost chatPost;
+
 
     public HealthyRemindersInteractor(
             HealthyRemindersUserDataAccessInterface userDataAccessObject,
-            HealthyRemindersOutputBoundary outputBoundary,
+            HealthyRemindersOutputBoundary healthyRemindersOutputBoundary,
             ChatPost chatPost
     ) {
         this.userDataAccessObject = userDataAccessObject;
-        this.outputBoundary = outputBoundary;
+        this.healthyRemindersPresenter = healthyRemindersOutputBoundary;
         this.chatPost = chatPost;
     }
 
@@ -76,9 +78,9 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
 
         if (reminder != null && !reminder.isEmpty()) {
             HealthyRemindersOutputData outputData = new HealthyRemindersOutputData(reminder);
-            outputBoundary.prepareSuccessView(outputData);
+            healthyRemindersPresenter.prepareSuccessView(outputData);
         } else {
-            outputBoundary.prepareFailView("Failed to generate a reminder.");
+            healthyRemindersPresenter.prepareFailView("Failed to generate a reminder.");
         }
     }
     @Override
@@ -94,5 +96,6 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
         return reminder;
     }
 
+    public void switchToLoggedInView() { healthyRemindersPresenter.switchToLoggedInView();}
 
 }

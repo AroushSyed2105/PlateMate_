@@ -3,11 +3,11 @@ package interface_adapter.healthyreminders;
 import use_case.healthy_reminders.HealthyRemindersInputBoundary;
 
 public class HealthyRemindersController {
-    private final HealthyRemindersInputBoundary healthyRemindersInteractor;
+    private final HealthyRemindersInputBoundary healthyRemindersUseCaseInteractor;
     private HealthyRemindersViewModel healthyRemindersViewModel;
 
     public HealthyRemindersController(HealthyRemindersInputBoundary healthyRemindersInteractor) {
-        this.healthyRemindersInteractor = healthyRemindersInteractor;
+        this.healthyRemindersUseCaseInteractor = healthyRemindersInteractor;
     }
 
     public void setViewModel(HealthyRemindersViewModel healthyRemindersViewModel) {
@@ -15,10 +15,12 @@ public class HealthyRemindersController {
     }
 
     public void generateReminder() {
-        String reminder = healthyRemindersInteractor.generateReminder();
+        String reminder = healthyRemindersUseCaseInteractor.generateReminder();
         healthyRemindersViewModel.getState().setCurrentReminder(reminder);
         healthyRemindersViewModel.firePropertyChanged();
     }
+
+    public void switchToLoggedInView() { healthyRemindersUseCaseInteractor.switchToLoggedInView();}
 }
 
 //public class HealthyRemindersController {

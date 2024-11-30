@@ -14,6 +14,7 @@ import java.util.Map;
 public class GroceryView extends JPanel {
     private final String viewName = "Grocery";
     private final Map<String, JPanel> groceryCategoryPanels;
+    private GroceryController groceryController;
 
     public GroceryView() {
         groceryCategoryPanels = new HashMap<>();
@@ -121,6 +122,10 @@ public class GroceryView extends JPanel {
 
     public String getViewName() {
         return viewName;
+    }
+
+    public void setGroceryController(GroceryController groceryController) {
+        this.groceryController = groceryController;
     }
 
     // For testing

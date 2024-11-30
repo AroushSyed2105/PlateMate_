@@ -75,7 +75,7 @@ import view.*;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
-    private static String apiKey = "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";
+    private static String apiKey = "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";
     private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -224,7 +224,7 @@ public class AppBuilder {
 
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);

@@ -212,26 +212,24 @@ public class CalorieView extends JPanel {
 
     // Create individual meal panels
     private JPanel createMealPanel(String mealName, int plannedCal, Color backgroundColor) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(new Color(34, 139, 34)),
-                mealName,
-                TitledBorder.DEFAULT_JUSTIFICATION,
-                TitledBorder.DEFAULT_POSITION,
-                new Font("Times New Roman", Font.BOLD, 20) // Change the font size here
-        ));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.setBorder(BorderFactory.createTitledBorder(mealName)); // Meal name as the title
         panel.setBackground(backgroundColor);
 
-        // Planned Calories Label
-        JLabel plannedLabel = new JLabel("Planned: " + plannedCal + " kcal");
+        // Set custom font and color for the meal name header
+        TitledBorder titleBorder = (TitledBorder) panel.getBorder();
+        titleBorder.setTitleFont(new Font("Arial", Font.BOLD, 18)); // Set font size and style
+        titleBorder.setTitleColor(new Color(34, 139, 34)); // Set font color (green, or any color you like)
+
+        // Display planned calories
+        JLabel plannedLabel = new JLabel("Planned: " + plannedCal + " kcal", JLabel.CENTER);
         plannedLabel.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         panel.add(plannedLabel, BorderLayout.NORTH);
 
-        // Input Field and Button
+        // Input field and button for actual calories
         JPanel inputPanel = new JPanel(new BorderLayout());
         inputPanel.setBackground(backgroundColor);
-        JLabel inputLabel = new JLabel("Enter actual amount here:");
-        inputLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         JTextField inputField = new JTextField();
         JButton submitButton = new JButton("Submit");
 
@@ -240,8 +238,8 @@ public class CalorieView extends JPanel {
             try {
                 int actualCal = Integer.parseInt(input);
                 actualCalories.put(mealName, actualCal);
-                updateSummary();
-                inputField.setText("");
+                updateSummary(); // Refresh summary
+                inputField.setText(""); // Clear input
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(
                         this,
@@ -252,11 +250,11 @@ public class CalorieView extends JPanel {
             }
         });
 
-        inputPanel.add(inputLabel, BorderLayout.NORTH);
+
         inputPanel.add(inputField, BorderLayout.CENTER);
         inputPanel.add(submitButton, BorderLayout.EAST);
-
         panel.add(inputPanel, BorderLayout.SOUTH);
+
         return panel;
     }
 

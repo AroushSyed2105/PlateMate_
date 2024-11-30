@@ -38,7 +38,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-
+    private static final String API_KEY = "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";
     private final UserFactory userFactory;
     private final ChatGPTPost chatGPTPost;
 
@@ -119,6 +119,35 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
         return mealMap;
     }
+
+//    public static Map<String, String> fullMealPlan(String input) {
+//        Map<String, String> mealMap = new LinkedHashMap<>();
+//
+//        // Updated regex to capture meal type (Breakfast, Lunch, Dinner) and its associated details
+//        // This regex will handle cases where there are extra spaces or newlines
+//        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner)\\s*:\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)", Pattern.DOTALL);
+//        Matcher matcher = pattern.matcher(input);
+//
+//        while (matcher.find()) {
+//            String mealType = matcher.group(1).trim();  // Extract the meal type (Breakfast, Lunch, Dinner)
+//            String mealDetails = matcher.group(2).trim();  // Extract the meal details
+//
+//            // Remove any leading or trailing stars or other unnecessary characters from meal type
+//            mealType = mealType.replaceAll("\\*\\*", "").trim();  // Remove the leading '**'
+//
+//            // Remove any unwanted characters from the meal details
+//            mealDetails = mealDetails.replaceAll("\\*\\*", "").trim(); // Remove the leading '**' from details if needed
+//
+//            // Log for debugging to check the values
+//            System.out.println("Meal Type: " + mealType);
+//            System.out.println("Meal Details: " + mealDetails);
+//
+//            // Add the meal type and details to the meal map
+//            mealMap.put(mealType, mealDetails);
+//        }
+//
+//        return mealMap;
+//    }
 
 //    GOOOOOODD
 //    public static Map<String, String> fullMealPlan(String input) {

@@ -38,7 +38,7 @@ public class MealView extends JPanel {
         // Initialize DAO and parse meal plan
         CommonUserFactory commonUserFactory = new CommonUserFactory();
         DBUserDataAccessObject dao = new DBUserDataAccessObject(commonUserFactory);
-        String TempMeal = dao.generateMealPlan(getUserPreferences());
+        String TempMeal = dao.generateMealPlan("Halal, almonds");
         // Sample meal plan string
 //        // Parse the meal plan
         Map<String, String> unformattedPlan = dao.fullMealPlan(TempMeal);

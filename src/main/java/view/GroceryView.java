@@ -78,7 +78,7 @@ public class GroceryView extends JPanel {
         // Save & Exit Button
         JButton saveButton = new JButton("Save & Exit");
         saveButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        saveButton.setBackground(new Color(255, 255, 240));
+        saveButton.setBackground(new Color(192, 192, 192));
         saveButton.setBorder(new LineBorder(Color.GRAY, 1, true));
         saveButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Grocery list saved!"));
 
@@ -106,7 +106,7 @@ public class GroceryView extends JPanel {
                 BorderFactory.createTitledBorder(categoryName),
                 new EmptyBorder(5, 5, 5, 5)
         ));
-        panel.setBackground(new Color(219, 232, 215));
+        panel.setBackground(new Color(255, 255, 240));
 
         // List of checkboxes for items
         JPanel itemListPanel = new JPanel();
@@ -117,7 +117,7 @@ public class GroceryView extends JPanel {
 
         // Input field and button
         JPanel inputPanel = new JPanel(new BorderLayout(5, 0));
-        inputPanel.setBackground(new Color(219, 232, 215));
+        inputPanel.setBackground(new Color(255, 255, 240));
         JTextField inputField = new JTextField("Enter item...");
         inputField.setForeground(Color.GRAY);
         inputField.addFocusListener(new FocusAdapter() {
@@ -146,7 +146,7 @@ public class GroceryView extends JPanel {
             String newItem = inputField.getText().trim();
             if (!newItem.isEmpty() && !newItem.equals("Enter item...")) {
                 JCheckBox itemCheckbox = new JCheckBox(newItem);
-                itemCheckbox.setBackground(new Color(219, 232, 215));
+                itemCheckbox.setBackground(new Color(255, 255, 240));
                 itemListPanel.add(itemCheckbox);
                 itemListPanel.revalidate();
                 itemListPanel.repaint();

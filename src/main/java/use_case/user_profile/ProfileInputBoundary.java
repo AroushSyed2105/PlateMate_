@@ -13,5 +13,7 @@ public interface ProfileInputBoundary {
 
     void switchToLoggedInView();
 
+    void switchToCalorieView();
+
     void switchToGroceryView();
 }

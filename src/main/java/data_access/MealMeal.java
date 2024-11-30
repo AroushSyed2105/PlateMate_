@@ -95,9 +95,7 @@ public class MealMeal {
                             "(Carbohydrates:.*?\\d+\\s*\\w*?)|" +
                             "(Fat:.*?\\d+\\s*\\w*?)|" +
                             "(Protein:.*?\\d+\\s*\\w*?)|" +
-                            "(Fiber:.*?\\d+\\s*\\w*?)|" +
-                            "(Vitamins:.*?\\w.*?)|" +
-                            "(Minerals:.*?\\w.*?)",
+                            "(Fiber:.*?\\d+\\s*\\w*?)|",
                     Pattern.DOTALL
             );
 

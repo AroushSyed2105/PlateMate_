@@ -57,50 +57,29 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
     }
 
-    public Map<String,String> tester(String planPlan) {
-        System.out.println("Full meal plan based on preferences: " + planPlan);
-        MealMeal planMeal = new MealMeal(planPlan);
-        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
-        return cleanedPlan;
-    }
+    public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {
+        Map<String, Map<String, String>> parsedPlan = new LinkedHashMap<>();
 
-    public static Map<String, Map<String, String>> formatMealDetails(Map<String, String> rawMealDetails) {
-        Map<String, Map<String, String>> formattedMealDetails = new LinkedHashMap<>();
+        for (Map.Entry<String, String> mealEntry : mealPlan.entrySet()) {
+            String mealType = mealEntry.getKey();
+            String mealDetails = mealEntry.getValue();
 
-        for (Map.Entry<String, String> entry : rawMealDetails.entrySet()) {
-            String mealName = entry.getKey(); // e.g., Breakfast, Lunch, Dinner
-            String mealContent = entry.getValue();
+            Map<String, String> subheaderMap = new LinkedHashMap<>();
+            Pattern subheaderPattern = Pattern.compile("\\*\\*(Ingredients|Instructions|Nutritional Facts):\\*\\*(.*?)((?=\\*\\*(Ingredients|Instructions|Nutritional Facts):)|$)", Pattern.DOTALL);
+            Matcher subheaderMatcher = subheaderPattern.matcher(mealDetails);
 
-            Map<String, String> sections = new LinkedHashMap<>();
-
-            // Extract Recipe, Instructions, Grocery List, Ingredients
-            String[] headers = {"Recipe", "Instructions", "Grocery List", "Ingredients"};
-            for (String header : headers) {
-                Pattern headerPattern = Pattern.compile("- \\*\\*" + header + ":\\*\\* (.*?)(?=\\n- |$)", Pattern.DOTALL);
-                Matcher headerMatcher = headerPattern.matcher(mealContent);
-
-                if (headerMatcher.find()) {
-                    String content = headerMatcher.group(1).trim();
-
-                    // For Instructions: split sentences into separate lines
-                    if (header.equals("Instructions")) {
-                        String[] sentences = content.split("\\.\\s+");
-                        StringBuilder formattedInstructions = new StringBuilder();
-                        for (String sentence : sentences) {
-                            formattedInstructions.append("- ").append(sentence.trim()).append(".\n");
-                        }
-                        sections.put(header, formattedInstructions.toString().trim());
-                    } else {
-                        sections.put(header, content);
-                    }
-                }
+            while (subheaderMatcher.find()) {
+                String subheader = subheaderMatcher.group(1).trim();
+                String content = subheaderMatcher.group(2).trim();
+                subheaderMap.put(subheader, content);
             }
 
-            formattedMealDetails.put(mealName, sections);
+            parsedPlan.put(mealType, subheaderMap);
         }
 
-        return formattedMealDetails;
+        return parsedPlan;
     }
+
 
     public static void printFormattedMealPlan(Map<String, Map<String, String>> formattedMealDetails) {
         for (Map.Entry<String, Map<String, String>> mealEntry : formattedMealDetails.entrySet()) { // main headers - breakfast,lunch,dinner
@@ -115,80 +94,90 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             }
         }
     }
+    public static Map<String, String> fullMealPlan(String input) {
+        Map<String, String> mealMap = new LinkedHashMap<>();
+        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)\n", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(input);
 
-    public Map<String,String> fullMealPlan(String planPlan) {
-        System.out.println("Full meal plan based on preferences: " + planPlan);
-        MealMeal planMeal = new MealMeal(planPlan);
-        Map<String, String> cleanedPlan = planMeal.parseSingleDayMealPlan(planPlan);
-
-        Map<String, String> masterMealPlan = new HashMap<>();
-
-        // Use keys from cleanedPlan and responses from chatPost as values
-        for (Map.Entry<String, String> entry : cleanedPlan.entrySet()) {
-            String mealType = entry.getKey(); // "Breakfast", "Lunch", "Dinner"
-            String mealDescription = entry.getValue(); // cleaned description
-
-            // Get response for the meal description
-            String response = chatPost.getResponseRecipes(mealDescription);
-
-            // Add the key (mealType) and value (response) to masterMealPlan
-            masterMealPlan.put(mealType, response);
+        while (matcher.find()) {
+            String mealType = matcher.group(1).trim();
+            String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
+            mealMap.put(mealType, mealDetails);
         }
-
-        return masterMealPlan;
+        return mealMap;
     }
-
-    // Method to generate and print the master grocery list
-
-    public String printMasterGroceries(String userPreferences) {
-        // Generate the full meal plan based on user preferences
-        Map<String, String> fullMealPlan = fullMealPlan(userPreferences);
-
-        // Create a master grocery list from the meal plan
-        StringBuilder masterGroceryList = new StringBuilder();
-
-        for (Map.Entry<String, String> entry : fullMealPlan.entrySet()) {
-            String mealType = entry.getKey();
-            String mealDescription = entry.getValue();
-
-            // Extract the grocery list for this meal
-            String groceryList = extractGroceryList(mealDescription);
-            if (!groceryList.isEmpty()) {
-                masterGroceryList.append(mealType).append(": ").append(groceryList).append("\n");
-            }
-        }
-
-        return masterGroceryList.toString().trim();
-    }
-
 
     // helper method to extract the grocery list from a single meal's description
-    public String extractGroceryList(String mealResponse) {
-        // Look for the "## Grocery List:" section in the meal response
-        String[] parts = mealResponse.split("## Grocery List:", 2);
-        if (parts.length > 1) {
-            String grocerySection = parts[1].trim(); // Everything after "## Grocery List:"
+    public List<String> extractGroceryList(Map<String, String> mealPlanMap) {
+        Set<String> grocerySet = new HashSet<>();
 
-            // Split the grocerySection into individual items by newlines or other delimiters
-            String[] groceryItems = grocerySection.split("\n|-");
-            StringBuilder groceryList = new StringBuilder();
-
-            for (String item : groceryItems) {
-                String trimmedItem = item.trim();
-                if (!trimmedItem.isEmpty() && !trimmedItem.startsWith("##")) { // Ignore empty lines and headings
-                    groceryList.append(trimmedItem).append(", ");
+        for (String details : mealPlanMap.values()) {
+            // Find the "Ingredients" section in the meal details
+            if (details.contains("**Ingredients:**")) {
+                String[] parts = details.split("\\*\\*Ingredients:\\*\\*", 2);
+                if (parts.length > 1) {
+                    String ingredientsSection = parts[1].split("\\*\\*", 2)[0].trim(); // Extract only the ingredients section
+                    // Split the ingredients into individual items and add them to the set
+                    String[] ingredients = ingredientsSection.split("\n");
+                    for (String ingredient : ingredients) {
+                        ingredient = ingredient.replaceFirst("- ", "").trim(); // Remove leading "- " and extra spaces
+                        if (!ingredient.isEmpty()) {
+                            grocerySet.add(ingredient);
+                        }
+                    }
                 }
             }
-
-            // Remove trailing comma and space
-            if (groceryList.length() > 0) {
-                groceryList.setLength(groceryList.length() - 2);
-            }
-            return groceryList.toString();
         }
 
-        return ""; // Return an empty string if no grocery list is found
+        // Convert the set to a sorted list for final output
+        List<String> groceryList = new ArrayList<>(grocerySet);
+        Collections.sort(groceryList); // Optional: Sort alphabetically
+        return groceryList;
     }
+
+    public List<Integer> extractCalories(String planPlan) {
+        //MealMeal object
+        MealMeal planMeal = new MealMeal(planPlan);
+
+        //The meal descriptions from the full meal plan
+//        List<String> mealDescriptions = new ArrayList<>(fullMealPlan(planPlan).values());
+//        System.out.println("mealDescription" + mealDescriptions);
+
+        List<String> mealDescriptions = List.of("Recipe: Oatmeal with Fruits\n\n" +
+                "Ingredients:\n" +
+                "- Oats\n- Banana\n- Almonds\n- Honey\n- Chia Seeds\n\n" +
+                "Nutrient Breakdown (per serving):\n" +
+                "- Calories: 300\n- Carbohydrates: 50g\n- Fat: 10g\n- Protein: 5g\n- Fiber: 7g",
+
+        "Recipe: Grilled Chicken Salad\n\n" +
+                "Ingredients:\n" +
+                "- Chicken Breast\n- Mixed Greens\n- Tomatoes\n- Cucumber\n- Olive Oil\n- Lemon Juice\n\n" +
+                "Nutrient Breakdown (per serving):\n" +
+                "- Calories: 350\n- Carbohydrates: 10g\n- Fat: 15g\n- Protein: 40g\n- Fiber: 4g",
+
+                "Recipe: Creamy Avocado Pasta (Vegan)\n\n" +
+                        "Ingredients:\n" +
+                        "- 12 oz pasta\n- 2 ripe avocados\n- Fresh basil\n- Garlic\n- Olive oil\n- Nutritional yeast\n\n" +
+                        "Nutrient Breakdown (per serving):\n" +
+                        "- Calories: 550\n- Carbohydrates: 70g\n- Fat: 28g\n- Protein: 12g\n- Fiber: 6g");
+
+
+        //Extract the calories using extractCalories
+        List<Integer> plannedCalories = planMeal.extractCalories(mealDescriptions);
+        System.out.println("plannedCalories"+ plannedCalories);
+
+        //Record Actual calories using recordActualCalories
+        List<Integer> actualCalories = planMeal.recordActualCalories(plannedCalories);
+        System.out.println("actualCalories" + actualCalories);
+
+        //Display calorie progress using displayCalorieProgress
+        planMeal.displayCalorieProgress(plannedCalories, actualCalories);
+
+        //Return the list of calories for each meal
+        return plannedCalories;
+    }
+
+
 
     @Override
     public User get(String username) {
@@ -315,3 +304,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return null;
     }
 }
+
+
+
+

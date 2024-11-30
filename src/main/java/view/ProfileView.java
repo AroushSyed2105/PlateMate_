@@ -40,6 +40,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JTextField usernameInputField = new JTextField(20);
     private ProfileController profileController;
     private final JButton toMealPlan;
+    private final JButton toCalorie;
     private final JButton toGrocery;
     private final JButton saveButton;
     private final JButton backToMenuButton;
@@ -47,7 +48,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     public ProfileView(ProfileViewModel profileViewModel) {
         // Define font and background color
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
-        Color customBackgroundColor = new Color(219, 232, 215);
+        Color customBackgroundColor = new Color(182, 212, 169);
 
         this.profileViewModel = profileViewModel;
         profileViewModel.addPropertyChangeListener(this);
@@ -113,6 +114,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         backToMenuButton = new JButton(ProfileViewModel.BACK_BUTTON_LABEL);
         buttons.add(backToMenuButton);
         backToMenuButton.setFont(customFont);
+        toCalorie = new JButton("Calorie Tracker");
+        buttons.add(toCalorie);
         toGrocery = new JButton("To Grocery List");
         toGrocery.setFont(customFont);
         buttons.add(toGrocery);
@@ -132,6 +135,19 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
         toGrocery.addActionListener(evt -> profileController.switchToGroceryView());
         backToMenuButton.addActionListener(evt -> profileController.switchToLoggedInView());
+        toMealPlan.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        profileController.switchToMealPlanView();
+                    }
+                }
+        );
+
+        toCalorie.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {profileController.switchtoCalorieView();}
+                }
+        );
 
         // Add listeners
         addAllergiesListener();

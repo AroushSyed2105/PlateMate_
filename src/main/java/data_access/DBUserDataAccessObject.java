@@ -165,45 +165,16 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     public List<Integer> extractCalories(String planPlan) {
         //MealMeal object
         MealMeal planMeal = new MealMeal(planPlan);
-
-        //The meal descriptions from the full meal plan
-//        List<String> mealDescriptions = new ArrayList<>(fullMealPlan(planPlan).values());
-//        System.out.println("mealDescription" + mealDescriptions);
-
-        List<String> mealDescriptions = List.of("Recipe: Oatmeal with Fruits\n\n" +
-                "Ingredients:\n" +
-                "- Oats\n- Banana\n- Almonds\n- Honey\n- Chia Seeds\n\n" +
-                "Nutrient Breakdown (per serving):\n" +
-                "- Calories: 300\n- Carbohydrates: 50g\n- Fat: 10g\n- Protein: 5g\n- Fiber: 7g",
-
-        "Recipe: Grilled Chicken Salad\n\n" +
-                "Ingredients:\n" +
-                "- Chicken Breast\n- Mixed Greens\n- Tomatoes\n- Cucumber\n- Olive Oil\n- Lemon Juice\n\n" +
-                "Nutrient Breakdown (per serving):\n" +
-                "- Calories: 350\n- Carbohydrates: 10g\n- Fat: 15g\n- Protein: 40g\n- Fiber: 4g",
-
-                "Recipe: Creamy Avocado Pasta (Vegan)\n\n" +
-                        "Ingredients:\n" +
-                        "- 12 oz pasta\n- 2 ripe avocados\n- Fresh basil\n- Garlic\n- Olive oil\n- Nutritional yeast\n\n" +
-                        "Nutrient Breakdown (per serving):\n" +
-                        "- Calories: 550\n- Carbohydrates: 70g\n- Fat: 28g\n- Protein: 12g\n- Fiber: 6g");
-
+        Map<String, String> fullPlan = fullMealPlan(planPlan);
+        List<String> mealDescriptions = new ArrayList<>(fullPlan.values());
 
         //Extract the calories using extractCalories
         List<Integer> plannedCalories = planMeal.extractCalories(mealDescriptions);
         System.out.println("plannedCalories"+ plannedCalories);
 
-        //Record Actual calories using recordActualCalories
-        List<Integer> actualCalories = planMeal.recordActualCalories(plannedCalories);
-        System.out.println("actualCalories" + actualCalories);
-
-        //Display calorie progress using displayCalorieProgress
-        planMeal.displayCalorieProgress(plannedCalories, actualCalories);
-
         //Return the list of calories for each meal
         return plannedCalories;
     }
-
 
 
     @Override

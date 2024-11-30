@@ -14,10 +14,9 @@ public class HealthyRemindersViewModel extends ViewModel<HealthyRemindersState> 
      * @param reminder The new healthy reminder
      */
     public void setReminder(String reminder) {
-        System.out.println("Setting reminder in ViewModel: " + reminder); // Add this line
-        HealthyRemindersState state = getState(); // Get the current state
-        state.setCurrentReminder(reminder); // Update the reminder
-        firePropertyChanged(); // Notify listeners of the state change
+        HealthyRemindersState state = getState();
+        state.setCurrentReminder(reminder);
+        firePropertyChanged();  // Notify the UI to refresh
     }
 }
 

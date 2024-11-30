@@ -28,17 +28,10 @@ public class ChatPost {
                                 List.of(Message.user(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone who is allergic to" + prompt).build()),
                                         Message.chatbot(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone who is allergic to" + prompt).build()))).build());
 
-    //    public String getResponse(String prompt) {
-//        NonStreamedChatResponse response = cohere.chat(
-//                ChatRequest.builder()
-//                        .message("Generate a simple 1 day meal plan for someone who is allergic to dairy, nuts and Halal.")
-//                        .chatHistory(
-//                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()),
-//                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1-week meal plan for someone who is allergic to dairy, nuts and Halal.").build()))).build());
-//
-//        System.out.println(response); // Prints the full JSON response
-//        return response.getText(); //  Returns only the text field as a String
-//    }
+        System.out.println(response); // Prints the full JSON response
+        return response.getText(); //  Returns only the text field as a String
+    }
+
     public String getReminder(String prompt) {
 
         return getResponse(prompt);

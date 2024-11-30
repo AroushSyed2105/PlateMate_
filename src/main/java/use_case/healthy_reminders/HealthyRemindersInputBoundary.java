@@ -1,13 +1,15 @@
 package use_case.healthy_reminders;
 
+import java.io.IOException;
+
 public interface HealthyRemindersInputBoundary {
 
     /**
      * Executes the profile use case.
      */
-    String generateReminder();
+    String generateReminder() throws IOException;
 
-    void execute(HealthyRemindersInputData healthyRemindersInputData);
+    void execute(HealthyRemindersInputData healthyRemindersInputData) throws IOException;
 
 }
 //package use_case.healthy_reminders;

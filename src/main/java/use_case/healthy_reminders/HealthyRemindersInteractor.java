@@ -52,25 +52,28 @@
 
 package use_case.healthy_reminders;
 
-import app.ChatPost;
+import app.ChatGPTPost;
+//import app.ChatPost;
+
+import java.io.IOException;
 
 public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary {
     private final HealthyRemindersUserDataAccessInterface userDataAccessObject;
     private final HealthyRemindersOutputBoundary outputBoundary;
-    private final ChatPost chatPost;
+    private final ChatGPTPost chatGPTPost;
 
     public HealthyRemindersInteractor(
             HealthyRemindersUserDataAccessInterface userDataAccessObject,
             HealthyRemindersOutputBoundary outputBoundary,
-            ChatPost chatPost
+            ChatGPTPost chatGPTPost
     ) {
         this.userDataAccessObject = userDataAccessObject;
         this.outputBoundary = outputBoundary;
-        this.chatPost = chatPost;
+        this.chatGPTPost = chatGPTPost;
     }
 
     @Override
-    public void execute(HealthyRemindersInputData healthyRemindersInputData) {
+    public void execute(HealthyRemindersInputData healthyRemindersInputData) throws IOException {
         String username = healthyRemindersInputData.getUsername();
         String reminder = generateReminder();
 
@@ -82,10 +85,10 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
         }
     }
     @Override
-    public String generateReminder() {
+    public String generateReminder() throws IOException {
         String prompt = "Generate a daily healthy reminder.";
         System.out.println("Prompt sent to ChatPost: " + prompt);
-        String reminder = chatPost.getResponse(prompt);
+        String reminder = chatGPTPost.getResponse(prompt);
         if (reminder == null || reminder.isEmpty()) {
             System.out.println("Reminder generation failed or returned empty.");
             return null;

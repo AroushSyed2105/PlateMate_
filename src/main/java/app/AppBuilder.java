@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.CardLayout;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -74,7 +75,7 @@ import view.*;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
-    private static String apiKey = "r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX";
+    private static String apiKey = "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";
     private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -99,17 +100,21 @@ public class AppBuilder {
     private ProfileViewModel profileViewModel;
     private ProfileView profileView;
     private MealPlanViewModel mealPlanViewModel;
-    private MealView mealPlanView;
+    private MealView mealView;
     private GroceryViewModel groceryViewModel;
     private GroceryView groceryView;
     private CalorieView calorieView;
     private HealthyRemindersViewModel healthyRemindersViewModel;
     private HealthyRemindersView healthyRemindersView;
 
-    public void ChatPost(String apiKey) {
+    public void ChatGPTPost(String apiKey) {
         this.apiKey = apiKey;
         System.out.println("ChatPost initialized with API key: " + apiKey);
     }
+    //    public void ChatPost(String apiKey) {
+//        this.apiKey = apiKey;
+//        System.out.println("ChatPost initialized with API key: " + apiKey);
+//    }
     public AppBuilder() {
         this.views = views;
         cardPanel.setLayout(cardLayout);
@@ -146,9 +151,8 @@ public class AppBuilder {
         profileViewModel = new ProfileViewModel();
         mealPlanViewModel = new MealPlanViewModel();
         groceryViewModel = new GroceryViewModel();
-        loggedInView = new LoggedInView(profileViewModel, loggedInViewModel);
-        healthyRemindersViewModel = new HealthyRemindersViewModel();
         loggedInView = new LoggedInView(profileViewModel, loggedInViewModel, healthyRemindersViewModel);
+        healthyRemindersViewModel = new HealthyRemindersViewModel();
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
@@ -163,6 +167,13 @@ public class AppBuilder {
         mealPlanViewModel = new MealPlanViewModel();
         groceryViewModel = new GroceryViewModel();
         cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMealView() throws IOException {
+        mealPlanViewModel = new MealPlanViewModel();
+        mealView = new MealView();
+        cardPanel.add(mealView, mealView.getViewName());
         return this;
     }
 
@@ -212,12 +223,13 @@ public class AppBuilder {
         final LoggedInController controller = new LoggedInController(loggedInInteractor);
 
         // Properly initialize HealthyRemindersInteractor
-        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
+//        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);
         final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(
-                userDataAccessObject, healthyRemindersPresenter, chatPost
+                userDataAccessObject, healthyRemindersPresenter, chatGPTPost
         );
 
         final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
@@ -230,24 +242,6 @@ public class AppBuilder {
 
         return this;
     }
-
-//    public AppBuilder addLoggedInUseCase() {
-//        final LoggedInOutputBoundary loggedInOutputBoundary = new LoggedInPresenter(viewManagerModel,
-//                loggedInViewModel, profileViewModel, healthyRemindersViewModel);
-//
-//        final LoggedInInputBoundary loggedInInteractor = new LoggedInInteractor(
-//               userDataAccessObject, loggedInOutputBoundary, userFactory);
-//
-//        final LoggedInController controller = new LoggedInController(loggedInInteractor);
-//
-//        HealthyRemindersInputBoundary healthyRemindersInteractor = null;
-//        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
-//        controller.setHealthyRemindersController(healthyRemindersController);
-//
-//        loggedInView.setLoggedInController(controller);
-//        return this;
-//
-//    }
 
     /**
      * Adds the Login Use Case to the application.
@@ -272,6 +266,7 @@ public class AppBuilder {
 
          final ProfileController profileController = new ProfileController(profileInteractor);
          loggedInView.setProfileController(profileController);
+         profileView.setProfileController(profileController);
          return this;
     }
 
@@ -312,8 +307,8 @@ public class AppBuilder {
         final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel, healthyRemindersViewModel);
 
-         final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX");
-        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(userDataAccessObject, healthyRemindersOutputBoundary, chatPost);
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("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");
+        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(userDataAccessObject, healthyRemindersOutputBoundary,  chatGPTPost);
 
         final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
         loggedInView.setHealthyRemindersController(healthyRemindersController);
@@ -334,4 +329,5 @@ public class AppBuilder {
 
         return application;
     }
+
 }

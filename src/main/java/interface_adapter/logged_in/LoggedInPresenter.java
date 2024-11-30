@@ -2,6 +2,7 @@ package interface_adapter.logged_in;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.healthyreminders.HealthyRemindersViewModel;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import use_case.logged_in.LoggedInOutputBoundary;
@@ -11,13 +12,15 @@ public class LoggedInPresenter implements LoggedInOutputBoundary {
     private LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
     private ProfileViewModel profileViewModel;
+    private HealthyRemindersViewModel healthyRemindersViewModel;
 
     public LoggedInPresenter(ViewManagerModel viewManagerModel,
                              LoggedInViewModel loggedInViewModel,
-                             ProfileViewModel profileViewModel) {
+                             ProfileViewModel profileViewModel, HealthyRemindersViewModel healthyRemindersViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;
         this.profileViewModel = profileViewModel;
+        this.healthyRemindersViewModel = healthyRemindersViewModel;
 
     }
 
@@ -61,6 +64,11 @@ public class LoggedInPresenter implements LoggedInOutputBoundary {
     @Override
     public void switchToProfileView() {
         viewManagerModel.setState(profileViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
+    public void switchToHealthyRemindersView() {
+        viewManagerModel.setState(healthyRemindersViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 }

@@ -14,4 +14,6 @@ public interface LoggedInInputBoundary {
      * Executes the switch to login view use case.
      */
     void switchToProfileView();
+
+    void switchToHealthyRemindersView();
 }

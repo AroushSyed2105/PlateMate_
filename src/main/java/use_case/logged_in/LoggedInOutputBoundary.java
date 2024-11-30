@@ -11,5 +11,7 @@ public interface LoggedInOutputBoundary {
 
 
     void switchToProfileView();
+
+    void switchToHealthyRemindersView();
 }
 

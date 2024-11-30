@@ -27,8 +27,10 @@ public class Main {
                                             .addGroceryPlanView()
                                             .addCalorieUseCase()
                                             .addGroceryUseCase()
+                                            .addHealthyRemindersView()
                                             .addProfileUseCase()
                                             .addMealPlanUseCase()
+                                            .addHealthyRemindersUseCase()
                                             .build();
 
         application.pack();

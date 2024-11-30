@@ -20,7 +20,6 @@ public class ChatPost {
                 .clientName("PlateMate")
                 .build();
     }
-
     public String getResponse(String prompt) {
         NonStreamedChatResponse response = cohere.chat(
                 ChatRequest.builder()
@@ -33,6 +32,11 @@ public class ChatPost {
         return response.getText(); //  Returns only the text field as a String
     }
 
+    public String getReminder(String prompt) {
+
+        return getResponse(prompt);
+    }
+
     public String getResponseRecipes(String MealResponse) {
         NonStreamedChatResponse response = cohere.chat(
                 ChatRequest.builder()
@@ -41,19 +45,7 @@ public class ChatPost {
                                 List.of(Message.user(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()),
                                         Message.chatbot(ChatMessage.builder().message("Generate a recipe and grocery list for" + MealResponse).build()))).build());
 
-        // System.out.println(response); // Prints the full JSON response
-        return response.getText(); //  Returns only the text field as a String
-    }
-
-    public String getResponseGivenGroceryList(String UseriIngrediants, String UserPreferences) {
-        NonStreamedChatResponse response = cohere.chat(
-                ChatRequest.builder()
-                        .message("Generate a simple 1 day meal plan for someone with these ingredients " + UseriIngrediants + "and preferences " + UserPreferences)
-                        .chatHistory(
-                                List.of(Message.user(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these ingredients " + UseriIngrediants + "and preferences " + UserPreferences).build()),
-                                        Message.chatbot(ChatMessage.builder().message("Generate a simple 1 day meal plan for someone with these ingredients " + UseriIngrediants + "and preferences " + UserPreferences).build()))).build());
-
-        // System.out.println(response); // Prints the full JSON response
+        System.out.println(response); // Prints the full JSON response
         return response.getText(); //  Returns only the text field as a String
     }
 

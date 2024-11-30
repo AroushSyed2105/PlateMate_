@@ -2,9 +2,10 @@ package data_access;
 
 import java.io.IOException;
 
+import app.ChatGPTPost;
 import org.json.JSONException;
 import org.json.JSONObject;
-import app.ChatPost; // Import ChatPost class
+//import app.ChatPost; // Import ChatPost class
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -37,24 +38,20 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-    private static final String API_KEY = "r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX";
+    private static final String API_KEY = "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";
     private final UserFactory userFactory;
-    private final ChatPost chatPost;
+    private final ChatGPTPost chatGPTPost;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
-        this.chatPost = new ChatPost(API_KEY); // Pass the API key for Cohere
+        this.chatGPTPost = new ChatGPTPost(API_KEY);
         // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
     }
 
-    public String generateMealPlan(String userPreferences) {
-        System.out.println("Generating meal plan based on preferences: " + userPreferences);
-        return chatPost.getResponse(userPreferences); // Assumes `chatPost` is properly initialized in the constructor
-    }
-
-    public String generateMealPlanGivenGroceries(String UserGroceries, String UserFoodPreferences) {
-        System.out.println("Generating meal plan based on what you have at home!");
-        return chatPost.getResponseGivenGroceryList(UserGroceries,UserFoodPreferences);
+    public String generateMealPlan(String userPreferences) throws IOException {
+//        String prompt = "Generate a precise detailed meal plan for one day with breakfast, lunch, and dinner including instructions, recipes, grocery list, and nutritional facts for someone with these restrictions: " + userPreferences;
+        String prompt = "Generate a precise detailed meal plan for one day with breakfast, lunch, and dinner including only instructions, recipes, and nutritional facts for someone with these restrictions and allergies: " + userPreferences;
+        return chatGPTPost.getResponse(prompt); // Assumes `chatPost` is properly initialized in the constructor
     }
 
     public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {
@@ -96,16 +93,98 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     }
     public static Map<String, String> fullMealPlan(String input) {
         Map<String, String> mealMap = new LinkedHashMap<>();
-        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)\n", Pattern.DOTALL);
+
+        // Updated regex to capture meal type (Breakfast, Lunch, Dinner) and its associated details
+        // This regex will handle cases where there are extra spaces or newlines
+        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner)\\s*:\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
-            String mealType = matcher.group(1).trim();
-            String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
+            String mealType = matcher.group(1).trim();  // Extract the meal type (Breakfast, Lunch, Dinner)
+            String mealDetails = matcher.group(2).trim();  // Extract the meal details
+
+            // Remove any leading or trailing stars or other unnecessary characters from meal type
+            mealType = mealType.replaceAll("\\*\\*", "").trim();  // Remove the leading '**'
+
+            // Remove any unwanted characters from the meal details
+            mealDetails = mealDetails.replaceAll("\\*\\*", "").trim(); // Remove the leading '**' from details if needed
+
+            // Log for debugging to check the values
+            System.out.println("Meal Type: " + mealType);
+            System.out.println("Meal Details: " + mealDetails);
+
+            // Add the meal type and details to the meal map
             mealMap.put(mealType, mealDetails);
         }
+
         return mealMap;
     }
+
+//    public static Map<String, String> fullMealPlan(String input) {
+//        Map<String, String> mealMap = new LinkedHashMap<>();
+//
+//        // Updated regex to capture meal type (Breakfast, Lunch, Dinner) and its associated details
+//        // This regex will handle cases where there are extra spaces or newlines
+//        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner)\\s*:\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)", Pattern.DOTALL);
+//        Matcher matcher = pattern.matcher(input);
+//
+//        while (matcher.find()) {
+//            String mealType = matcher.group(1).trim();  // Extract the meal type (Breakfast, Lunch, Dinner)
+//            String mealDetails = matcher.group(2).trim();  // Extract the meal details
+//
+//            // Remove any leading or trailing stars or other unnecessary characters from meal type
+//            mealType = mealType.replaceAll("\\*\\*", "").trim();  // Remove the leading '**'
+//
+//            // Remove any unwanted characters from the meal details
+//            mealDetails = mealDetails.replaceAll("\\*\\*", "").trim(); // Remove the leading '**' from details if needed
+//
+//            // Log for debugging to check the values
+//            System.out.println("Meal Type: " + mealType);
+//            System.out.println("Meal Details: " + mealDetails);
+//
+//            // Add the meal type and details to the meal map
+//            mealMap.put(mealType, mealDetails);
+//        }
+//
+//        return mealMap;
+//    }
+
+//    GOOOOOODD
+//    public static Map<String, String> fullMealPlan(String input) {
+//        Map<String, String> mealMap = new LinkedHashMap<>();
+//
+//        // Updated regex to capture meal type (Breakfast, Lunch, Dinner) and its associated details
+//        // This regex will handle cases where there are extra spaces or newlines
+//        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner)\\s*:\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)", Pattern.DOTALL);
+//        Matcher matcher = pattern.matcher(input);
+//
+//        while (matcher.find()) {
+//            String mealType = matcher.group(1).trim();  // Extract the meal type (Breakfast, Lunch, Dinner)
+//            String mealDetails = matcher.group(2).trim();  // Extract the meal details
+//
+//            // Log for debugging to check the values
+//            System.out.println("Meal Type: " + mealType);
+//            System.out.println("Meal Details: " + mealDetails);
+//
+//            // Add the meal type and details to the meal map
+//            mealMap.put(mealType, mealDetails);
+//        }
+//
+//        return mealMap;
+//    }
+
+//    public static Map<String, String> fullMealPlan(String input) {
+//        Map<String, String> mealMap = new LinkedHashMap<>();
+//        Pattern pattern = Pattern.compile("\\*\\*(Breakfast|Lunch|Dinner):\\s*(.*?)(?=\\n\\*\\*(Breakfast|Lunch|Dinner):|$)\n", Pattern.DOTALL);
+//        Matcher matcher = pattern.matcher(input);
+//
+//        while (matcher.find()) {
+//            String mealType = matcher.group(1).trim();
+//            String mealDetails = matcher.group(2).trim().replaceAll("\\*\\*", "");
+//            mealMap.put(mealType, mealDetails);
+//        }
+//        return mealMap;
+//    }
 
     // helper method to extract the grocery list from a single meal's description
     public List<String> extractGroceryList(Map<String, String> mealPlanMap) {

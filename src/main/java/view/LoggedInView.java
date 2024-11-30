@@ -2,6 +2,7 @@ package view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -9,9 +10,12 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+//import app.ChatPost;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.healthyreminders.HealthyRemindersController;
+import interface_adapter.healthyreminders.HealthyRemindersViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.logged_in.LoggedInController;
@@ -25,6 +29,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final String viewName = "logged in";
     private final ProfileViewModel profileViewModel;
     private final LoggedInViewModel loggedInViewModel;
+    private final HealthyRemindersViewModel healthyRemindersViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
     private LogoutController logoutController;
@@ -34,17 +39,23 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JLabel username;
     private final JButton logOut;
     private final JButton toProfile;
+
+    private final JButton toHealthyReminders;
+
+
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
+    private HealthyRemindersController healthyRemindersController;
 
-    public LoggedInView(ProfileViewModel profileViewModel, LoggedInViewModel loggedInViewModel) {
-        // Set the custom font and background color
+
+    public LoggedInView(ProfileViewModel profileViewModel, LoggedInViewModel loggedInViewModel, HealthyRemindersViewModel healthyRemindersViewModel1) {
         Font customFont = new Font("Times New Roman", Font.PLAIN, 16);
         Color customBackgroundColor = new Color(219, 232, 215);
         Color plainColour = new Color(238, 238, 238);
 
         this.profileViewModel = profileViewModel;
         this.loggedInViewModel = loggedInViewModel;
+        this.healthyRemindersViewModel = healthyRemindersViewModel1;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
         // Set the layout and background color
@@ -58,7 +69,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         title.setOpaque(true);
         title.setBackground(customBackgroundColor);
 
-       // Password Info
+        // Password Info
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(customFont);
         passwordLabel.setOpaque(true); // Allow background color to show
@@ -100,6 +111,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         toProfile.setFont(customFont);
         buttons.add(toProfile);
 
+        toHealthyReminders = new JButton("Go to Daily Healthy Reminders");
+        buttons.add(toHealthyReminders);
+
         // Add DocumentListener for password input
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
@@ -125,14 +139,37 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         });
 
         // Add ActionListeners for buttons
-        toProfile.addActionListener(evt -> loggedInController.switchToProfileView());
 
-        changePassword.addActionListener(evt -> {
-            if (evt.getSource().equals(changePassword)) {
-                LoggedInState currentState = loggedInViewModel.getState();
-                changePasswordController.execute(currentState.getUsername(), currentState.getPassword());
-            }
-        });
+        toProfile.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        loggedInController.switchToProfileView();
+                    }
+                }
+        );
+
+        toHealthyReminders.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        loggedInController.switchToHealthyRemindersView();
+                    }
+                }
+        );
+
+
+        changePassword.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(changePassword)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+
+                        this.changePasswordController.execute(
+                                currentState.getUsername(),
+                                currentState.getPassword()
+                        );
+                    }
+                }
+        );
 
         logOut.addActionListener(evt -> {
             if (evt.getSource().equals(logOut)) {
@@ -181,5 +218,10 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     public void setLoggedInController(LoggedInController controller) {
         this.loggedInController = controller;
     }
+
+    public void setHealthyRemindersController(HealthyRemindersController healthyRemindersController) {
+        this.healthyRemindersController = healthyRemindersController;
+    }
+
 }
 

@@ -138,6 +138,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         buttons.add(toProfile);
 
         toHealthyReminders = new JButton("Go to Daily Healthy Reminders");
+        toHealthyReminders.setFont(customFont);
         buttons.add(toHealthyReminders);
 
         // Add DocumentListener for password input

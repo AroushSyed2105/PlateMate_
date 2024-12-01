@@ -27,9 +27,7 @@ public class CalorieView extends JPanel {
     private final Map<String, Integer> actualCalories; // Actual calorie data entered by the user
     private final JTextArea summaryTextArea;
     private CalorieController calorieController;
-    private final Map<String, Integer> plannedCalories;
-    private final Map<String, Integer> actualCalories;
-    private final JTextArea summaryTextArea;
+
     CommonUserFactory commonuserFactory = new CommonUserFactory();
     DBUserDataAccessObject dao = new DBUserDataAccessObject(commonuserFactory);
 

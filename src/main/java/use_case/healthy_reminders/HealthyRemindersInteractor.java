@@ -81,9 +81,9 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
 
         if (reminder != null && !reminder.isEmpty()) {
             HealthyRemindersOutputData outputData = new HealthyRemindersOutputData(reminder);
-            healthyRemindersPresenter.prepareSuccessView(outputData);
+            outputBoundary.prepareSuccessView(outputData);
         } else {
-            healthyRemindersPresenter.prepareFailView("Failed to generate a reminder.");
+            outputBoundary.prepareFailView("Failed to generate a reminder.");
         }
     }
     @Override
@@ -99,6 +99,6 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
         return reminder;
     }
 
-    public void switchToLoggedInView() { healthyRemindersPresenter.switchToLoggedInView();}
+    public void switchToLoggedInView() { outputBoundary.switchToLoggedInView();}
 
 }

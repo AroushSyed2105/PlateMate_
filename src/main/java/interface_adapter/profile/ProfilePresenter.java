@@ -5,7 +5,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.meal_plan.MealPlanViewModel;
 import interface_adapter.groceries.GroceryViewModel;
-import interface_adapter.Calorie.CalorieViewModel;
 import use_case.user_profile.ProfileOutputBoundary;
 import use_case.user_profile.ProfileOutputData;
 
@@ -44,9 +43,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         //update the ProfileViewModel state
         profileViewModel.setState(profileState);
         profileViewModel.firePropertyChanged();
-        //switch to MealPlanView
-        this.viewManagerModel.setState(mealPlanViewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
+
     }
 
     @Override
@@ -59,6 +56,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
     public void switchToMealPlanView() {
         this.viewManagerModel.setState(mealPlanViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+
     }
 
     public void switchToGroceryView() {

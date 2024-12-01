@@ -9,6 +9,7 @@ public class ProfileViewModel extends ViewModel<ProfileState> {
     public static final String HEALTH_GOALS = "Health Goals";
     public static final String CANCEL_BUTTON_LABEL = "Back to menu";
     public static final String SAVE_BUTTON_LABEL = "Save";
+    public static final String BACK_BUTTON_LABEL = "Back";
 
 
     public ProfileViewModel() {

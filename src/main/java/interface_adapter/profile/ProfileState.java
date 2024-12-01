@@ -1,5 +1,9 @@
 package interface_adapter.profile;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ProfileState {
     // Singleton instance
     private static ProfileState instance;
@@ -71,5 +75,23 @@ public class ProfileState {
 
     public void setDietaryRestrictions(String[] dietaryRestrictions) {
         this.dietaryRestrictions = dietaryRestrictions;
+    }
+
+    // Helper method to return a single string of all allergies
+    public String getAllergiesAsString() {
+        return String.join(", ", allergies);
+    }
+
+    // Helper method to return a single string of all dietary restrictions
+    public String getDietaryRestrictionsAsString() {
+        return String.join(", ", dietaryRestrictions);
+    }
+
+    // Method to combine all dietary information (allergies + dietary restrictions)
+    public String getCombinedDietaryInfo() {
+        List<String> combinedList = new ArrayList<>();
+        combinedList.addAll(Arrays.asList(allergies));
+        combinedList.addAll(Arrays.asList(dietaryRestrictions));
+        return String.join(", ", combinedList);
     }
 }

@@ -22,9 +22,15 @@ public class Main {
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
+                                            .addMealView()
                                             .addProfileView()
                                             .addHealthyRemindersView()
+                                            .addCalorieView()
+                                            .addGroceryPlanView()
                                             .addProfileUseCase()
+                                            .addMealPlanUseCase()
+                                            .addCalorieUseCase()
+                                            .addGroceryUseCase()
                                             .addHealthyRemindersUseCase()
                                             .build();
 

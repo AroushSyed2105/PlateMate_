@@ -73,7 +73,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         Color customBackgroundColor = new Color(255, 255, 240);
 
         this.profileViewModel = profileViewModel;
-        this.profileInteractor = profileInteractor;
         profileViewModel.addPropertyChangeListener(this);
 
         // Set layout and make the background transparent
@@ -133,9 +132,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         saveButton = new JButton(ProfileViewModel.SAVE_BUTTON_LABEL);
         saveButton.setFont(customFont);
         buttons.add(saveButton);
-        profile = new JButton("Profile");
-        profile.setFont(customFont);
-        buttons.add(profile);
+
         toMealPlan = new JButton("To Meal Plan");
         toMealPlan.setFont(customFont);
         buttons.add(toMealPlan);
@@ -150,25 +147,65 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         buttons.add(toGrocery);
 
         saveButton.addActionListener(evt -> {
-            if (evt.getSource().equals(saveButton)) {
-                ProfileState currentState = profileViewModel.getState();
-                profileController.execute(
-                        currentState.getAllergies(),
-                        currentState.getHealthGoals(),
-                        currentState.getDietaryRestrictions(),
-                        currentState.getUsername()
-                );
-            }
+            ProfileState currentState = profileViewModel.getState();
+
+            // Fetch selected allergies and dietary restrictions from JList
+            List<String> selectedAllergies = allergiesList.getSelectedValuesList();
+            List<String> selectedDietaryRestrictions = dietaryRestrictionsList.getSelectedValuesList();
+
+            currentState.setAllergies(selectedAllergies.toArray(new String[0]));
+            currentState.setDietaryRestrictions(selectedDietaryRestrictions.toArray(new String[0]));
+            currentState.setHealthGoals(healthGoalsInputField.getText().split(","));
+            profileViewModel.setState(currentState);
+
+            allergiesList.addListSelectionListener(e -> {
+                if (!e.getValueIsAdjusting()) {
+                    currentState.setAllergies(allergiesList.getSelectedValuesList().toArray(new String[0]));
+                    profileViewModel.setState(currentState);
+                }
+            });
+
+            dietaryRestrictionsList.addListSelectionListener(e -> {
+                if (!e.getValueIsAdjusting()) {
+                    currentState.setDietaryRestrictions(dietaryRestrictionsList.getSelectedValuesList().toArray(new String[0]));
+                    profileViewModel.setState(currentState);
+                }
+            });
+
+            profileController.execute(
+                    currentState.getAllergies(),
+                    currentState.getHealthGoals(),
+                    currentState.getDietaryRestrictions(),
+                    currentState.getUsername()
+            );
+
+            System.out.println("Saved ProfileState:");
+            System.out.println("Allergies: " + String.join(", ", currentState.getAllergies()));
+            System.out.println("Dietary Restrictions: " + String.join(", ", currentState.getDietaryRestrictions()));
+            System.out.println("Health Goals: " + currentState.getHealthGoals());
+            System.out.println("Total: " + currentState.getCombinedDietaryInfo());
         });
 
-        toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
+
+        toMealPlan.addActionListener(evt -> {
+            // Ensure ProfileState is updated before switching to Meal Plan View
+            ProfileState currentState = profileViewModel.getState();
+            profileController.execute(
+                    currentState.getAllergies(),
+                    currentState.getHealthGoals(),
+                    currentState.getDietaryRestrictions(),
+                    currentState.getUsername()
+            );
+
+            // Switch to the Meal Plan View
+            profileController.switchToMealPlanView();
+        });
+
         toGrocery.addActionListener(evt -> profileController.switchToGroceryView());
         backToMenuButton.addActionListener(evt -> profileController.switchToLoggedInView());
-        toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
         toCalorie.addActionListener(evt -> profileController.switchtoCalorieView());
 
 
-        cancelButton.addActionListener(this);
 
         addAllergiesListener();
         addDietaryRestrictionsListener();
@@ -256,8 +293,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             @Override
             public void changedUpdate(DocumentEvent e) { documentListenerHelper(); }
         });
-    }
 
+    }
 
     @Override
     public void actionPerformed(ActionEvent evt) {

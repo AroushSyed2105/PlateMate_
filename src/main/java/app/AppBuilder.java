@@ -346,7 +346,7 @@ public class AppBuilder {
 
         final ChatGPTPost chatGPTPost = new ChatGPTPost("proj-VpL8cdC3iIAFo22tSRUqRRNri0kk6UyeZ_Gfz68RLBbtHZj-VISeWiGFh0QRLq0SJWvJilD_EqT3BlbkFJUec_DjbA7hFywZb6JmNAnVM2OqL6dZ541tdfrsXZyFil6I9sIwAmKZmg979mcgrsuJWF7vPCwA");
         final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(
-                userDataAccessObject, healthyRemindersOutputBoundary, chatPost);
+                userDataAccessObject, healthyRemindersOutputBoundary, chatGPTPost);
         final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(
                 healthyRemindersInteractor);
         healthyRemindersView.setHealthyRemindersController(healthyRemindersController);

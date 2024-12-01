@@ -44,7 +44,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
-        this.chatGPTPost = new ChatGPTPost("API_KEY");
+        this.chatGPTPost = new ChatGPTPost(API_KEY);
         // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
     }
 
@@ -53,6 +53,12 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         String prompt = "Generate a precise detailed meal plan for one day with breakfast, lunch, and dinner including only instructions, recipes, and nutritional facts for someone with these restrictions and allergies: " + userPreferences;
         return chatGPTPost.getResponse(prompt); // Assumes `chatPost` is properly initialized in the constructor
     }
+
+    public String generateReminder() throws IOException {
+        String prompt = "Generate a random healthy daily reminder";
+        return chatGPTPost.getReminder(prompt);
+    }
+
 
     public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {
         Map<String, Map<String, String>> parsedPlan = new LinkedHashMap<>();

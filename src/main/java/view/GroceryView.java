@@ -112,11 +112,11 @@ public class GroceryView extends JPanel {
         // Panel for all ingredients
         JPanel ingredientsPanel = new JPanel();
         ingredientsPanel.setLayout(new BoxLayout(ingredientsPanel, BoxLayout.Y_AXIS));
-        ingredientsPanel.setBackground(new Color(204, 229, 255)); // Light blue background
+        ingredientsPanel.setBackground(new Color(219, 232, 215));
         ingredientsPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        JLabel ingredientsTitle = new JLabel("Ingredients:");
-        ingredientsTitle.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        JLabel ingredientsTitle = new JLabel("Ingredients");
+        ingredientsTitle.setFont(new Font("Times New Roman", Font.BOLD, 20));
         ingredientsTitle.setForeground(new Color(0, 51, 102)); // Dark blue
         ingredientsTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         ingredientsPanel.add(ingredientsTitle);

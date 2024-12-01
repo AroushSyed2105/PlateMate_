@@ -17,16 +17,23 @@ public class HealthyRemindersController {
         this.healthyRemindersViewModel = healthyRemindersViewModel;
     }
 
-//    public void setViewModel(HealthyRemindersViewModel healthyRemindersViewModel) {
+
+
+    //    public void setViewModel(HealthyRemindersViewModel healthyRemindersViewModel) {
 //        this.healthyRemindersViewModel = healthyRemindersViewModel;
 //    }
     public void generateReminder() throws IOException {
         System.out.println("Controller: Generating reminder...");
-        String reminder = healthyRemindersInteractor.generateReminder();
+        String reminder = healthyRemindersUseCaseInteractor.generateReminder();
         System.out.println("Controller: Received reminder: " + reminder);
 
         healthyRemindersViewModel.setReminder(reminder != null ? reminder : "No reminder generated.");
     }
+
+    public void switchToLoggedInView() { healthyRemindersUseCaseInteractor.switchToLoggedInView();}
+}
+
+
 
 //package interface_adapter.healthyreminders;
 //

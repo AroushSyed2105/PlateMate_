@@ -86,6 +86,10 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
             outputBoundary.prepareFailView("Failed to generate a reminder.");
         }
     }
+
+    @Override
+    public void switchToLoggedInView() { outputBoundary.switchToLoggedInView();}
+
     @Override
     public String generateReminder() throws IOException {
         String prompt = "Generate a random healthy daily reminder.";

@@ -9,9 +9,12 @@ import java.io.IOException;
 public class ChatGPTPost {
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
     private final String apiKey;
+    private final OkHttpClient client;
 
     public ChatGPTPost(String apiKey) {
         this.apiKey = apiKey;
+        this.client = new OkHttpClient();
+        System.out.println("Using API Key: " + apiKey);  // Debug log
     }
 
     public String getResponse(String prompt) throws IOException {
@@ -42,34 +45,112 @@ public class ChatGPTPost {
 
         // Execute the request and process the response
         try (Response response = client.newCall(request).execute()) {
+            System.out.println("Response Code: " + response.code());
             if (response.isSuccessful() && response.body() != null) {
-                JSONObject jsonResponse = new JSONObject(response.body().string());
-                String messageContent = jsonResponse.getJSONArray("choices")
+                String responseBody = response.body().string();
+                System.out.println("Response Body: " + responseBody);
+                JSONObject jsonResponse = new JSONObject(responseBody);
+                return jsonResponse.getJSONArray("choices")
                         .getJSONObject(0)
                         .getJSONObject("message")
                         .getString("content");
-                System.out.println("Generated Response: " + messageContent);
-
-                return messageContent;
-//                return jsonResponse.getJSONArray("choices")
-//                        .getJSONObject(0)
-//                        .getJSONObject("message")
-//                        .getString("content");
-//
             } else {
-                // Log the error response for debugging
-                if (response.body() != null) {
-                    System.err.println("Error response: " + response.body().string());
+                System.err.println("API Error Code: " + response.code());
+                System.err.println("Error Response Body: " + (response.body() != null ? response.body().string() : "null"));
+                throw new IOException("Failed ChatGPT request: " + response.code());
+            }
+        }
+
+    }
+
+    // Get a reminder based on a prompt (using the same helper method)
+    public String getReminder(String prompt) throws IOException {
+        System.out.println("ChatGPTPost: Sending request with prompt: " + prompt);
+        System.out.println("ChatGPTPost: Using API Key: " + apiKey);
+
+        JSONObject payload = new JSONObject();
+        payload.put("model", "gpt-3.5-turbo");
+        JSONArray messages = new JSONArray()
+                .put(new JSONObject().put("role", "system").put("content", "You are a helpful assistant."))
+                .put(new JSONObject().put("role", "user").put("content", prompt));
+        payload.put("messages", messages);
+        payload.put("temperature", 0.7);
+
+        RequestBody body = RequestBody.create(
+                MediaType.parse("application/json"), payload.toString());
+
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .header("Authorization", "Bearer " + apiKey)
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            System.out.println("Response code: " + response.code());
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
+                System.out.println("ChatGPTPost: Response body: " + responseBody);
+                JSONObject jsonResponse = new JSONObject(responseBody);
+                return jsonResponse.getJSONArray("choices")
+                        .getJSONObject(0)
+                        .getJSONObject("message")
+                        .getString("content");
+            } else {
+                System.err.println("ChatGPTPost: API Error: " + response.code());
+                if (response.code() == 401) {
+                    System.err.println("ChatGPTPost: Unauthorized: Check your API key or account status.");
                 }
                 throw new IOException("Failed ChatGPT request: " + response.code());
             }
         }
     }
 
-    // Get a reminder based on a prompt (using the same helper method)
-    public String getReminder(String prompt) throws IOException {
-        return getResponse(prompt);
-    }
+//    public String getReminder(String prompt) throws IOException {
+//        System.out.println("ChatGPTPost: Sending request with prompt: " + prompt);
+//
+//        JSONObject payload = new JSONObject();
+//        payload.put("model", "gpt-3.5-turbo");
+//        JSONArray messages = new JSONArray()
+//                .put(new JSONObject().put("role", "system").put("content", "You are a helpful assistant."))
+//                .put(new JSONObject().put("role", "user").put("content", prompt));
+//        payload.put("messages", messages);
+//        payload.put("temperature", 0.7);
+//
+//        RequestBody body = RequestBody.create(
+//                MediaType.parse("application/json"), payload.toString());
+//
+//        Request request = new Request.Builder()
+//                .url(API_URL)
+//                .header("Authorization", "Bearer " + apiKey)
+//                .post(body)
+//                .build();
+//
+//        try (Response response = client.newCall(request).execute()) {
+//            if (response.isSuccessful() && response.body() != null) {
+//                String responseBody = response.body().string();
+//                System.out.println("ChatGPTPost: Response body: " + responseBody);
+//
+//                JSONObject jsonResponse = new JSONObject(responseBody);
+//                return jsonResponse.getJSONArray("choices")
+//                        .getJSONObject(0)
+//                        .getJSONObject("message")
+//                        .getString("content");
+//            } else {
+//                System.err.println("ChatGPTPost: API Error: " + response.code());
+//                if (response.code() == 401) {
+//                    throw new IOException("Unauthorized: Check your API key.");
+//                }
+//                throw new IOException("Failed ChatGPT request: " + response.code());
+//            }
+//        }
+//    }
+
+
+
+
+//    public String getReminder(String prompt) throws IOException {
+//        return getResponse(prompt);
+//    }
 
     // Get a recipe and grocery list for a given meal
     public String getResponseRecipes(String mealResponse) throws IOException {

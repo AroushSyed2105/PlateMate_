@@ -91,7 +91,7 @@ import view.*;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
-    private static String apiKey = "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";
+    private static String apiKey = "API_KEY";
     private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -240,7 +240,7 @@ public class AppBuilder {
 
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_key"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);
@@ -346,7 +346,7 @@ public class AppBuilder {
         final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel, healthyRemindersViewModel);
 
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_KEY");
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("sk-proj-tA9atpVajVVvRZnj6FiJBSiGavKM9VgHGVnk6WqzVYBbkywhoG6Q0unV2NWBQTxvP0iO26Hp15T3BlbkFJ0lz1_Mr7AE58j-8UPUfTVgJ52jGdvSzuTGG-JRyn97rZs8EffZ52cgnmxQxIp71RltCmgrZnYAY");
         final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(
                 userDataAccessObject, healthyRemindersOutputBoundary, chatGPTPost);
         final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(
@@ -359,7 +359,7 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("PlateMate");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

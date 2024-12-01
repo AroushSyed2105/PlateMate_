@@ -7,6 +7,10 @@ public class GroceryInteractor implements GroceryInputBoundary {
         this.groceryPresenter = groceryPresenter;
     }
 
-    public void switchToProfileView() { groceryPresenter.switchToProfileView(); }
+    public void switchToProfileView() {
+        groceryPresenter.switchToProfileView();
     }
+
+
+}
 

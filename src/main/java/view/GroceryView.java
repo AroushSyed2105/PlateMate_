@@ -61,6 +61,7 @@ public class GroceryView extends JPanel {
         saveButton.setBackground(new Color(192, 192, 192));
         saveButton.setBorder(new LineBorder(Color.GRAY, 1, true));
         saveButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Grocery list saved!"));
+        saveButton.addActionListener(evt-> groceryController.switchToProfileView());
 
         // Add components to the view
         this.add(titleLabel, BorderLayout.NORTH);

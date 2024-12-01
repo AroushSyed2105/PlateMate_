@@ -200,7 +200,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addGroceryPlanView() {
+    public AppBuilder addGroceryPlanView() throws IOException {
         groceryViewModel = new GroceryViewModel();
         groceryView = new GroceryView();
         cardPanel.add(groceryView, groceryView.getViewName());

@@ -77,7 +77,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         // Set layout and make the background transparent
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(Box.createVerticalStrut(120));
+        this.add(Box.createVerticalStrut(130));
 
         this.setBackground(customBackgroundColor);
 

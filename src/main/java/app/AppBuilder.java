@@ -237,7 +237,7 @@ public class AppBuilder {
 
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_KEY"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);
@@ -344,7 +344,7 @@ public class AppBuilder {
         final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel, healthyRemindersViewModel);
 
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("proj-VpL8cdC3iIAFo22tSRUqRRNri0kk6UyeZ_Gfz68RLBbtHZj-VISeWiGFh0QRLq0SJWvJilD_EqT3BlbkFJUec_DjbA7hFywZb6JmNAnVM2OqL6dZ541tdfrsXZyFil6I9sIwAmKZmg979mcgrsuJWF7vPCwA");
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_KEY");
         final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(
                 userDataAccessObject, healthyRemindersOutputBoundary, chatGPTPost);
         final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(

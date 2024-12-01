@@ -200,7 +200,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addGroceryPlanView() {
+    public AppBuilder addGroceryPlanView() throws IOException {
         groceryViewModel = new GroceryViewModel();
         groceryView = new GroceryView();
         cardPanel.add(groceryView, groceryView.getViewName());
@@ -240,7 +240,7 @@ public class AppBuilder {
 
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("API"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_KEY"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);

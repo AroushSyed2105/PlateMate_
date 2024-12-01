@@ -173,6 +173,30 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
+//        toHealthyReminders.addActionListener(evt -> {
+//            try {
+//                healthyRemindersController.generateReminder();  // Trigger reminder generation
+//
+//                // Fetch and display the reminder
+//                String reminder = healthyRemindersViewModel.getState().getCurrentReminder();
+//                System.out.println("Reminder fetched in View: " + reminder);
+//
+//                JOptionPane.showMessageDialog(
+//                        null,
+//                        reminder != null && !reminder.isEmpty() ? "Healthy Reminder: " + reminder : "No reminder available. Please try generating a reminder again.",
+//                        "Daily Healthy Reminder",
+//                        JOptionPane.INFORMATION_MESSAGE
+//                );
+//            } catch (IOException ex) {
+//                JOptionPane.showMessageDialog(
+//                        null,
+//                        "Failed to generate a reminder. Please try again later.",
+//                        "Error",
+//                        JOptionPane.ERROR_MESSAGE
+//                );
+//                ex.printStackTrace();
+//            }
+//        });
 
         toHealthyReminders.addActionListener(
                 new ActionListener() {

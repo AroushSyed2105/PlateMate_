@@ -38,7 +38,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
-    private static final String API_KEY = "API_KEY";
+    private static final String API_KEY = "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";
     private final UserFactory userFactory;
     private final ChatGPTPost chatGPTPost;
 
@@ -54,10 +54,10 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         return chatGPTPost.getResponse(prompt); // Assumes `chatPost` is properly initialized in the constructor
     }
 
-    public String generateReminder() throws IOException {
-        String prompt = "Generate a random healthy daily reminder";
-        return chatGPTPost.getReminder(prompt);
-    }
+//    public String generateReminder() throws IOException {
+//        String prompt = "Generate a random healthy daily reminder";
+//        return chatGPTPost.getReminder(prompt);
+//    }
 
 
     public static Map<String, Map<String, String>> parseMealDetails(Map<String, String> mealPlan) {

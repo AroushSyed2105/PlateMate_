@@ -16,11 +16,23 @@ public class HealthyRemindersController {
 //    public void setViewModel(HealthyRemindersViewModel healthyRemindersViewModel) {
 //        this.healthyRemindersViewModel = healthyRemindersViewModel;
 //    }
-
     public void generateReminder() throws IOException {
-        String reminder = healthyRemindersInteractor.generateReminder();  // Calls the interactor to get the reminder
-        healthyRemindersViewModel.setReminder(reminder);  //
-//        healthyRemindersViewModel.getState().setCurrentReminder(reminder);
-//        healthyRemindersViewModel.firePropertyChanged();
+        System.out.println("Controller: Generating reminder...");
+        String reminder = healthyRemindersInteractor.generateReminder();
+        System.out.println("Controller: Received reminder: " + reminder);
+
+        healthyRemindersViewModel.setReminder(reminder != null ? reminder : "No reminder generated.");
     }
+
+//    public void generateReminder() throws IOException {
+//        // Call the interactor's generateReminder() method
+//        String reminder = healthyRemindersInteractor.generateReminder();
+//
+//        // Update the ViewModel with the fetched reminder
+//        if (reminder != null) {
+//            healthyRemindersViewModel.setReminder(reminder);
+//        } else {
+//            healthyRemindersViewModel.setReminder("Failed to generate a reminder. Please try again.");
+//        }
+//    }
 }

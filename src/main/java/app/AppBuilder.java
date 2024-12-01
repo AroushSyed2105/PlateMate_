@@ -184,8 +184,11 @@ public class AppBuilder {
     }
 
     public AppBuilder addMealView() throws IOException {
-        mealPlanViewModel = new MealPlanViewModel();
+        final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel);
+        final MealPlanInputBoundary mealPlanInteractor = new MealPlanInteractor(mealPlanOutputBoundary);
+        MealPlanController mealPlanController = new MealPlanController(mealPlanInteractor);
         mealView = new MealView();
+        mealView.setMealPlanController(mealPlanController);
         cardPanel.add(mealView, mealView.getViewName());
         return this;
     }
@@ -320,7 +323,6 @@ public class AppBuilder {
         final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel);
         final MealPlanInputBoundary mealPlanInteractor = new MealPlanInteractor(mealPlanOutputBoundary);
         final MealPlanController mealPlanController = new MealPlanController(mealPlanInteractor);
-        mealPlanView.setMealPlanController(mealPlanController);
         return this;
     }
 

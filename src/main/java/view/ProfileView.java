@@ -184,6 +184,8 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
             System.out.println("Dietary Restrictions: " + String.join(", ", currentState.getDietaryRestrictions()));
             System.out.println("Health Goals: " + currentState.getHealthGoals());
             System.out.println("Total: " + currentState.getCombinedDietaryInfo());
+
+            JOptionPane.showMessageDialog(this, "Profile updated successfully!");
         });
 
 
@@ -303,7 +305,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        JOptionPane.showMessageDialog(this, "Profile updated successfully!");
     }
 
     public String getViewName() {

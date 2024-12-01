@@ -241,6 +241,7 @@ public class AppBuilder {
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
         final ChatGPTPost chatGPTPost = new ChatGPTPost("API"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);

@@ -88,17 +88,32 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
     }
     @Override
     public String generateReminder() throws IOException {
-        String prompt = "Generate a daily healthy reminder.";
-        System.out.println("Prompt sent to ChatPost: " + prompt);
-        String reminder = chatGPTPost.getResponse(prompt);
-        if (reminder == null || reminder.isEmpty()) {
-            System.out.println("Reminder generation failed or returned empty.");
-            return null;
-        }
-        System.out.println("Generated reminder: " + reminder);
+        String prompt = "Generate a random healthy daily reminder.";
+        System.out.println("Interactor: Sending prompt to ChatGPT API: " + prompt);
+
+        String reminder = chatGPTPost.getReminder(prompt);
+        System.out.println("Interactor: Reminder received: " + reminder);
+
         return reminder;
     }
 
-    public void switchToLoggedInView() { outputBoundary.switchToLoggedInView();}
+//    @Override
+//    public String generateReminder() throws IOException {
+//        String prompt = "Generate a daily healthy reminder.";
+//        System.out.println("Prompt sent to ChatGPT API: " + prompt);
+//
+//        // Fetch the reminder from ChatGPTPost
+//        String reminder = chatGPTPost.getResponse(prompt);
+//
+//        if (reminder == null || reminder.isEmpty()) {
+//            System.err.println("Reminder generation failed or returned empty.");
+//            return null;
+//        }
+//
+//        System.out.println("Generated reminder: " + reminder);
+//        return reminder;
+//    }
+
+
 
 }

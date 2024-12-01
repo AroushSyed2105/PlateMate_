@@ -20,34 +20,13 @@ public class HealthyRemindersController {
 //    public void setViewModel(HealthyRemindersViewModel healthyRemindersViewModel) {
 //        this.healthyRemindersViewModel = healthyRemindersViewModel;
 //    }
-
     public void generateReminder() throws IOException {
-        String reminder = healthyRemindersUseCaseInteractor.generateReminder();  // Calls the interactor to get the reminder
-        healthyRemindersViewModel.setReminder(reminder);  //
-        healthyRemindersViewModel.getState().setCurrentReminder(reminder);
-        healthyRemindersViewModel.firePropertyChanged();
+        System.out.println("Controller: Generating reminder...");
+        String reminder = healthyRemindersInteractor.generateReminder();
+        System.out.println("Controller: Received reminder: " + reminder);
+
+        healthyRemindersViewModel.setReminder(reminder != null ? reminder : "No reminder generated.");
     }
-
-    public void switchToLoggedInView() { healthyRemindersUseCaseInteractor.switchToLoggedInView();}
-}
-
-//public class HealthyRemindersController {
-//    private final HealthyRemindersInputBoundary interactor;
-//    private HealthyRemindersViewModel viewModel;
-//
-//    public HealthyRemindersController(HealthyRemindersInputBoundary interactor) {
-//        this.interactor = interactor;
-//    }
-//    public void setViewModel(HealthyRemindersViewModel viewModel) {
-//        this.viewModel = viewModel;
-//    }
-//
-//
-//    public void generateReminder() {
-//        interactor.generateReminder();
-//    }
-//}
-
 
 //package interface_adapter.healthyreminders;
 //

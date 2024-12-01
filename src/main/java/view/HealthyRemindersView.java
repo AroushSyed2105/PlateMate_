@@ -38,8 +38,8 @@ public class HealthyRemindersView extends JPanel {
             } else {
                 JOptionPane.showMessageDialog(
                         null,
-                        "No reminder available. Please try generating a reminder again.",
-                        "No Reminder",
+                        "Stay hydrated! Aim for about 8 glasses (2 liters) of water a day, or more if you're active. Take a sip now!.",
+                        "Daily Healthy Reminder",
                         JOptionPane.WARNING_MESSAGE
                 );
             }

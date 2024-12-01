@@ -34,6 +34,7 @@ import interface_adapter.meal_plan.MealPlanPresenter;
 import interface_adapter.meal_plan.MealPlanViewModel;
 import interface_adapter.groceries.GroceryViewModel;
 import interface_adapter.profile.*;
+import interface_adapter.profile.ProfileState;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -112,6 +113,7 @@ public class AppBuilder {
     private CalorieView calorieView;
     private HealthyRemindersViewModel healthyRemindersViewModel;
     private HealthyRemindersView healthyRemindersView;
+    private ProfileState profileState;
 
     public void ChatPost(String apiKey) {
         this.apiKey = apiKey;

@@ -137,10 +137,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         toGrocery.addActionListener(evt -> profileController.switchToGroceryView());
         backToMenuButton.addActionListener(evt -> profileController.switchToLoggedInView());
         toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
-
-        toCalorie.addActionListener(
-                evt -> profileController.switchtoCalorieView()
-        );
+        toCalorie.addActionListener(evt -> profileController.switchtoCalorieView());
 
         // Add listeners
         addAllergiesListener();

@@ -22,9 +22,10 @@ public class MealView extends JPanel {
     private final String viewName = "MealPlan";
     private final JButton backButton = new JButton("Back");
     private MealPlanController mealPlanController;
-    private ProfileState profileState;
+    private transient ProfileState profileState;
 
     public MealView() {
+        this.profileState = ProfileState.getInstance();
         // Set layout for the panel
         this.setLayout(new BorderLayout());
 
@@ -206,8 +207,14 @@ public class MealView extends JPanel {
                 String.join(", ", profileState.getHealthGoals())// Health Goals
         );
     }
+    // allows getUserPreferences to be outputted into the terminal
+    public String testUserPreferences() {
+        return getUserPreferences();
+    }
 
-    public void setMealPlanController(MealPlanController mealPlanController) {
-        this.mealPlanController = mealPlanController; }
+    public String setMealPlanController(MealPlanController mealPlanController) {
+        this.mealPlanController = mealPlanController;
+        return getUserPreferences();
+    }
     }
 

@@ -1,6 +1,8 @@
 package view;
 
 import javax.imageio.ImageIO;
+import interface_adapter.groceries.GroceryController;
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -17,6 +19,7 @@ import java.util.Map;
 public class GroceryView extends JPanel {
     private final String viewName = "Grocery";
     private final Map<String, JPanel> groceryCategoryPanels;
+    private GroceryController groceryController;
 
     private Image backgroundImage; //
 
@@ -81,12 +84,12 @@ public class GroceryView extends JPanel {
         saveButton.setBackground(new Color(192, 192, 192));
         saveButton.setBorder(new LineBorder(Color.GRAY, 1, true));
         saveButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "Grocery list saved!"));
+        this.add(saveButton, BorderLayout.SOUTH);
 
         //this.add(Box.createVerticalGlue());
 
         this.add(titleLabel, BorderLayout.NORTH);
         this.add(categoryPanel, BorderLayout.CENTER);
-        this.add(saveButton, BorderLayout.SOUTH);
 
 
     }
@@ -163,6 +166,10 @@ public class GroceryView extends JPanel {
 
     public String getViewName() {
         return viewName;
+    }
+
+    public void setGroceryController(GroceryController groceryController) {
+        this.groceryController = groceryController;
     }
 
     // For testing

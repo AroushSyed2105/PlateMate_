@@ -14,9 +14,9 @@ public interface HealthyRemindersOutputBoundary {
     void prepareFailView(String error);
 
     /**
-     * Switches to the Healthy Reminders view.
+     * Switches to the Logged In view.
      */
-    void switchToHealthyRemindersView();
+    void switchToLoggedInView();
 }
 
 

@@ -2,6 +2,7 @@ package view;
 
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
+import interface_adapter.Calorie.CalorieController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -22,6 +23,10 @@ import java.util.List;
 
 public class CalorieView extends JPanel {
     private final String viewName = "CalorieView";
+    private final Map<String, Integer> plannedCalories; // Planned calorie data
+    private final Map<String, Integer> actualCalories; // Actual calorie data entered by the user
+    private final JTextArea summaryTextArea;
+    private CalorieController calorieController;
     private final Map<String, Integer> plannedCalories;
     private final Map<String, Integer> actualCalories;
     private final JTextArea summaryTextArea;
@@ -175,6 +180,11 @@ public class CalorieView extends JPanel {
             mealPlanPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add spacing
         }
 
+        // Add back button
+        JButton backButton = new JButton("Back to Profile");
+        backButton.addActionListener(e -> calorieController.switchToProfileView());
+
+        // Summary Section
         summaryTextArea = new JTextArea();
         summaryTextArea.setAlignmentX(Component.CENTER_ALIGNMENT);
         summaryTextArea.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -201,6 +211,8 @@ public class CalorieView extends JPanel {
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Add spacing before summary
         mainPanel.add(summaryScrollPane);
 
+        mainPanel.add(backButton);
+        // Wrap mainPanel in a JScrollPane
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -293,5 +305,9 @@ public class CalorieView extends JPanel {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+    }
+
+    public void setCalorieController(CalorieController calorieController) {
+        this.calorieController = calorieController;
     }
 }

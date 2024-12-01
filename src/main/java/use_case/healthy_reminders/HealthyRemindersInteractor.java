@@ -56,11 +56,13 @@ import app.ChatGPTPost;
 //import app.ChatPost;
 
 import java.io.IOException;
+import interface_adapter.healthyreminders.HealthyRemindersPresenter;
 
 public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary {
     private final HealthyRemindersUserDataAccessInterface userDataAccessObject;
     private final HealthyRemindersOutputBoundary outputBoundary;
     private final ChatGPTPost chatGPTPost;
+
 
     public HealthyRemindersInteractor(
             HealthyRemindersUserDataAccessInterface userDataAccessObject,
@@ -79,9 +81,9 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
 
         if (reminder != null && !reminder.isEmpty()) {
             HealthyRemindersOutputData outputData = new HealthyRemindersOutputData(reminder);
-            outputBoundary.prepareSuccessView(outputData);
+            healthyRemindersPresenter.prepareSuccessView(outputData);
         } else {
-            outputBoundary.prepareFailView("Failed to generate a reminder.");
+            healthyRemindersPresenter.prepareFailView("Failed to generate a reminder.");
         }
     }
     @Override
@@ -97,5 +99,6 @@ public class HealthyRemindersInteractor implements HealthyRemindersInputBoundary
         return reminder;
     }
 
+    public void switchToLoggedInView() { healthyRemindersPresenter.switchToLoggedInView();}
 
 }

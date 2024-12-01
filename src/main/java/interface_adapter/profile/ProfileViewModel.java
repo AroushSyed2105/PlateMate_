@@ -12,7 +12,7 @@ public class ProfileViewModel extends ViewModel<ProfileState> {
 
 
     public ProfileViewModel() {
-        super("Profile");
+        super(TITLE_LABEL);
         setState(new ProfileState());
     }
 }

@@ -13,11 +13,19 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import interface_adapter.meal_plan.MealPlanController;
+import interface_adapter.profile.ProfileState;
+
 public class MealView extends JPanel {
 
     private final String viewName = "MealPlan";
+    private final JButton backButton = new JButton("Back");
+    private MealPlanController mealPlanController;
+    private transient ProfileState profileState;
 
     public MealView() throws IOException {
+        this.profileState = ProfileState.getInstance();
+
         // Set layout for the panel
         this.setLayout(new BorderLayout());
 
@@ -88,6 +96,11 @@ public class MealView extends JPanel {
             mealCard.add(Box.createRigidArea(new Dimension(0, 15)));
             mealPlanPanel.add(mealCard);
             mealPlanPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between cards
+
+            // Back button
+            backButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+            backButton.addActionListener(evt -> mealPlanController.switchToProfileView());
+            mealCard.add(backButton);
         }
 
         // Refresh the panel to display the content
@@ -100,12 +113,24 @@ public class MealView extends JPanel {
     }
 
     public String getUserPreferences() {
-        ProfileState currentState = new ProfileState();
-        String tempshit = String.join(",",
-                String.join(",", currentState.getAllergies()),
-                String.join(",", currentState.getDietaryRestrictions()),
-                String.join(",", currentState.getHealthGoals()));
-        System.out.println(tempshit);
-        return tempshit;
+        System.out.println("Statement" + String.join(", ",
+                String.join(", ", profileState.getAllergies()),              // Allergies
+                String.join(", ", profileState.getDietaryRestrictions()),    // Dietary Restrictions
+                String.join(", ", profileState.getHealthGoals())));
+        return String.join(", ",
+                String.join(", ", profileState.getAllergies()),              // Allergies
+                String.join(", ", profileState.getDietaryRestrictions()),    // Dietary Restrictions
+                String.join(", ", profileState.getHealthGoals())// Health Goals
+        );
     }
-}
+    // allows getUserPreferences to be outputted into the terminal
+    public String testUserPreferences() {
+        return getUserPreferences();
+    }
+
+    public String setMealPlanController(MealPlanController mealPlanController) {
+        this.mealPlanController = mealPlanController;
+        return getUserPreferences();
+    }
+    }
+

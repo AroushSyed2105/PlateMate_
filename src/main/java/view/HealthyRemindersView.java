@@ -9,6 +9,7 @@ import java.awt.*;
 
 public class HealthyRemindersView extends JPanel {
     private final String viewName = "HealthyReminders";
+    private transient HealthyRemindersController healthyRemindersController;
 
     public HealthyRemindersView(HealthyRemindersViewModel healthyRemindersViewModel) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -18,6 +19,10 @@ public class HealthyRemindersView extends JPanel {
 
         JButton generateReminderButton = new JButton("Generate Reminder");
         generateReminderButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JButton backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(evt-> healthyRemindersController.switchToLoggedInView());
 
         // Button click shows the reminder stored in the ViewModel
         generateReminderButton.addActionListener(e -> {
@@ -42,10 +47,15 @@ public class HealthyRemindersView extends JPanel {
 
         this.add(titleLabel);
         this.add(generateReminderButton);
+        this.add(backButton);
     }
 
     public String getViewName() {
         return viewName;
+    }
+
+    public void setHealthyRemindersController(HealthyRemindersController healthyRemindersController) {
+        this.healthyRemindersController = healthyRemindersController;
     }
 
 //    public void setReminder(String reminder) {

@@ -44,16 +44,13 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
     private final JTextField healthGoalsInputField = new JTextField(20);
     private final JTextField usernameInputField = new JTextField(20);
     private ProfileController profileController;
-    private ProfileInteractor profileInteractor;
-
-    private final JButton profile;
     private final JButton toMealPlan;
     private final JButton toCalorie;
     private final JButton toGrocery;
     private final JButton saveButton;
-    private final JButton cancelButton;
+    private final JButton backToMenuButton;
     private Image backgroundImage; // Background image variable
-    // add button
+
 
     public ProfileView(ProfileViewModel profileViewModel) {
         try {
@@ -86,7 +83,6 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         this.setBackground(customBackgroundColor);
 
         final JLabel title = new JLabel(ProfileViewModel.TITLE_LABEL);
-        title.setFont(new Font("Times New Roman", Font.BOLD, 24));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setOpaque(false);
         title.setBackground(customBackgroundColor);
@@ -129,6 +125,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         dietaryRestrictionsLabel.setFont(customFont);
         dietaryRestrictionsInfo.add(dietaryRestrictionsLabel);
         dietaryRestrictionsInfo.add(dietaryRestrictionsScrollPane);
+        dietaryRestrictionsList.getSelectedValuesList();
 
         // Buttons panel
         final JPanel buttons = new JPanel();
@@ -142,15 +139,15 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         toMealPlan = new JButton("To Meal Plan");
         toMealPlan.setFont(customFont);
         buttons.add(toMealPlan);
+        backToMenuButton = new JButton(ProfileViewModel.BACK_BUTTON_LABEL);
+        buttons.add(backToMenuButton);
+        backToMenuButton.setFont(customFont);
         toCalorie = new JButton("Calorie Tracker");
         toCalorie.setFont(customFont);
         buttons.add(toCalorie);
         toGrocery = new JButton("To Grocery List");
         toGrocery.setFont(customFont);
         buttons.add(toGrocery);
-        cancelButton = new JButton(ProfileViewModel.CANCEL_BUTTON_LABEL);
-        cancelButton.setFont(customFont);
-        buttons.add(cancelButton);
 
         saveButton.addActionListener(evt -> {
             if (evt.getSource().equals(saveButton)) {
@@ -166,24 +163,13 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
 
         toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
         toGrocery.addActionListener(evt -> profileController.switchToGroceryView());
-        toMealPlan.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        profileController.switchToMealPlanView();
-                    }
-                }
-        );
-
-        toCalorie.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {profileController.switchtoCalorieView();}
-                }
-        );
+        backToMenuButton.addActionListener(evt -> profileController.switchToLoggedInView());
+        toMealPlan.addActionListener(evt -> profileController.switchToMealPlanView());
+        toCalorie.addActionListener(evt -> profileController.switchtoCalorieView());
 
 
         cancelButton.addActionListener(this);
 
-        // Add listeners
         addAllergiesListener();
         addDietaryRestrictionsListener();
         addHealthGoalsListener();

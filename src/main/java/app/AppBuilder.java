@@ -11,11 +11,15 @@ import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.ProfileFactory;
 import entity.UserFactory;
+import interface_adapter.Calorie.CalorieController;
+import interface_adapter.Calorie.CaloriePresenter;
 import interface_adapter.Calorie.CalorieViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.groceries.GroceryController;
+import interface_adapter.groceries.GroceryPresenter;
 import interface_adapter.healthyreminders.HealthyRemindersController;
 import interface_adapter.healthyreminders.HealthyRemindersPresenter;
 import interface_adapter.healthyreminders.HealthyRemindersViewModel;
@@ -26,18 +30,27 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.meal_plan.MealPlanController;
+import interface_adapter.meal_plan.MealPlanPresenter;
 import interface_adapter.meal_plan.MealPlanViewModel;
 import interface_adapter.groceries.GroceryViewModel;
 import interface_adapter.profile.*;
+import interface_adapter.profile.ProfileState;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.calorie.CalorieInputBoundary;
+import use_case.calorie.CalorieInteractor;
+import use_case.calorie.CalorieOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.healthy_reminders.HealthyRemindersInputBoundary;
 import use_case.healthy_reminders.HealthyRemindersInteractor;
 import use_case.healthy_reminders.HealthyRemindersOutputBoundary;
+import use_case.grocery.GroceryInputBoundary;
+import use_case.grocery.GroceryInteractor;
+import use_case.grocery.GroceryOutputBoundary;
 import use_case.logged_in.LoggedInInputBoundary;
 import use_case.logged_in.LoggedInInteractor;
 import use_case.logged_in.LoggedInOutputBoundary;
@@ -47,6 +60,9 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.meal_plan.MealPlanInputBoundary;
+import use_case.meal_plan.MealPlanInteractor;
+import use_case.meal_plan.MealPlanOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -106,15 +122,12 @@ public class AppBuilder {
     private CalorieView calorieView;
     private HealthyRemindersViewModel healthyRemindersViewModel;
     private HealthyRemindersView healthyRemindersView;
+    private ProfileState profileState;
 
     public void ChatGPTPost(String apiKey) {
         this.apiKey = apiKey;
         System.out.println("ChatPost initialized with API key: " + apiKey);
     }
-    //    public void ChatPost(String apiKey) {
-//        this.apiKey = apiKey;
-//        System.out.println("ChatPost initialized with API key: " + apiKey);
-//    }
     public AppBuilder() {
         this.views = views;
         cardPanel.setLayout(cardLayout);
@@ -249,7 +262,7 @@ public class AppBuilder {
      */
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+                loggedInViewModel, loginViewModel, signupViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(
                 userDataAccessObject, loginOutputBoundary);
 
@@ -265,8 +278,8 @@ public class AppBuilder {
                 profileOutputBoundary, profileFactory);
 
          final ProfileController profileController = new ProfileController(profileInteractor);
-         loggedInView.setProfileController(profileController);
          profileView.setProfileController(profileController);
+         loggedInView.setProfileController(profileController);
          return this;
     }
 
@@ -303,15 +316,40 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addMealPlanUseCase() {
+        final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel);
+        final MealPlanInputBoundary mealPlanInteractor = new MealPlanInteractor(mealPlanOutputBoundary);
+        final MealPlanController mealPlanController = new MealPlanController(mealPlanInteractor);
+        mealPlanView.setMealPlanController(mealPlanController);
+        return this;
+    }
+
+    public AppBuilder addCalorieUseCase() {
+        final CalorieOutputBoundary calorieOutputBoundary = new CaloriePresenter(viewManagerModel, profileViewModel);
+        final CalorieInputBoundary calorieInteractor = new CalorieInteractor(calorieOutputBoundary);
+        final CalorieController calorieController = new CalorieController(calorieInteractor);
+        calorieView.setCalorieController(calorieController);
+        return this;
+    }
+
+    public AppBuilder addGroceryUseCase() {
+        final GroceryOutputBoundary groceryOutputBoundary = new GroceryPresenter(viewManagerModel, profileViewModel);
+        final GroceryInputBoundary groceryInteractor = new GroceryInteractor(groceryOutputBoundary);
+        final GroceryController groceryController = new GroceryController(groceryInteractor);
+        groceryView.setGroceryController(groceryController);
+        return this;
+    }
+
     public AppBuilder addHealthyRemindersUseCase() {
         final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel, healthyRemindersViewModel);
 
         final ChatGPTPost chatGPTPost = new ChatGPTPost("proj-VpL8cdC3iIAFo22tSRUqRRNri0kk6UyeZ_Gfz68RLBbtHZj-VISeWiGFh0QRLq0SJWvJilD_EqT3BlbkFJUec_DjbA7hFywZb6JmNAnVM2OqL6dZ541tdfrsXZyFil6I9sIwAmKZmg979mcgrsuJWF7vPCwA");
-        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(userDataAccessObject, healthyRemindersOutputBoundary,  chatGPTPost);
-
-        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(healthyRemindersInteractor);
-        loggedInView.setHealthyRemindersController(healthyRemindersController);
+        final HealthyRemindersInputBoundary healthyRemindersInteractor = new HealthyRemindersInteractor(
+                userDataAccessObject, healthyRemindersOutputBoundary, chatPost);
+        final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(
+                healthyRemindersInteractor);
+        healthyRemindersView.setHealthyRemindersController(healthyRemindersController);
         return this;
     }
     /**

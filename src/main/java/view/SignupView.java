@@ -35,7 +35,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private SignupController signupController;
 
     private final JButton signUp;
-    private final JButton cancel;
+    private final JButton shutDown;
     private final JButton toLogin;
 
     private Image backgroundImage; // Background image variable
@@ -115,10 +115,9 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
         signUp.setFont(customFont);
         buttons.add(signUp);
-
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-        cancel.setFont(customFont);
-        buttons.add(cancel);
+        shutDown = new JButton(SignupViewModel.EXIT_BUTTON_LABEL);
+        shutDown.setFont(customFont);
+        buttons.add(shutDown);
 
         signUp.addActionListener(evt -> {
             if (evt.getSource().equals(signUp)) {
@@ -133,8 +132,15 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
             }
         });
 
-        toLogin.addActionListener(evt -> signupController.switchToLoginView());
-        cancel.addActionListener(this);
+        toLogin.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        signupController.switchToLoginView();
+                    }
+                }
+        );
+
+        shutDown.addActionListener(evt -> System.exit(0));
 
         // Add listeners
         addUsernameListener();

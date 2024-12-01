@@ -42,10 +42,11 @@ public class HealthyRemindersPresenter implements HealthyRemindersOutputBoundary
     }
 
     @Override
-    public void switchToHealthyRemindersView() {
-        // Notify listeners to switch to the Healthy Reminders view
-        viewModel.firePropertyChanged();
+    public void switchToLoggedInView() {
+        this.viewManagerModel.setState(loggedInViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
+
 }
 //package interface_adapter.healthyreminders;
 //

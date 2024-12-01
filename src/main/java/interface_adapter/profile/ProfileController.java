@@ -39,4 +39,8 @@ public class ProfileController {
         profileUseCaseInteractor.switchToGroceryView();
     }
 
+    public void switchToLoggedInView() {
+        profileUseCaseInteractor.switchToLoggedInView();
+    }
+
 }

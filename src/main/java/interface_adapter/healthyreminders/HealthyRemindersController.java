@@ -5,10 +5,14 @@ import use_case.healthy_reminders.HealthyRemindersInputBoundary;
 import java.io.IOException;
 
 public class HealthyRemindersController {
-    private final HealthyRemindersInputBoundary healthyRemindersInteractor;
+    private final HealthyRemindersInputBoundary healthyRemindersUseCaseInteractor;
     private HealthyRemindersViewModel healthyRemindersViewModel;
 
     public HealthyRemindersController(HealthyRemindersInputBoundary healthyRemindersInteractor) {
+        this.healthyRemindersUseCaseInteractor = healthyRemindersInteractor;
+    }
+
+    public void setViewModel(HealthyRemindersViewModel healthyRemindersViewModel) {
         this.healthyRemindersInteractor = healthyRemindersInteractor;
         this.healthyRemindersViewModel = healthyRemindersViewModel;
     }
@@ -20,9 +24,11 @@ public class HealthyRemindersController {
     public void generateReminder() throws IOException {
         String reminder = healthyRemindersInteractor.generateReminder();  // Calls the interactor to get the reminder
         healthyRemindersViewModel.setReminder(reminder);  //
-//        healthyRemindersViewModel.getState().setCurrentReminder(reminder);
-//        healthyRemindersViewModel.firePropertyChanged();
+        healthyRemindersViewModel.getState().setCurrentReminder(reminder);
+        healthyRemindersViewModel.firePropertyChanged();
     }
+
+    public void switchToLoggedInView() { healthyRemindersUseCaseInteractor.switchToLoggedInView();}
 }
 
 //public class HealthyRemindersController {

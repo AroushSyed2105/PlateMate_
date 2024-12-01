@@ -49,11 +49,21 @@ public class GroceryView extends JPanel {
         titleLabel.setBackground(new Color(219, 232, 215));
         titleLabel.setBorder(new EmptyBorder(10, 0, 10, 0));
 
+        // Create Split Pane for Category Panel and Ingredient Panel
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setDividerLocation(0.9); // 70% for categories, 30% for ingredients
+        splitPane.setResizeWeight(0.9); // Allocate more weight to the upper panel
+        splitPane.setBackground(new Color(219, 232, 215));
+
         // Category Panel
         JPanel categoryPanel = createCategoryPanel();
 
         // Ingredient Panel
         JPanel ingredientPanel = createIngredientPanel();
+
+        // Add category and ingredient panels to the split pane
+        splitPane.setTopComponent(categoryPanel);
+        splitPane.setBottomComponent(ingredientPanel);
 
         // Save & Exit Button
         JButton saveButton = new JButton("Save & Exit");
@@ -64,8 +74,8 @@ public class GroceryView extends JPanel {
 
         // Add components to the view
         this.add(titleLabel, BorderLayout.NORTH);
-        this.add(categoryPanel, BorderLayout.CENTER); // Categories in the center
-        this.add(ingredientPanel, BorderLayout.SOUTH); // Ingredients below categories
+        this.add(splitPane, BorderLayout.CENTER);
+        this.add(saveButton, BorderLayout.SOUTH);
     }
 
     @Override
@@ -113,12 +123,12 @@ public class GroceryView extends JPanel {
         JPanel ingredientsPanel = new JPanel();
         ingredientsPanel.setLayout(new BoxLayout(ingredientsPanel, BoxLayout.Y_AXIS));
         ingredientsPanel.setBackground(new Color(219, 232, 215));
-        ingredientsPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
+        ingredientsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        JLabel ingredientsTitle = new JLabel("Ingredients");
-        ingredientsTitle.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        JLabel ingredientsTitle = new JLabel("Ingredients:");
+        ingredientsTitle.setFont(new Font("Times New Roman", Font.BOLD, 16));
         ingredientsTitle.setForeground(new Color(0, 51, 102)); // Dark blue
-        ingredientsTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        ingredientsTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         ingredientsPanel.add(ingredientsTitle);
 
         JTextArea allIngredientsText = new JTextArea();
@@ -140,7 +150,9 @@ public class GroceryView extends JPanel {
         }
 
         allIngredientsText.setText(allIngredients.toString());
-        ingredientsPanel.add(allIngredientsText);
+        JScrollPane scrollPane = new JScrollPane(allIngredientsText);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        ingredientsPanel.add(scrollPane);
 
         return ingredientsPanel;
     }
@@ -149,7 +161,7 @@ public class GroceryView extends JPanel {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new CompoundBorder(
                 BorderFactory.createTitledBorder(categoryName),
-                new EmptyBorder(6, 6, 6, 6)
+                new EmptyBorder(5, 5, 5, 5)
         ));
         panel.setBackground(new Color(255, 255, 240));
 
@@ -222,20 +234,17 @@ public class GroceryView extends JPanel {
             String mealType = entry.getKey();
             String mealDetails = entry.getValue();
             Matcher matcher = ingredientsPattern.matcher(mealDetails);
-
             if (matcher.find()) {
-                String ingredientsBlock = matcher.group(1).trim();
-                String[] ingredients = ingredientsBlock.split("\\n- ");
+                String ingredientsList = matcher.group(1);
                 List<String> ingredientList = new ArrayList<>();
+                String[] ingredients = ingredientsList.split(",\\s*");
+
                 for (String ingredient : ingredients) {
-                    if (!ingredient.isEmpty()) {
-                        ingredientList.add(ingredient.trim());
-                    }
+                    ingredientList.add(ingredient.trim());
                 }
                 ingredientsMap.put(mealType, ingredientList);
             }
         }
-
         return ingredientsMap;
     }
 
@@ -250,6 +259,7 @@ public class GroceryView extends JPanel {
     }
 }
 
+//
 //package view;
 //
 //import javax.imageio.ImageIO;

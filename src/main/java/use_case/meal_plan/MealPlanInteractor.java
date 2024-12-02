@@ -7,5 +7,10 @@ public class MealPlanInteractor implements MealPlanInputBoundary {
         this.mealPlanPresenter = mealPlanPresenter;
     }
     public void switchToProfileView() { mealPlanPresenter.switchToProfileView(); }
+
+    @Override
+    public void switchToNotesView() {
+        mealPlanPresenter.switchToNotesView();
     }
+}
 

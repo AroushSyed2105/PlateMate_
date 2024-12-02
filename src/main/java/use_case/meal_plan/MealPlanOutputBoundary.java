@@ -17,4 +17,6 @@ public interface MealPlanOutputBoundary {
     void prepareFailView(String errorMessage);
 
     void switchToProfileView();
+
+    void switchToNotesView();
 }

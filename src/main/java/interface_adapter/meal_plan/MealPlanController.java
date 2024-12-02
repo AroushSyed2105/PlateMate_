@@ -8,4 +8,7 @@ public class MealPlanController {
         this.mealPlanUseCaseInteractor = mealPlanUseCaseInteractor;
     }
     public void switchToProfileView() { mealPlanUseCaseInteractor.switchToProfileView();}
+
+    public void switchToNotesView() { mealPlanUseCaseInteractor.switchToNotesView();
+    }
 }

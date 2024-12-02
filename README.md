@@ -185,7 +185,7 @@ Thank you for helping us improve the software! Your contributions are invaluable
 We welcome contributions to make this project better! Whether it’s fixing a bug, adding new features, improving documentation, or providing feedback, your help is appreciated. Here’s how you can contribute:
 
 ### How to Contribute
-1. Report Issues: Found a bug or have a suggestion? Open an issue [[here](https://github.com/your-repo/issues)].
+1. Report Issues: Found a bug or have a suggestion? Open an issue on the issues tab in the repo.
 2. Submit Code Changes:
 - Fork the Repository: Click Fork on the repo page and clone it:
 ```

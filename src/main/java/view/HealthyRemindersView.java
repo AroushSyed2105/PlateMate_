@@ -17,6 +17,9 @@ public class HealthyRemindersView extends JPanel {
     private Image backgroundImage;
 
     public HealthyRemindersView(HealthyRemindersViewModel healthyRemindersViewModel) {
+        Font titleFont = new Font("Times New Roman", Font.BOLD, 24); // Larger font for the title
+        Font customFont = new Font("Times New Roman", Font.PLAIN, 16); // Standard font for other components
+
         try {
             backgroundImage = ImageIO.read(new File("images/BG4.png")); // Replace with the path to your image
             if (backgroundImage == null) {
@@ -26,26 +29,26 @@ public class HealthyRemindersView extends JPanel {
             e.printStackTrace(); // Handle exception if image is not found
         }
 
-
         // Set layout and make the background transparent
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Ensure the panel is transparent
         this.setOpaque(false);
 
-
         JLabel titleLabel = new JLabel("Daily Healthy Reminders");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setFont(titleFont); // Apply larger font to the title label
 
         JButton generateReminderButton = new JButton("Generate Reminder");
         generateReminderButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateReminderButton.setFont(customFont); // Apply smaller font to the button
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(Box.createVerticalStrut(300));
 
         JButton backButton = new JButton("Back");
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        backButton.addActionListener(evt-> healthyRemindersController.switchToLoggedInView());
+        backButton.setFont(customFont); // Apply smaller font to the back button
+        backButton.addActionListener(evt -> healthyRemindersController.switchToLoggedInView());
 
         // Button click shows the reminder stored in the ViewModel
         generateReminderButton.addActionListener(e -> {
@@ -68,12 +71,14 @@ public class HealthyRemindersView extends JPanel {
             }
         });
 
+        // Add components to the panel
         this.add(titleLabel);
-        this.add(Box.createVerticalStrut(30));
+        this.add(Box.createVerticalStrut(20));
         this.add(generateReminderButton);
         this.add(Box.createVerticalStrut(20));
         this.add(backButton);
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

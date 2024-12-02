@@ -16,7 +16,7 @@ public class HealthyRemindersViewModel extends ViewModel<HealthyRemindersState> 
     public void setReminder(String reminder) {
         HealthyRemindersState state = getState();
         state.setCurrentReminder(reminder);
-        firePropertyChanged();  // Notify the UI to refresh
+        firePropertyChanged();
     }
 }
 

@@ -18,7 +18,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
-//import interface_adapter.groceries.GroceryController;
 import interface_adapter.groceries.GroceryController;
 import interface_adapter.groceries.GroceryPresenter;
 import interface_adapter.healthyreminders.HealthyRemindersController;
@@ -55,7 +54,7 @@ import use_case.healthy_reminders.HealthyRemindersInputBoundary;
 import use_case.healthy_reminders.HealthyRemindersInteractor;
 import use_case.healthy_reminders.HealthyRemindersOutputBoundary;
 import use_case.grocery.GroceryInputBoundary;
-//import use_case.grocery.GroceryInteractor;
+import use_case.grocery.GroceryInteractor;
 import use_case.grocery.GroceryOutputBoundary;
 import use_case.logged_in.LoggedInInputBoundary;
 import use_case.logged_in.LoggedInInteractor;
@@ -259,7 +258,7 @@ public class AppBuilder {
 
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_KEY"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);
@@ -387,7 +386,7 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("PlateMate");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

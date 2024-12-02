@@ -1,9 +1,38 @@
 # PlateMate - Personalized Meal Planner
+   
 ### Team Members: <br>
 **Mayesha Rahaman - mayesharahaman <br>**
 **Aroush Syed - asyed2105 <br>
 Fatima Masood - fatima0996 <br>
 Melissa Xiao - mxiao86**
+
+# Table of Contents
+
+1. [Summary](#summary)  
+   - [Why We Built This Project](#why-we-built-this-project)  
+   - [What This Project Does](#what-this-project-does)  
+   - [Who It’s For](#who-its-for)  
+   - [What Problem Does It Solve](#what-problem-does-it-solve)  
+2. [Features](#features)  
+   - [1. Personalized One-Day Meal Plan](#1-personalized-one-day-meal-plan)  
+   - [2. Personalized Daily Calorie Tracker](#2-personalized-daily-calorie-tracker)  
+   - [3. Grocery List Organizer](#3-grocery-list-organizer)  
+   - [4. Daily Health Reminders](#4-daily-health-reminders)  
+3. [Installation Instructions](#installation-instructions)  
+   - [1. Prerequisites](#1-prerequisites)  
+   - [2. Installation Steps](#2-installation-steps)  
+   - [3. Run the Application](#3-run-the-application)  
+   - [Common Issues and Fixes](#common-issues-and-fixes)  
+4. [User Guide](#user-guide)  
+5. [Feedback](#feedback)  
+   - [How to Provide Feedback](#how-to-provide-feedback)  
+   - [Rules for Valid Feedback](#rules-for-valid-feedback)  
+   - [What to Expect After Submitting Feedback](#what-to-expect-after-submitting-feedback)  
+6. [Contributions](#contributions)  
+   - [How to Contribute](#how-to-contribute)  
+   - [Guidelines for Contributions](#guidelines-for-contributions)  
+7. [License](#license)
+
 
 ## Summary:
 ### Why We Built This Project

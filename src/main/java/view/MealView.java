@@ -20,6 +20,7 @@ public class MealView extends JPanel {
 
     private final String viewName = "MealPlan";
     private final JButton backButton = new JButton("Back");
+    private final JButton toNotesButton = new JButton("Make a note");
     private MealPlanController mealPlanController;
     private transient ProfileState profileState;
 
@@ -101,6 +102,11 @@ public class MealView extends JPanel {
             backButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
             backButton.addActionListener(evt -> mealPlanController.switchToProfileView());
             mealCard.add(backButton);
+
+            // To notes
+            toNotesButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+            toNotesButton.addActionListener(evt -> mealPlanController.switchToNotesView());
+            mealCard.add(toNotesButton);
         }
 
         // Refresh the panel to display the content

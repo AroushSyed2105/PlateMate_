@@ -18,7 +18,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
-import interface_adapter.groceries.GroceryController;
+//import interface_adapter.groceries.GroceryController;
 import interface_adapter.groceries.GroceryPresenter;
 import interface_adapter.healthyreminders.HealthyRemindersController;
 import interface_adapter.healthyreminders.HealthyRemindersPresenter;
@@ -34,6 +34,10 @@ import interface_adapter.meal_plan.MealPlanController;
 import interface_adapter.meal_plan.MealPlanPresenter;
 import interface_adapter.meal_plan.MealPlanViewModel;
 import interface_adapter.groceries.GroceryViewModel;
+import interface_adapter.notes.NoteState;
+import interface_adapter.notes.NotesController;
+import interface_adapter.notes.NotesPresenter;
+import interface_adapter.notes.NotesViewModel;
 import interface_adapter.profile.*;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.signup.SignupController;
@@ -49,7 +53,7 @@ import use_case.healthy_reminders.HealthyRemindersInputBoundary;
 import use_case.healthy_reminders.HealthyRemindersInteractor;
 import use_case.healthy_reminders.HealthyRemindersOutputBoundary;
 import use_case.grocery.GroceryInputBoundary;
-import use_case.grocery.GroceryInteractor;
+//import use_case.grocery.GroceryInteractor;
 import use_case.grocery.GroceryOutputBoundary;
 import use_case.logged_in.LoggedInInputBoundary;
 import use_case.logged_in.LoggedInInteractor;
@@ -63,6 +67,9 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.meal_plan.MealPlanInputBoundary;
 import use_case.meal_plan.MealPlanInteractor;
 import use_case.meal_plan.MealPlanOutputBoundary;
+import use_case.notes.NotesInputBoundary;
+import use_case.notes.NotesInteractor;
+import use_case.notes.NotesOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -91,7 +98,7 @@ import view.*;
 //                  if your team decides to work with this as your starter code
 //                  for your final project this term.
 public class AppBuilder {
-    private static String apiKey = "API";
+    private static String apiKey = "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";
     private HealthyRemindersInputBoundary healthyRemindersInteractor; // Declare at the class level
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -122,7 +129,8 @@ public class AppBuilder {
     private CalorieView calorieView;
     private HealthyRemindersViewModel healthyRemindersViewModel;
     private HealthyRemindersView healthyRemindersView;
-    private ProfileState profileState;
+    private NotesView notesView;
+    private NotesViewModel notesViewModel;
 
     public void ChatGPTPost(String apiKey) {
         this.apiKey = apiKey;
@@ -240,7 +248,7 @@ public class AppBuilder {
 
         // Properly initialize HealthyRemindersInteractor
 //        final ChatPost chatPost = new ChatPost("r4A0YoQcxKECMc4f2ipQT7PcKDqljAY8nYoLaETX"); // Replace with your API key
-        final ChatGPTPost chatGPTPost = new ChatGPTPost("API_KEY"); // Replace with your API key
+        final ChatGPTPost chatGPTPost = new ChatGPTPost("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"); // Replace with your API key
         final HealthyRemindersOutputBoundary healthyRemindersPresenter = new HealthyRemindersPresenter(viewManagerModel,
                 loggedInViewModel,
                 healthyRemindersViewModel);
@@ -334,13 +342,13 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addGroceryUseCase() {
-        final GroceryOutputBoundary groceryOutputBoundary = new GroceryPresenter(viewManagerModel, profileViewModel);
-        final GroceryInputBoundary groceryInteractor = new GroceryInteractor(groceryOutputBoundary);
-        final GroceryController groceryController = new GroceryController(groceryInteractor);
-        groceryView.setGroceryController(groceryController);
-        return this;
-    }
+//    public AppBuilder addGroceryUseCase() {
+//        final GroceryOutputBoundary groceryOutputBoundary = new GroceryPresenter(viewManagerModel, profileViewModel);
+//        final GroceryInputBoundary groceryInteractor = new GroceryInteractor(groceryOutputBoundary);
+//        final GroceryController groceryController = new GroceryController(groceryInteractor);
+//        groceryView.setGroceryController(groceryController);
+//        return this;
+//    }
 
     public AppBuilder addHealthyRemindersUseCase() {
         final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,
@@ -352,6 +360,14 @@ public class AppBuilder {
         final HealthyRemindersController healthyRemindersController = new HealthyRemindersController(
                 healthyRemindersInteractor);
         healthyRemindersView.setHealthyRemindersController(healthyRemindersController);
+        return this;
+    }
+
+    public AppBuilder addNotesUseCase() {
+        final NotesOutputBoundary notesOutputBoundary = new NotesPresenter(viewManagerModel, mealPlanViewModel);
+        final NotesInputBoundary notesInteractor = new NotesInteractor(notesOutputBoundary);
+        final NotesController notesController = new NotesController(notesInteractor);
+        notesView.setNotesController(notesController);
         return this;
     }
     /**

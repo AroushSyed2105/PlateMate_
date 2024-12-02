@@ -30,8 +30,9 @@ public class Main {
                                             .addProfileUseCase()
                                             .addMealPlanUseCase()
                                             .addCalorieUseCase()
-                                            .addGroceryUseCase()
+//                                            .addGroceryUseCase()
                                             .addHealthyRemindersUseCase()
+                                            .addNotesUseCase()
                                             .build();
 
         application.pack();

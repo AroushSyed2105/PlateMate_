@@ -188,7 +188,7 @@ To begin using the software after downloading and logging in, follow these steps
 - At the bottom, the **ingredients section** will show you which ingredients are required for the recipes in the generated meal plan.
 
 ### 6. Make Personalized Meal Notes:
-- Click the **"Notes"** button to open the notes feature
+- Click the **"Make a Note"** button to open the notes feature
 - Use the input text boxes to enter the users-personalized notes regarding the meal plan
 ### 7. Navigate Between Views:
 - Easily switch between the different sections of the app (Daily Healthy Reminders, Profile, Meal Plan, Calorie Tracker, and Grocery List) using the buttons provided at the bottom of each page.

@@ -31,30 +31,36 @@ public class NotesView extends JPanel {
         }
 
         this.noteState = NoteState.getInstance();
-        // Create and set up the notes area with scroll
+        Color customBackgroundColor = new Color(219, 232, 215);
+        this.setBackground(customBackgroundColor);
+        this.setOpaque(false);
+
+        JPanel notesPanel = new JPanel();
+        notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.Y_AXIS));
         notesArea = new JTextArea(noteState.getSavedNotes());
         notesArea.setFont(new Font("Times New Roman", Font.PLAIN, 16));
+        notesArea.setLineWrap(true);  // Enable text wrapping
+        notesArea.setWrapStyleWord(true);  // Ensure wrapping at word boundaries
         JScrollPane scrollPane = new JScrollPane(notesArea);
+        scrollPane.setPreferredSize(new Dimension(450, 300));
 
-        // Create a panel for the notes area
-        JPanel notesPanel = new JPanel();
-        notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.Y_AXIS)); // Stack elements vertically
-        notesPanel.add(scrollPane); // Add scrollable notes area to panel
-
-        // Add action listeners for the buttons
+        notesPanel.add(scrollPane, BorderLayout.CENTER);
+        saveButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         saveButton.addActionListener(e -> noteState.setSavedNotes(notesArea.getText()));
+        saveButton.addActionListener(evt-> JOptionPane.showMessageDialog(this,
+                "Notes saved!"));
+        backButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         backButton.addActionListener(e -> notesController.switchToMealPlanView());
 
-        // Create a panel for the buttons and center them
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Center the buttons
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));  // Center the buttons
         buttonPanel.add(saveButton);
         buttonPanel.add(backButton);
 
-        // Set layout for the main NotesView
-        setLayout(new BorderLayout());
-        add(notesPanel, BorderLayout.CENTER); // Add notes panel in center
-        add(buttonPanel, BorderLayout.SOUTH); // Add butto
+// Set layout for the main NotesView
+        setLayout(new BorderLayout());  // Use BorderLayout to arrange components
+        add(notesPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
 
     }
     public String getViewName() {

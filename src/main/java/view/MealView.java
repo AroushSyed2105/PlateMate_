@@ -99,14 +99,16 @@ public class MealView extends JPanel {
             mealPlanPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between cards
 
             // Back button
+            JPanel buttons = new JPanel();
             backButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
             backButton.addActionListener(evt -> mealPlanController.switchToProfileView());
-            mealCard.add(backButton);
+            buttons.add(backButton);
 
             // To notes
             toNotesButton.setFont(new Font("Times New Roman", Font.PLAIN, 16));
             toNotesButton.addActionListener(evt -> mealPlanController.switchToNotesView());
-            mealCard.add(toNotesButton);
+            buttons.add(toNotesButton);
+            this.add(buttons, BorderLayout.SOUTH);
         }
 
         // Refresh the panel to display the content

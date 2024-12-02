@@ -5,6 +5,31 @@
 Fatima Masood - fatima0996 <br>
 Melissa Xiao - mxiao86**
 
+## Summary:
+### Why We Built This Project
+Ever feel overwhelmed by the idea of eating healthy? Whether it's figuring out what to cook, shopping for the right ingredients, or sticking to your nutritional goals, maintaining a healthy lifestyle can be tough. We’ve been there, too. This project intends to make healthy living easier for everyone. We wanted to create something that not only helps you stay on track but also takes the stress out of planning meals, shopping, and hitting your health goals.
+
+### What This Project Does
+Imagine having a personal assistant for your meals and nutrition. That’s what this app is for:
+- Set Your Restrictions and Allergies: Need to avoid tree nuts? Eat a vegetarian diet? Save this in your profile, and we'll take it from there.
+- Get Daily Challenges: Receive small, manageable challenges like trying new veggies or drinking more water to make healthy habits stick.
+- Personalized Meal Plans: Based on your preferences and available ingredients, we’ll suggest recipes that fit your lifestyle.
+- Nutritional Tracking: Track your calories, protein, carbs, and fats to see how you’re doing.
+We designed this app to fit into your busy life, helping you save time, money, and effort while making healthier choices.
+
+### Who It’s For
+This app is for anyone who wants to:
+- Wants healthier meals but doesn’t know where to start or have hours to spend planning meals.
+- Stay motivated with small, achievable daily goals.
+- Struggles to stay consistent with your nutrition.
+- Feels overwhelmed by the idea of meal prep and grocery shopping.
+- Keep track of their nutrition without the hassle.
+- Stay organized with a grocery tracker 
+Whether you're a busy professional, a fitness enthusiast, or someone starting their health journey, this app is here to support you.
+
+### What Problem Does It Solve?
+Eating healthy can feel complicated, and time-consuming. We simplify the process by giving you all the tools you need in one place. It’s like having a meal planner, a nutritionist, and a personal motivator all in your pocket.
+
 ## Features:
 
 ### **1. Personalized One-Day Meal Plan**

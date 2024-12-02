@@ -27,10 +27,11 @@ public class Main {
                                             .addHealthyRemindersView()
                                             .addCalorieView()
                                             .addGroceryPlanView()
+                                            .addNotesView()
                                             .addProfileUseCase()
                                             .addMealPlanUseCase()
                                             .addCalorieUseCase()
-//                                            .addGroceryUseCase()
+                                            .addGroceryUseCase()
                                             .addHealthyRemindersUseCase()
                                             .addNotesUseCase()
                                             .build();

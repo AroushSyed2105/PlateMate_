@@ -19,6 +19,7 @@ import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
 //import interface_adapter.groceries.GroceryController;
+import interface_adapter.groceries.GroceryController;
 import interface_adapter.groceries.GroceryPresenter;
 import interface_adapter.healthyreminders.HealthyRemindersController;
 import interface_adapter.healthyreminders.HealthyRemindersPresenter;
@@ -49,6 +50,7 @@ import use_case.calorie.CalorieOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.grocery.GroceryInteractor;
 import use_case.healthy_reminders.HealthyRemindersInputBoundary;
 import use_case.healthy_reminders.HealthyRemindersInteractor;
 import use_case.healthy_reminders.HealthyRemindersOutputBoundary;
@@ -174,6 +176,7 @@ public class AppBuilder {
         groceryViewModel = new GroceryViewModel();
         loggedInView = new LoggedInView(profileViewModel, loggedInViewModel, healthyRemindersViewModel);
         healthyRemindersViewModel = new HealthyRemindersViewModel();
+        notesViewModel = new NotesViewModel();
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
@@ -192,7 +195,8 @@ public class AppBuilder {
     }
 
     public AppBuilder addMealView() throws IOException {
-        final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel);
+        final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel,
+        notesViewModel);
         final MealPlanInputBoundary mealPlanInteractor = new MealPlanInteractor(mealPlanOutputBoundary);
         MealPlanController mealPlanController = new MealPlanController(mealPlanInteractor);
         mealView = new MealView();
@@ -219,6 +223,13 @@ public class AppBuilder {
         calorieViewModel = new CalorieViewModel();
         calorieView = new CalorieView();
         cardPanel.add(calorieView, calorieView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addNotesView() {
+        notesViewModel = new NotesViewModel();
+        notesView = new NotesView();
+        cardPanel.add(notesView, notesView.getViewName());
         return this;
     }
 
@@ -328,7 +339,8 @@ public class AppBuilder {
     }
 
     public AppBuilder addMealPlanUseCase() {
-        final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel);
+        final MealPlanOutputBoundary mealPlanOutputBoundary = new MealPlanPresenter(viewManagerModel, profileViewModel,
+                notesViewModel);
         final MealPlanInputBoundary mealPlanInteractor = new MealPlanInteractor(mealPlanOutputBoundary);
         final MealPlanController mealPlanController = new MealPlanController(mealPlanInteractor);
         return this;
@@ -342,13 +354,13 @@ public class AppBuilder {
         return this;
     }
 
-//    public AppBuilder addGroceryUseCase() {
-//        final GroceryOutputBoundary groceryOutputBoundary = new GroceryPresenter(viewManagerModel, profileViewModel);
-//        final GroceryInputBoundary groceryInteractor = new GroceryInteractor(groceryOutputBoundary);
-//        final GroceryController groceryController = new GroceryController(groceryInteractor);
-//        groceryView.setGroceryController(groceryController);
-//        return this;
-//    }
+    public AppBuilder addGroceryUseCase() {
+        final GroceryOutputBoundary groceryOutputBoundary = new GroceryPresenter(viewManagerModel, profileViewModel);
+        final GroceryInputBoundary groceryInteractor = new GroceryInteractor(groceryOutputBoundary);
+        final GroceryController groceryController = new GroceryController(groceryInteractor);
+        groceryView.setGroceryController(groceryController);
+        return this;
+    }
 
     public AppBuilder addHealthyRemindersUseCase() {
         final HealthyRemindersOutputBoundary healthyRemindersOutputBoundary = new HealthyRemindersPresenter(viewManagerModel,

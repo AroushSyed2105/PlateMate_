@@ -161,7 +161,6 @@ To begin using the software after downloading and logging in, follow these steps
 ### 6. Navigate Between Views:
 - Easily switch between the different sections of the app (Daily Healthy Reminders, Profile, Meal Plan, Calorie Tracker, and Grocery List) using the buttons provided at the bottom of each page.
 
-
 ## Feedback
 
 We welcome your feedback on the software! Your input helps us improve and make the app better for everyone. Here's how you can give feedback:
@@ -181,6 +180,34 @@ To ensure your feedback is constructive and helpful, please follow these guideli
 - **Follow-up:** If needed, we may follow up with you for additional clarification or updates on the status of your feedback.
 
 Thank you for helping us improve the software! Your contributions are invaluable to our development process.
+
+## Contributions
+We welcome contributions to make this project better! Whether it’s fixing a bug, adding new features, improving documentation, or providing feedback, your help is appreciated. Here’s how you can contribute:
+
+### How to Contribute
+1. Report Issues: Found a bug or have a suggestion? Open an issue [[here](https://github.com/your-repo/issues)].
+2. Submit Code Changes:
+- Fork the Repository: Click Fork on the repo page and clone it:
+```
+git clone https://github.com/your-username/your-repo.git
+```
+- Create a Branch:
+```
+git checkout -b feature/your-feature-name
+```
+- Make Your Changes: Edit code, test thoroughly, and commit:
+```
+git commit -m "Description of changes"
+git push origin feature/your-feature-name
+```
+- Open a Pull Request: Go to the original repository and click New Pull Request. Provide a clear title and description.
+
+### Guidelines for Contributions
+- Follow Code Style: Match the existing code structure.
+- Focus Your PR: One feature or fix per pull request.
+- Test Thoroughly: Include tests for any new functionality.
+
+
 ## License 
 MIT License
 

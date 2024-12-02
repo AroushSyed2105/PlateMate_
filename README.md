@@ -77,6 +77,58 @@ Eating healthy can feel complicated, and time-consuming. We simplify the process
 #### Sample Healthy Reminder:
 <img src="images/reminder.png" alt="Sample Breakfast Based on Saved Preferences" width="500" height="500">
 
+## Installation Instructions
+### 1. Prerequisites
+Ensure your system meets the following requirements:
+
+- Operating System: Tested on:
+  - Windows 10 or higher
+  - macOS 10.15 (Catalina) or higher
+  - Linux Ubuntu 20.04 or higher
+- Java Development Kit (JDK): Version 11 or higher
+  - [Download JDK](https://www.oracle.com/java/technologies/downloads/#java11?er=221886)
+- Maven: Version 3.6.3 or higher 
+  - [Download](https://maven.apache.org/install.html)
+ 
+### 2. Installation Steps 
+1. Clone the Repository
+```
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
+2. Install Required Dependencies
+This project relies on a few libraries to work its magic.Ensure the following Maven dependencies are included in the pom.xml file. 
+- OkHttp (v4.10.0): For API requests
+- JSON.org Library (v20210307): For JSON parsing
+Run the following command to download and install all dependencies:
+```
+mvn clean install
+```
+### 3. Run the Application
+```
+mvn compile
+
+mvn exec:java
+```
+
+### Common Issues and Fixes
+#### Dependency Download Fails
+Error Message:
+```
+Could not resolve dependencies for project <project-name>.
+```
+Solution
+- Run the following
+```
+mvn clean install -U
+```
+### ChatGPT API Setup
+1. Obtain an API key from OpenAI.
+2. Configure the API key: Add it as an environment variable
+```
+export OPENAI_API_KEY=sk-your-api-key
+``` 
+- Alternatively, directly configure it in the code (not recommended for production as you won't be able to commit and push any changes to Github with the secret key).
 
 ## User Guide: 
 

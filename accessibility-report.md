@@ -26,7 +26,7 @@
 ***
 ### Size and Space for Approach and Use
 
-- This principle is not relevant to our program as it is a digital product, it is already accessible for any user regardless of
+- This principle is not relevant to our program as it is a digital product, it is already accessible for any type of user regardless of
 mobility or size.
 ***
 Our program is primarily targeted towards a health conscious audience, particularly those who would benefit from convenient 

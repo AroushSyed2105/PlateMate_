@@ -42,7 +42,7 @@ Ever feel overwhelmed by the idea of eating healthy? Whether it's figuring out w
 Imagine having a personal assistant for your meals and nutrition. That’s what this app is for:
 - Set Your Restrictions and Allergies: Need to avoid tree nuts? Eat a vegetarian diet? Save this in your profile, and we'll take it from there.
 - Get Daily Challenges: Receive small, manageable challenges like trying new veggies or drinking more water to make healthy habits stick.
-- Personalized Meal Plans: Based on your preferences and available ingredients, we’ll suggest recipes that fit your lifestyle.
+- Personalized Meal Plans: Based on your preferences and available ingredients, we’ll suggest recipes that fit your lifestyle. You will also be able make personalized notes based on the meal plan you get. 
 - Nutritional Tracking: Track your calories, protein, carbs, and fats to see how you’re doing.
 We designed this app to fit into your busy life, helping you save time, money, and effort while making healthier choices.
 
@@ -187,7 +187,11 @@ To begin using the software after downloading and logging in, follow these steps
 - The **checkbox feature** allows you to mark items you have already stored.
 - At the bottom, the **ingredients section** will show you which ingredients are required for the recipes in the generated meal plan.
 
-### 6. Navigate Between Views:
+### 6. Make Personalized Meal Notes:
+- Click the **"Notes"** button to open the notes feature
+- Use the input text boxes to enter the users-personalized notes regarding the meal plan
+- 
+### 7. Navigate Between Views:
 - Easily switch between the different sections of the app (Daily Healthy Reminders, Profile, Meal Plan, Calorie Tracker, and Grocery List) using the buttons provided at the bottom of each page.
 
 ## Feedback

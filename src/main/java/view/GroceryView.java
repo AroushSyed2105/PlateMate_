@@ -227,7 +227,7 @@ public class GroceryView extends JPanel {
         this.groceryController = groceryController;
     }
 
-    private static Map<String, List<String>> extractIngredients(Map<String, String> mealPlan) {
+    public static Map<String, List<String>> extractIngredients(Map<String, String> mealPlan) {
         Map<String, List<String>> ingredientsMap = new LinkedHashMap<>();
         Pattern ingredientsPattern = Pattern.compile("Ingredients:\\s*(.*?)\\n\\n", Pattern.DOTALL);
 

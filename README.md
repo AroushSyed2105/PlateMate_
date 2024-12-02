@@ -14,10 +14,11 @@ Melissa Xiao - mxiao86**
    - [Who It’s For](#who-its-for)  
    - [What Problem Does It Solve](#what-problem-does-it-solve)  
 2. [Features](#features)  
-   - [1. Personalized One-Day Meal Plan](#1-personalized-one-day-meal-plan)  
-   - [2. Personalized Daily Calorie Tracker](#2-personalized-daily-calorie-tracker)  
-   - [3. Grocery List Organizer](#3-grocery-list-organizer)  
-   - [4. Daily Health Reminders](#4-daily-health-reminders)  
+   - [1. Personalized One-Day Meal Plan](#1-personalized-one-day-meal-plan)
+   - [2. Personal Notes Page](#2-personal-notes-page)  
+   - [3. Personalized Daily Calorie Tracker](#3-personalized-daily-calorie-tracker)  
+   - [4. Grocery List Organizer](#4-grocery-list-organizer)  
+   - [5. Daily Health Reminders](#5-daily-health-reminders)  
 3. [Installation Instructions](#installation-instructions)  
    - [1. Prerequisites](#1-prerequisites)  
    - [2. Installation Steps](#2-installation-steps)  
@@ -42,7 +43,7 @@ Ever feel overwhelmed by the idea of eating healthy? Whether it's figuring out w
 Imagine having a personal assistant for your meals and nutrition. That’s what this app is for:
 - Set Your Restrictions and Allergies: Need to avoid tree nuts? Eat a vegetarian diet? Save this in your profile, and we'll take it from there.
 - Get Daily Challenges: Receive small, manageable challenges like trying new veggies or drinking more water to make healthy habits stick.
-- Personalized Meal Plans: Based on your preferences and available ingredients, we’ll suggest recipes that fit your lifestyle. You will also be able make personalized notes based on the meal plan you get. 
+- Personalized Meal Plans: Based on your preferences and available ingredients, we’ll suggest recipes that fit your lifestyle.
 - Nutritional Tracking: Track your calories, protein, carbs, and fats to see how you’re doing.
 We designed this app to fit into your busy life, helping you save time, money, and effort while making healthier choices.
 
@@ -72,18 +73,23 @@ Eating healthy can feel complicated, and time-consuming. We simplify the process
 #### Sample Breakfast Based on Saved Preferences:
 <img src="images/sampleBreakfast.png" alt="Sample Breakfast Based on Saved Preferences" width="500" height="500">
 
+### **2. Personal Notes Page:
+- Users can add personalized notes based on the generated meal plan and save them.
 
-### **2. Personalized Daily Calorie Tracker**
+#### Sample Note:
+<img src="images/note.png" alt="Sample Note" width="300" height="300">
+
+### **3. Personalized Daily Calorie Tracker**
 - Tracks daily calorie intake by comparing:  
   1. **Planned Calories:** Automatically calculated based on the generated meal plan.  
   2. **Actual Calories:** Recorded by users as they input what they eat throughout the day.  
 - Provides an easy-to-understand summary of deviations from planned goals, empowering users to adjust their habits.
 
 #### Sample Calorie Tracker Display:
-<img src="images/calorie.png" alt="Sample Breakfast Based on Saved Preferences" width="400" height="500">
+<img src="images/calorie.png" alt="Sample Calorie Tracker Display" width="400" height="500">
 
 
-### **3. Grocery List Organizer**
+### **4. Grocery List Organizer**
 - Allows users to input grocery items they need for their meal plan or personal shopping.  
 - Automatically organizes items into six intuitive categories for a streamlined shopping experience:  
   - **Grains**  
@@ -95,16 +101,16 @@ Eating healthy can feel complicated, and time-consuming. We simplify the process
 - Helps users keep track of essential ingredients and reduces the hassle of grocery planning.
 
 #### Sample Grocery List:
-<img src="images/grocery.png" alt="Sample Breakfast Based on Saved Preferences" width="400" height="500">
+<img src="images/grocery.png" alt="Sample Grocery List" width="400" height="500">
 
 
-### **4. Daily Health Reminders**
+### **5. Daily Health Reminders**
 - A dedicated page generates easy-to-follow, practical health tips to encourage users to stay on a healthy track.  
 - Examples of tips include hydration reminders and incorporating more vegetables into meals.  
 - Designed to motivate and educate users with small, manageable steps toward better health.
 
 #### Sample Healthy Reminder:
-<img src="images/reminder.png" alt="Sample Breakfast Based on Saved Preferences" width="500" height="500">
+<img src="images/reminder.png" alt="Sample Healthy Reminder" width="500" height="500">
 
 ## Installation Instructions
 ### 1. Prerequisites
@@ -190,9 +196,9 @@ To begin using the software after downloading and logging in, follow these steps
 ### 6. Make Personalized Meal Notes:
 - Click the **"Make a Note"** button to open the notes feature
 - Use the input text boxes to enter the users-personalized notes regarding the meal plan
+  
 ### 7. Navigate Between Views:
 - Easily switch between the different sections of the app (Daily Healthy Reminders, Profile, Meal Plan, Calorie Tracker, and Grocery List) using the buttons provided at the bottom of each page.
-
 ## Feedback
 
 We welcome your feedback on the software! Your input helps us improve and make the app better for everyone. Here's how you can give feedback:

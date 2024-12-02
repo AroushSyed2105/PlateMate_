@@ -39,8 +39,8 @@ public class NotesView extends JPanel {
         notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.Y_AXIS));
         notesArea = new JTextArea(noteState.getSavedNotes());
         notesArea.setFont(new Font("Times New Roman", Font.PLAIN, 16));
-        notesArea.setLineWrap(true);  // Enable text wrapping
-        notesArea.setWrapStyleWord(true);  // Ensure wrapping at word boundaries
+        notesArea.setLineWrap(true);
+        notesArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(notesArea);
         scrollPane.setPreferredSize(new Dimension(450, 300));
 
@@ -53,12 +53,11 @@ public class NotesView extends JPanel {
         backButton.addActionListener(e -> notesController.switchToMealPlanView());
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));  // Center the buttons
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(saveButton);
         buttonPanel.add(backButton);
 
-// Set layout for the main NotesView
-        setLayout(new BorderLayout());  // Use BorderLayout to arrange components
+        setLayout(new BorderLayout());
         add(notesPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
